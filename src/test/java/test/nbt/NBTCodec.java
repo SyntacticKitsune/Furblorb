@@ -1,0 +1,349 @@
+package test.nbt;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.querz.nbt.tag.CompoundTag;
+import net.querz.nbt.tag.ListTag;
+import net.querz.nbt.tag.StringTag;
+
+import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.io.Decoder;
+import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.api.io.INamedEnum;
+import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
+import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
+import net.syntactickitsune.furblorb.api.io.impl.Codec;
+import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
+import net.syntactickitsune.furblorb.api.util.TriConsumer;
+
+/**
+ * <p>
+ * {@code NBTCodec} is an {@link Encoder}/{@link Decoder} hybrid that works with NBT data. (Yes, <i>Minecraft</i>'s data format.)
+ * It turns out that when you create a generalized binary data format you tend to arrive at something similar to NBT, so why not
+ * do some sequence breaking and just use NBT directly? And that's where we are now.
+ * </p>
+ * <p>
+ * This {@code Codec} is a wrapper around {@link CompoundTag}, unifying Furblorb's serialization API and NBT.
+ * On top of this, it takes into account some NBT-specific optimizations, such as writing numbers as smaller data types (where applicable).
+ * Combined with NBT's almost-natural GZIP compression, writing {@link Furball Furballs} in NBT results in just under half the file size!
+ * </p>
+ * @author SyntacticKitsune
+ * @see BinaryCodec
+ * @see JsonCodec
+ */
+public final class NBTCodec extends Codec {
+
+	private final CompoundTag wrapped;
+	private final boolean read;
+
+	/**
+	 * Constructs a new {@code NBTCodec} with the specified parameters.
+	 * @param root The root object.
+	 * @param read Whether the {@code NBTCodec} should be read-only versus write-only.
+	 * @throws NullPointerException If {@code root} is {@code null}.
+	 */
+	public NBTCodec(CompoundTag root, boolean read) {
+		wrapped = Objects.requireNonNull(root, "root");
+		this.read = read;
+	}
+
+	/**
+	 * Constructs a new {@code NBTCodec} with the specified parameters.
+	 * @param root The root object.
+	 * @param read Whether the {@code NBTCodec} should be read-only versus write-only.
+	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
+	 * @throws NullPointerException If {@code root} is {@code null}.
+	 */
+	public NBTCodec(CompoundTag root, boolean read, byte formatVersion) {
+		this(root, read);
+		this.formatVersion = formatVersion;
+	}
+
+	public CompoundTag unwrap() {
+		return wrapped;
+	}
+
+	@Override
+	public boolean readCompressedTypes() {
+		return true;
+	}
+
+	@Override
+	public boolean writeCompressedTypes() {
+		return true;
+	}
+
+	@Override
+	public byte readByte(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asByte();
+	}
+
+	@Override
+	@Nullable
+	public byte[] readByteArray(@Nullable String key) {
+		return wrapped.containsKey(Objects.requireNonNull(key, "key")) ? wrapped.getByteArray(key) : null;
+	}
+
+	@Override
+	public boolean readBoolean(@Nullable String key) {
+		return wrapped.getBoolean(Objects.requireNonNull(key, "key"));
+	}
+
+	@Override
+	public short readShort(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asShort();
+	}
+
+	@Override
+	public int readInt(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asInt();
+	}
+
+	@Override
+	public long readLong(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asLong();
+	}
+
+	@Override
+	public float readFloat(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asFloat();
+	}
+
+	@Override
+	public double readDouble(@Nullable String key) {
+		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asDouble();
+	}
+
+	@Override
+	public UUID readUUID(@Nullable String key) {
+		return UUID.fromString(readString(Objects.requireNonNull(key, "key")));
+	}
+
+	@Override
+	public String readString(@Nullable String key) {
+		return wrapped.containsKey(Objects.requireNonNull(key, "key")) ? wrapped.getString(key) : ""; // Coerce to "".
+	}
+
+	@Override
+	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
+		final E[] vals = type.getEnumConstants();
+		final ParsingStrategy.NumberType numberType = numberType(type);
+
+		final int index = switch (numberType) {
+			case BYTE -> Byte.toUnsignedInt(readByte(key));
+			case SHORT -> Short.toUnsignedInt(readShort(key));
+			case INT -> readInt(key);
+		};
+
+		if (index < 0 || index >= vals.length)
+			throw new FurblorbParsingException("Attempt to access enum constant " + index + " which does not exist (enum: " + type.getName() + ", using " + numberType + " number type)");
+
+		return vals[index];
+	}
+
+	@Override
+	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) {
+		final ListTag<CompoundTag> arr = wrapped.getListTag(key).asCompoundTagList();
+		final List<T> ret = new ArrayList<>(arr.size());
+
+		for (int i = 0; i < arr.size(); i++)
+			ret.add(reader.apply(new NBTCodec(arr.get(i), read, formatVersion)));
+
+		return ret;
+	}
+
+	@Override
+	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
+		final ListTag<CompoundTag> listTag = wrapped.getListTag(key).asCompoundTagList();
+		final List<T> ret = new ArrayList<>(listTag.size());
+
+		for (CompoundTag tag : listTag)
+			if (!tag.containsKey("__null__"))
+				ret.add(reader.apply(new NBTCodec(tag, read, formatVersion)));
+			else
+				ret.add(null);
+
+		return ret;
+	}
+
+	@Override
+	public List<String> readStringList(@Nullable String key) {
+		final ListTag<StringTag> tag = wrapped.getListTag(key).asStringTagList();
+		final List<String> ret = new ArrayList<>(tag.size());
+
+		for (StringTag str : tag)
+			ret.add(str.getValue());
+
+		return ret;
+	}
+
+	@Override
+	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
+		return reader.apply(new NBTCodec(wrapped.getCompoundTag(key), read, formatVersion));
+	}
+
+	@Override
+	@Nullable
+	public <T> T readOptional(@Nullable String key, Function<Decoder, T> reader) {
+		return wrapped.containsKey(key) ? read(key, reader) : null;
+	}
+
+	@Override
+	public <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		return reader.apply(this, key);
+	}
+
+	@Override
+	@Nullable
+	public <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		return wrapped.containsKey(key) ? reader.apply(this, key) : null;
+	}
+
+	@Override
+	public void writeByte(@Nullable String key, byte value) {
+		wrapped.putByte(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeByteArray(@Nullable String key, @Nullable byte[] value) {
+		if (value != null)
+			wrapped.putByteArray(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeBoolean(@Nullable String key, boolean value) {
+		wrapped.putBoolean(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeShort(@Nullable String key, short value) {
+		if ((byte) value == value)
+			writeByte(key, (byte) value);
+		else
+			wrapped.putShort(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeInt(@Nullable String key, int value) {
+		// Optimization: try to write ints as smaller data types when possible.
+		if ((byte) value == value)
+			writeByte(key, (byte) value);
+		else if ((short) value == value)
+			writeShort(key, (short) value);
+		else
+			wrapped.putInt(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeLong(@Nullable String key, long value) {
+		if ((int) value == value)
+			writeInt(key, (int) value);
+
+		wrapped.putLong(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeFloat(@Nullable String key, float value) {
+		wrapped.putFloat(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeDouble(@Nullable String key, double value) {
+		wrapped.putDouble(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public void writeUUID(@Nullable String key, UUID value) {
+		writeString(Objects.requireNonNull(key, "key"), value.toString());
+	}
+
+	@Override
+	public void writeString(@Nullable String key, String value) {
+		if (!value.isEmpty())
+			wrapped.putString(Objects.requireNonNull(key, "key"), value);
+	}
+
+	@Override
+	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) {
+		Objects.requireNonNull(value, "value");
+
+		final ParsingStrategy.NumberType numberType = numberType(value.getClass());
+		switch (numberType) {
+			case BYTE -> writeByte(key, (byte) value.ordinal());
+			case SHORT -> writeShort(key, (short) value.ordinal());
+			case INT -> writeInt(key, value.ordinal());
+		}
+	}
+
+	@Override
+	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
+		final ListTag<CompoundTag> arr = new ListTag<>(CompoundTag.class);
+
+		for (T v : value) {
+			final CompoundTag tag = new CompoundTag();
+			writer.accept(v, new NBTCodec(tag, read, formatVersion));
+			arr.add(tag);
+		}
+
+		wrapped.put(key, arr);
+	}
+
+	@Override
+	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+		final ListTag<CompoundTag> arr = new ListTag<>(CompoundTag.class);
+
+		for (T v : value) {
+			final CompoundTag tag = new CompoundTag();
+			if (v != null)
+				writer.accept(v, new NBTCodec(tag, read, formatVersion));
+			else
+				tag.putBoolean("__null__", true);
+			arr.add(tag);
+		}
+
+		wrapped.put(key, arr);
+	}
+
+	@Override
+	public void writeStringList(@Nullable String key, List<String> value) {
+		final ListTag<StringTag> arr = new ListTag<>(StringTag.class);
+
+		for (String v : value) arr.add(new StringTag(Objects.requireNonNull(v)));
+
+		wrapped.put(key, arr);
+	}
+
+	@Override
+	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
+		final CompoundTag tag = new CompoundTag();
+		writer.accept(value, new NBTCodec(tag, read, formatVersion));
+		wrapped.put(key, tag);
+	}
+
+	@Override
+	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) {
+		if (value != null)
+			write(key, value, writer);
+	}
+
+	@Override
+	public <T> void writeExternal(@Nullable String key, T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		writer.accept(key, value, this);
+	}
+
+	@Override
+	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		if (value == null) return;
+
+		writeExternal(key, value, writer, externalWriter);
+	}
+}
