@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'net.syntactickitsune'
+version = '1.0.0'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.withSourcesJar()
+
+test {
+    useJUnitPlatform()
+}
+
+repositories {
+    mavenCentral()
+	maven {
+		url 'https://jitpack.io/'
+		content {
+			includeGroup 'com.github.Querz'
+		}
+	}
+}
+
+dependencies {
+	compileOnly 'org.jetbrains:annotations:24.0.1'
+	implementation 'com.google.code.gson:gson:2.10.1'
+
+	testImplementation 'com.github.Querz:NBT:6.1'
+	testImplementation 'org.reflections:reflections:0.10.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+	preserveFileTimestamps = false
+	reproducibleFileOrder = true
+}
+
+tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
+	exclude 'module-info.class'
+	exclude 'META-INF/maven/**'
+	exclude 'META-INF/versions/9/**'
+}
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb'
+	}
+}
