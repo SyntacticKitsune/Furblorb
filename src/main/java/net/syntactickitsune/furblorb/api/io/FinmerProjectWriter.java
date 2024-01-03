@@ -86,14 +86,13 @@ public final class FinmerProjectWriter {
 	}
 
 	private void writeProjectFile(Furball furball) {
-		final JsonObject obj = new JsonObject();
-		final JsonCodec codec = new JsonCodec(obj, externalFiles, false, furball.meta.formatVersion);
+		final JsonCodec codec = new JsonCodec(externalFiles, furball.meta.formatVersion);
 
 		furball.meta.write(codec);
 
 		codec.writeList("Dependencies", furball.dependencies, FurballDependency::write);
 
-		writeJson(obj, externalFiles.projectFilename());
+		writeJson(codec.unwrap(), externalFiles.projectFilename());
 	}
 
 	/**
@@ -108,10 +107,9 @@ public final class FinmerProjectWriter {
 		writeProjectFile(furball);
 
 		for (FurballAsset asset : furball.assets) {
-			final JsonObject obj = new JsonObject();
-			final JsonCodec codec = new JsonCodec(obj, externalFiles, false, furball.meta.formatVersion);
+			final JsonCodec codec = new JsonCodec(externalFiles, furball.meta.formatVersion);
 			asset.writeWithId(codec);
-			writeJson(obj, asset.filename + ".json");
+			writeJson(codec.unwrap(), asset.filename + ".json");
 		}
 	}
 

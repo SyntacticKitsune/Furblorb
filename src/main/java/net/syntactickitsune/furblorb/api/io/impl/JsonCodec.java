@@ -67,6 +67,20 @@ public final class JsonCodec extends Codec {
 		this.formatVersion = formatVersion;
 	}
 
+	/**
+	 * Constructs a new write-only {@code JsonCodec} with the specified parameters.
+	 * The backing {@code JsonObject} can be accessed via {@link #unwrap()}.
+	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to write them inline.
+	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
+	 */
+	public JsonCodec(@Nullable ExternalFileHandler externalFiles, byte formatVersion) {
+		this(new JsonObject(), externalFiles, false, formatVersion);
+	}
+
+	public JsonObject unwrap() {
+		return wrapped;
+	}
+
 	@Override
 	public boolean readCompressedTypes() {
 		return false;
@@ -314,9 +328,9 @@ public final class JsonCodec extends Codec {
 		final JsonArray arr = new JsonArray(value.size());
 
 		for (T v : value) {
-			final JsonObject obj = new JsonObject();
-			writer.accept(v, new JsonCodec(obj, externalFiles, read, formatVersion));
-			arr.add(obj);
+			final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
+			writer.accept(v, codec);
+			arr.add(codec.unwrap());
 		}
 
 		wrapped.add(key, arr);
@@ -331,9 +345,9 @@ public final class JsonCodec extends Codec {
 			if (v == null)
 				arr.add(JsonNull.INSTANCE);
 			else {
-				final JsonObject obj = new JsonObject();
-				writer.accept(v, new JsonCodec(obj, externalFiles, read, formatVersion));
-				arr.add(obj);
+				final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
+				writer.accept(v, codec);
+				arr.add(codec.unwrap());
 			}
 
 		wrapped.add(key, arr);
@@ -352,9 +366,9 @@ public final class JsonCodec extends Codec {
 	@Override
 	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonObject obj = new JsonObject();
-		writer.accept(value, new JsonCodec(obj, externalFiles, read, formatVersion));
-		wrapped.add(key, obj);
+		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
+		writer.accept(value, codec);
+		wrapped.add(key, codec.unwrap());
 	}
 
 	@Override
