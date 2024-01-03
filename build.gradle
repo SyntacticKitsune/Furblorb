@@ -58,6 +58,7 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
+	archiveClassifier = 'cli'
 	from sourceSets.cli.output
 	exclude 'module-info.class'
 	exclude 'META-INF/maven/**'
@@ -68,4 +69,12 @@ jar {
 	manifest {
 		attributes 'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb'
 	}
+}
+
+sourcesJar {
+	from sourceSets.cli.allSource
+}
+
+artifacts {
+	archives shadowJar
 }
