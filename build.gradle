@@ -1,6 +1,7 @@
 plugins {
-    id 'java'
-    id 'eclipse'
+	id 'java'
+	id 'eclipse'
+	id 'jvm-test-suite'
 	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -23,8 +24,12 @@ configurations {
 	testCompileOnly.extendsFrom compileOnly
 }
 
-test {
-    useJUnitPlatform()
+testing {
+	suites {
+		test {
+		    useJUnitJupiter()
+		}
+	}
 }
 
 repositories {
