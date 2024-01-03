@@ -54,10 +54,7 @@ public final class FurballWriter {
 		for (int i = 0; i < FurballReader.MAGIC.length; i++)
 			codec.writeByte((byte) FurballReader.MAGIC[i]);
 
-		codec.writeByte(meta.formatVersion);
-		codec.writeUUID(Objects.requireNonNull(meta.id, "id"));
-		codec.writeString(Objects.requireNonNull(meta.title, "title"));
-		codec.writeString(Objects.requireNonNull(meta.author, "author"));
+		meta.write(codec);
 	}
 
 	/**

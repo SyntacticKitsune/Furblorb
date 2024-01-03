@@ -84,18 +84,12 @@ public final class FurballReader {
 				throw new FurblorbParsingException("Not a furball: expected " + MAGIC[i] + ", read " + c);
 		}
 
-		final FurballMetadata meta = new FurballMetadata();
+		final byte formatVersion = codec.readByte();
 
-		meta.formatVersion = codec.readByte();
+		checkFormatVersion(formatVersion);
+		codec.setFormatVersion(formatVersion);
 
-		checkFormatVersion(meta.formatVersion);
-		codec.setFormatVersion(meta.formatVersion);
-
-		meta.id = codec.readUUID();
-		meta.title = codec.readString();
-		meta.author = codec.readString();
-
-		return meta;
+		return new FurballMetadata(codec, formatVersion);
 	}
 
 	/**

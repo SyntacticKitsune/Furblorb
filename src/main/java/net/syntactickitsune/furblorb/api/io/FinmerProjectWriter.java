@@ -13,14 +13,12 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 import net.syntactickitsune.furblorb.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.Furball;
-import net.syntactickitsune.furblorb.api.FurballDependency;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectReader.ExtendedExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
@@ -88,21 +86,14 @@ public final class FinmerProjectWriter {
 
 	private void writeProjectFile(Furball furball) {
 		final JsonObject obj = new JsonObject();
-		obj.addProperty("FormatVersion", furball.meta.formatVersion);
-		obj.addProperty("ID", furball.meta.id.toString());
-		obj.addProperty("Title", furball.meta.title);
-		obj.addProperty("Author", furball.meta.author);
+		final JsonCodec codec = new JsonCodec(obj, externalFiles, false, furball.meta.formatVersion);
 
-		final JsonArray deps = new JsonArray(furball.dependencies.size());
+		furball.meta.write(codec);
 
-		for (FurballDependency dep : furball.dependencies) {
-			final JsonObject o = new JsonObject();
-			o.addProperty("ID", dep.id().toString());
-			o.addProperty("FileNameHint", dep.filename());
-			deps.add(o);
-		}
-
-		obj.add("Dependencies", deps);
+		codec.writeList("Dependencies", furball.dependencies, (dep, enc) -> {
+			enc.writeUUID("ID", dep.id());
+			enc.writeString("FileNameHint", dep.filename());
+		});
 
 		writeJson(obj, externalFiles.projectFilename());
 	}

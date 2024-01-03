@@ -3,6 +3,9 @@ package net.syntactickitsune.furblorb.api;
 import java.util.Objects;
 import java.util.UUID;
 
+import net.syntactickitsune.furblorb.api.io.Decoder;
+import net.syntactickitsune.furblorb.api.io.Encoder;
+
 /**
  * Represents the metadata associated with a {@link Furball}.
  * Most importantly, these are the format version and id, but there's also the title and author name.
@@ -42,6 +45,22 @@ public final class FurballMetadata {
 	 * The name of the creator of the furball.
 	 */
 	public String author;
+
+	public FurballMetadata() {}
+
+	public FurballMetadata(Decoder in, byte formatVersion) {
+		this.formatVersion = formatVersion;
+		id = in.readUUID("ID");
+		title = in.readString("Title");
+		author = in.readString("Author");
+	}
+
+	public void write(Encoder to) {
+		to.writeByte("FormatVersion", formatVersion);
+		to.writeUUID("ID", id);
+		to.writeString("Title", title);
+		to.writeString("Author", author);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

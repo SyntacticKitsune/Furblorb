@@ -72,17 +72,10 @@ public final class FinmerProjectReader {
 	}
 
 	private FurballMetadata readMetadata(JsonObject obj) {
-		final FurballMetadata ret = new FurballMetadata();
+		final byte formatVersion = obj.get("FormatVersion").getAsByte();
+		FurballReader.checkFormatVersion(formatVersion);
 
-		ret.formatVersion = obj.get("FormatVersion").getAsByte();
-
-		FurballReader.checkFormatVersion(ret.formatVersion);
-
-		ret.id = UUID.fromString(obj.get("ID").getAsString());
-		ret.title = obj.get("Title").getAsString();
-		ret.author = obj.get("Author").getAsString();
-
-		return ret;
+		return new FurballMetadata(new JsonCodec(obj, externalFiles, true, formatVersion), formatVersion);
 	}
 
 	/**

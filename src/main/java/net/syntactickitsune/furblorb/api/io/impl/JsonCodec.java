@@ -268,8 +268,10 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public void writeString(@Nullable String key, String value) {
+		Objects.requireNonNull(key, "key");
+		Objects.requireNonNull(value, "value");
 		if (!value.isEmpty())
-			wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
+			wrapped.addProperty(key, value);
 	}
 
 	@Override
