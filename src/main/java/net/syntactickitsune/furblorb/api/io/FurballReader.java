@@ -103,7 +103,7 @@ public final class FurballReader {
 		final FurballMetadata meta = readMetadata();
 		final Furball ret = new Furball(meta);
 
-		ret.dependencies.addAll(codec.readList(dec -> new FurballDependency(dec.readUUID(null), dec.readString(null))));
+		ret.dependencies.addAll(codec.readList(FurballDependency::new));
 
 		final int assetCount = codec.readInt();
 		for (int i = 0; i < assetCount; i++) {

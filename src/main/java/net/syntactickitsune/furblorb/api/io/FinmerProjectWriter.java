@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonWriter;
 
 import net.syntactickitsune.furblorb.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.FurballDependency;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectReader.ExtendedExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
@@ -90,10 +91,7 @@ public final class FinmerProjectWriter {
 
 		furball.meta.write(codec);
 
-		codec.writeList("Dependencies", furball.dependencies, (dep, enc) -> {
-			enc.writeUUID("ID", dep.id());
-			enc.writeString("FileNameHint", dep.filename());
-		});
+		codec.writeList("Dependencies", furball.dependencies, FurballDependency::write);
 
 		writeJson(obj, externalFiles.projectFilename());
 	}

@@ -3,6 +3,7 @@ package net.syntactickitsune.furblorb.api.io;
 import java.util.Objects;
 
 import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.FurballDependency;
 import net.syntactickitsune.furblorb.api.FurballMetadata;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
@@ -72,10 +73,7 @@ public final class FurballWriter {
 
 		writeMetadata(furball.meta);
 
-		codec.writeList(furball.dependencies, (dep, enc) -> {
-			enc.writeUUID("ID", dep.id());
-			enc.writeString("FileNameHint", dep.filename());
-		});
+		codec.writeList(furball.dependencies, FurballDependency::write);
 
 		codec.writeList(furball.assets, FurballAsset::writeWithId);
 

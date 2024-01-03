@@ -7,11 +7,9 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -71,11 +69,9 @@ public final class FinmerProjectReader {
 		return elem.getAsJsonObject();
 	}
 
-	private FurballMetadata readMetadata(JsonObject obj) {
-		final byte formatVersion = obj.get("FormatVersion").getAsByte();
-		FurballReader.checkFormatVersion(formatVersion);
-
-		return new FurballMetadata(new JsonCodec(obj, externalFiles, true, formatVersion), formatVersion);
+	private FurballMetadata readMetadata(JsonCodec codec) {
+		FurballReader.checkFormatVersion(codec.formatVersion());
+		return new FurballMetadata(codec, codec.formatVersion());
 	}
 
 	/**
@@ -88,17 +84,12 @@ public final class FinmerProjectReader {
 		final List<String> files = externalFiles.listFiles();
 
 		final JsonObject proj = readJson(externalFiles.projectFilename());
-		final FurballMetadata meta = readMetadata(proj);
+		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, true, proj.get("FormatVersion").getAsByte());
+		final FurballMetadata meta = readMetadata(projCodec);
 		final Furball furball = new Furball(meta);
 
 		{
-			final JsonArray deps = proj.getAsJsonArray("Dependencies");
-			for (int i = 0; i < deps.size(); i++) {
-				final JsonObject o = deps.get(i).getAsJsonObject();
-				furball.dependencies.add(new FurballDependency(
-						UUID.fromString(o.get("ID").getAsString()),
-						o.get("FileNameHint").getAsString()));
-			}
+			furball.dependencies.addAll(projCodec.readList("Dependencies", FurballDependency::new));
 		}
 
 		final List<String> assets = files.stream()
