@@ -155,7 +155,7 @@ public interface Encoder {
 	public void writeStringList(@Nullable String key, List<String> value);
 
 	/**
-	 * Writes the given... thing.
+	 * Writes the given {@code Object} using the provided writer.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the value.
@@ -164,11 +164,12 @@ public interface Encoder {
 	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer);
 
 	/**
-	 * Writes the given... thing, which may be {@code null}.
+	 * Writes the given {@code Object} -- which may be {@code null} -- using the provided writer.
+	 * A {@code null} value will <i>not</i> be passed to the writer.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write. May be {@code null}.
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
-	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @throws NullPointerException If {@code writer} is {@code null} or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
 	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer);
 

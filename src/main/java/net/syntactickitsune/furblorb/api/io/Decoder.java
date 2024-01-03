@@ -155,7 +155,7 @@ public interface Decoder {
 	public List<String> readStringList(@Nullable String key);
 
 	/**
-	 * Reads the next mystery {@code Object} from this {@code Decoder}'s sequence.
+	 * Reads the next {@code Object} from this {@code Decoder}'s sequence using the provided reader.
 	 * @param <T> The kind of {@code Object} to read.
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @param reader A {@code Function} to read the desired value.
@@ -165,7 +165,8 @@ public interface Decoder {
 	public <T> T read(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
-	 * Reads the next mystery {@code Object} from this {@code Decoder}'s sequence, if one is present.
+	 * Reads the next {@code Object} from this {@code Decoder}'s sequence using the provided reader, if one exists.
+	 * Otherwise, returns {@code null}.
 	 * @param <T> The kind of {@code Object} to read.
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @param reader A {@code Function} to read the desired value.
