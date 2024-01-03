@@ -54,28 +54,17 @@ public final class FurballSerializables {
 					}
 				};
 
-				final java.lang.reflect.Constructor<?> reflectNoArgCtor = cls.getDeclaredConstructor();
-				final MethodHandle noArgHandle = MethodHandles.publicLookup().unreflectConstructor(reflectNoArgCtor);
-
-				final Supplier noArgCtor = () -> {
-					try {
-						return (IFurballSerializable) noArgHandle.invoke();
-					} catch (Throwable e) {
-						return FurblorbUtil.throwAsUnchecked(e);
-					}
-				};
-
-				register(id, rs.value(), (Class) cls, ctor, noArgCtor);
+				register(id, rs.value(), (Class) cls, ctor);
 			} catch (Exception e) {
 				throw new IllegalStateException("Failed to register " + target, e);
 			}
 	}
 
-	private static <T extends IFurballSerializable> void register(int id, String name, Class<T> clazz, Constructor<T> ctor, Supplier<T> noArgCtor) {
+	private static <T extends IFurballSerializable> void register(int id, String name, Class<T> clazz, Constructor<T> ctor) {
 		if (SERIALIZABLES_BY_ID.containsKey(id))
 			throw new IllegalArgumentException("Cannot register " + clazz.getName() + " under id " + id + ", as it is already owned by " + SERIALIZABLES_BY_ID.get(id).owner.getName());
 
-		final Metadata meta = new Metadata<>(id, name, ctor, noArgCtor, clazz);
+		final Metadata meta = new Metadata<>(id, name, ctor, clazz);
 
 		SERIALIZABLES_BY_ID.put(id, meta);
 		SERIALIZABLES_BY_TYPE.put(name, meta);
@@ -158,11 +147,10 @@ public final class FurballSerializables {
 	 * @param id The ID of the {@code IFurballSerializable}. This is the hash of its {@code name}.
 	 * @param name The C# class name of the {@code IFurballSerializable}. This is discovered from {@link RegisterSerializable}.
 	 * @param ctor The {@code IFurballSerializable}'s one-parameter {@link Decoder} constructor.
-	 * @param noArgCtor The {@code IFurballSerializable}'s no-parameter constructor.
 	 * @param owner The {@code IFurballSerializable} class.
 	 */
 	@Internal
-	public static record Metadata<T extends IFurballSerializable>(int id, String name, Constructor<T> ctor, Supplier<T> noArgCtor, Class<T> owner) {}
+	public static record Metadata<T extends IFurballSerializable>(int id, String name, Constructor<T> ctor, Class<T> owner) {}
 
 	/**
 	 * Represents an {@link IFurballSerializable}'s one-parameter {@link Decoder} constructor.

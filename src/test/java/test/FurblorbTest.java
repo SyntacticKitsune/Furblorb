@@ -162,7 +162,7 @@ final class FurblorbTest {
 	@Test
 	void testConstructEveryAsset() { // This isn't coverage hacking, probably.
 		for (FurballSerializables.Metadata<?> meta : FurballSerializables.lookupAll())
-			assertDoesNotThrow(() -> meta.noArgCtor().get());
+			assertDoesNotThrow(() -> meta.owner().getDeclaredConstructor().newInstance());
 
 		// Extra stragglers:
 		assertDoesNotThrow(() -> new BooleanExpression());
