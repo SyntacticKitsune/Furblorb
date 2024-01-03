@@ -10,6 +10,19 @@ version = '1.0.0'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 java.withSourcesJar()
 
+sourceSets {
+	cli {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+configurations {
+	cliImplementation.extendsFrom implementation
+	cliCompileOnly.extendsFrom compileOnly
+	testCompileOnly.extendsFrom compileOnly
+}
+
 test {
     useJUnitPlatform()
 }
@@ -40,6 +53,7 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
+	from sourceSets.cli.output
 	exclude 'module-info.class'
 	exclude 'META-INF/maven/**'
 	exclude 'META-INF/versions/9/**'
