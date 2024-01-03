@@ -131,7 +131,7 @@ public final class SceneNode {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(type, key, title, tooltip, highlight, buttonWidth, compassLink, compassTarget, linkTarget, onTrigger, displayTest);
+		return Objects.hash(type, key, title, tooltip, highlight, buttonWidth, compassLink, compassTarget, linkTarget, onTrigger, displayTest, children);
 	}
 
 	public static enum Type implements INamedEnum {

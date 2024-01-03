@@ -152,7 +152,9 @@ public final class SceneAsset extends FurballAsset {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, filename, root, head, onEnter, onLeave, gameStart, patch, injectMode, injectionTargetScene, injectionTargetNode, gameStartDescription);
+		return Objects.hash(id, filename, root, head, onEnter, onLeave,
+				gameStart, patch, injectMode, injectionTargetScene,
+				injectionTargetNode, gameStartDescription);
 	}
 
 	/**
