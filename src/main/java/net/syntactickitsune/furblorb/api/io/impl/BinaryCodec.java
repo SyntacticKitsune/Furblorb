@@ -640,11 +640,11 @@ public final class BinaryCodec extends Codec {
 	}
 
 	private void checkRead() {
-		if (!read) throw new UnsupportedOperationException("Buffer is write-only");
+		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
 	private void checkWrite(int length) {
-		if (read) throw new UnsupportedOperationException("Buffer is read-only");
+		if (read) throw new UnsupportedOperationException("Codec is read-only");
 
 		if (buf.remaining() < length) {
 			final ByteBuffer old = buf;

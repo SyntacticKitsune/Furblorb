@@ -79,12 +79,14 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public byte readByte(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsByte();
 	}
 
 	@Override
 	@Nullable
 	public byte[] readByteArray(@Nullable String key) {
+		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final byte[] ret = new byte[arr.size()];
 
@@ -96,47 +98,56 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public boolean readBoolean(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsBoolean();
 	}
 
 	@Override
 	public short readShort(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsShort();
 	}
 
 	@Override
 	public int readInt(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsInt();
 	}
 
 	@Override
 	public long readLong(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsLong();
 	}
 
 	@Override
 	public float readFloat(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsFloat();
 	}
 
 	@Override
 	public double readDouble(@Nullable String key) {
+		checkRead();
 		return wrapped.get(Objects.requireNonNull(key, "key")).getAsDouble();
 	}
 
 	@Override
 	public UUID readUUID(@Nullable String key) {
+		checkRead();
 		return UUID.fromString(readString(Objects.requireNonNull(key, "key")));
 	}
 
 	@Override
 	public String readString(@Nullable String key) {
+		checkRead();
 		final JsonElement elem = wrapped.get(Objects.requireNonNull(key, "key"));
 		return elem == null ? "" : elem.getAsString(); // Coerce to "".
 	}
 
 	@Override
 	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
+		checkRead();
 		final String str = readString(key);
 
 		final E[] constants = type.getEnumConstants();
@@ -149,6 +160,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final List<T> ret = new ArrayList<>(arr.size());
 
@@ -162,6 +174,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final List<T> ret = new ArrayList<>(arr.size());
 
@@ -176,6 +189,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public List<String> readStringList(@Nullable String key) {
+		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final List<String> ret = new ArrayList<>(arr.size());
 
@@ -187,17 +201,20 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, read, formatVersion));
 	}
 
 	@Override
 	@Nullable
 	public <T> T readOptional(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		return wrapped.has(key) ? read(key, reader) : null;
 	}
 
 	@Override
 	public <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		checkRead();
 		if (externalFiles == null || !externalFiles.handles(key))
 			return reader.apply(this, key);
 
@@ -209,6 +226,7 @@ public final class JsonCodec extends Codec {
 	@Override
 	@Nullable
 	public <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		checkRead();
 		if (externalFiles == null || !externalFiles.handles(key))
 			return wrapped.has(key) ? reader.apply(this, key) : null;
 
@@ -219,11 +237,13 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public void writeByte(@Nullable String key, byte value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeByteArray(@Nullable String key, @Nullable byte[] value) {
+		checkWrite();
 		final JsonArray arr = new JsonArray(value.length);
 
 		for (byte v : value) arr.add(v);
@@ -233,41 +253,49 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public void writeBoolean(@Nullable String key, boolean value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeShort(@Nullable String key, short value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeInt(@Nullable String key, int value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeLong(@Nullable String key, long value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeFloat(@Nullable String key, float value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeDouble(@Nullable String key, double value) {
+		checkWrite();
 		wrapped.addProperty(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeUUID(@Nullable String key, UUID value) {
+		checkWrite();
 		writeString(Objects.requireNonNull(key, "key"), value.toString());
 	}
 
 	@Override
 	public void writeString(@Nullable String key, String value) {
+		checkWrite();
 		Objects.requireNonNull(key, "key");
 		Objects.requireNonNull(value, "value");
 		if (!value.isEmpty())
@@ -276,11 +304,13 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) {
+		checkWrite();
 		writeString(Objects.requireNonNull(key, "key"), Objects.requireNonNull(value.id(), value.getClass().getSimpleName() + " violated INamedEnum contract"));
 	}
 
 	@Override
 	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
 		for (T v : value) {
@@ -294,6 +324,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
 		for (T v : value)
@@ -310,6 +341,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public void writeStringList(@Nullable String key, List<String> value) {
+		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
 		for (String v : value) arr.add(Objects.requireNonNull(v));
@@ -319,6 +351,7 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final JsonObject obj = new JsonObject();
 		writer.accept(value, new JsonCodec(obj, externalFiles, read, formatVersion));
 		wrapped.add(key, obj);
@@ -326,12 +359,14 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		if (value != null)
 			write(key, value, writer);
 	}
 
 	@Override
 	public <T> void writeExternal(@Nullable String key, T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		checkWrite();
 		if (externalFiles == null || !externalFiles.handles(key)) {
 			writer.accept(key, value, this);
 			return;
@@ -345,8 +380,17 @@ public final class JsonCodec extends Codec {
 
 	@Override
 	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		checkWrite();
 		if (value == null) return;
 
 		writeExternal(key, value, writer, externalWriter);
+	}
+
+	private void checkRead() {
+		if (!read) throw new UnsupportedOperationException("Codec is write-only");
+	}
+
+	private void checkWrite() {
+		if (read) throw new UnsupportedOperationException("Codec is read-only");
 	}
 }
