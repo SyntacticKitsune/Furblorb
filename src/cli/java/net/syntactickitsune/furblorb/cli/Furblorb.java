@@ -16,84 +16,13 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
 public final class Furblorb {
 
 	private static final String VERSION;
-	private static final String HELP = """
-Furblorb: an unpacker/packer for Finmer "furballs"
-
-Usage: java -jar Furblorb-%VERSION%.jar <arguments...>
-Ex. 1: java -jar Furblorb-%VERSION%.jar --read Core.furball --write Core
-Ex. 2: java -jar Furblorb-%VERSION%.jar --read Core --write Core.furball
-
-Informational options:
-
-  --help
-          Print this text and exit.
-  --version
-          Print Furblorb's version and exit.
-
-Note: "furball" in the following sections may be either a
-      furball (.furball file) or a Finmer project (directory).
-
-I/O options:
-
-  --read <file>
-          Read from the specified file.
-          The file must be a valid furball.
-  --write <file>
-          Write to the specified file. Furblorb assumes
-          it should write a furball if the filename ends
-          in ".furball" and that it should write a
-          Finmer project otherwise.
-  --format-version <version>
-          Write in the specified format version.
-          Warning: changing the format version can
-          and probably will cause problems!
-          As Minecraft would say, "Here be dragons!"
-
-Analysis options:
-
-  --show-metadata
-          Display the metadata of the read furball.
-  --list-dependencies
-          List all dependencies of the read furball.
-  --list-assets
-          List all assets of the read furball.
-
-Manipulation options (these affect the read furball):
-
-  --change-title <value>
-          Set the title to the specified value.
-  --change-author <value>
-          Set the author to the specified value.
-  --add-dependency <ID> <filename>
-          Add a dependency on a furball or project with
-          the specified ID and filename.
-  --drop-dependency <ID>
-          Remove any dependencies on the specified ID.
-
-  --insert-asset <filename>
-          Insert the specified Json asset.
-  --extract-asset-id <ID> <destination>
-          Extract the Json asset with the specified ID and
-          write it to the specified file.
-  --extract-asset-name <filename> <destination>
-          Extract the Json asset with the specified filename
-          and write it to the specified file.
-  --drop-asset-id <ID>
-          Remove ("drop") the asset with the specified ID.
-  --drop-asset-name <filename>
-          Remove ("drop") the asset with the specified filename.
-  --merge <file>
-          Merge the specified furball into the read furball. Any
-          dependencies that the specified file has will be
-          inherited by the read file, except for dependencies on
-          the read file itself. All other metadata on the specified
-          file will be discarded. Assets will replace any assets in
-          the read furball that they share an ID with.
-""";
+	private static final String HELP;
 
 	static {
 		final String version = String.join("\n", FurblorbUtil.readStringResource("/version.txt"));
 		VERSION = "${version}".equals(version) ? "dev" : version;
+
+		HELP = String.join("\n", FurblorbUtil.readStringResource("/usage.txt"));
 	}
 
 	public static void main(String[] args) throws IOException {
