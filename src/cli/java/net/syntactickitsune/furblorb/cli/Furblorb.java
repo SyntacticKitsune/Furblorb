@@ -15,7 +15,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  */
 public final class Furblorb {
 
-	private static final String VERSION = "1.0.0";
+	private static final String VERSION;
 	private static final String HELP = """
 Furblorb: an unpacker/packer for Finmer "furballs"
 
@@ -90,6 +90,11 @@ Manipulation options (these affect the read furball):
           file will be discarded. Assets will replace any assets in
           the read furball that they share an ID with.
 """;
+
+	static {
+		final String version = String.join("\n", FurblorbUtil.readStringResource("/version.txt"));
+		VERSION = "${version}".equals(version) ? "dev" : version;
+	}
 
 	public static void main(String[] args) throws IOException {
 		final Config cfg = readArgs(args);

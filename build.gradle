@@ -78,3 +78,19 @@ sourcesJar {
 artifacts {
 	archives shadowJar
 }
+
+processCliResources {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+	inputs.property 'version', version
+
+    from(sourceSets.cli.resources.srcDirs) {
+        include 'version.txt'
+
+        expand 'version':version
+    }
+
+    from(sourceSets.cli.resources.srcDirs) {
+        exclude 'version.txt'
+    }
+}
