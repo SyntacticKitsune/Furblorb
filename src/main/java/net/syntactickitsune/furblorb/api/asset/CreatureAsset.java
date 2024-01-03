@@ -198,9 +198,11 @@ public final class CreatureAsset extends FurballAsset {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, filename, objectName, objectAlias, strength, agility, body, wits, flags, level,
+		return Arrays.deepHashCode(new Object[] {
+				id, filename, objectName, objectAlias, strength, agility, body, wits, flags, level,
 				size, gender, equipment, strings, predatorEnabled, predatorDigests, predatorDisposal,
-				autoSwallowPlayer, autoSwallowedByPlayer);
+				autoSwallowPlayer, autoSwallowedByPlayer
+		});
 	}
 
 	public static enum Size implements INamedEnum {

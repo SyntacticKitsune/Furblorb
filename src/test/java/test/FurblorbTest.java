@@ -134,7 +134,10 @@ final class FurblorbTest {
 		for (int i = 0; i < targetFurball.assets.size(); i++) {
 			final FurballAsset exp = targetFurball.assets.get(i);
 			final FurballAsset got = inFurball.assets.get(i);
-			ret.add(DynamicTest.dynamicTest(exp.filename, () -> assertEquals(exp, got)));
+			ret.add(DynamicTest.dynamicTest(exp.filename, () -> {
+				assertEquals(exp, got);
+				assertEquals(exp.hashCode(), got.hashCode());
+			}));
 		}
 
 		final byte[] inBytes = assertDoesNotThrow(() -> new FurballWriter().write(targetFurball).toByteArray());

@@ -157,14 +157,17 @@ public final class ItemAsset extends FurballAsset {
 				&& consumable == a.consumable && questItem == a.questItem && price == a.price
 				&& slot == a.slot && type == a.type && Objects.equals(useDescription, a.useDescription)
 				&& Objects.equals(flavorText, a.flavorText) && Objects.equals(objectAlias, a.objectAlias)
-				&& Objects.equals(objectName, a.objectName) && Arrays.equals(icon, a.icon) && Objects.equals(useScript, a.useScript);
+				&& Objects.equals(objectName, a.objectName) && Arrays.equals(icon, a.icon) && Objects.equals(useScript, a.useScript)
+				&& Objects.equals(equipEffects, a.equipEffects);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, filename, objectName, objectAlias, flavorText, type, slot, equipEffects,
+		return Arrays.deepHashCode(new Object[] {
+				id, filename, objectName, objectAlias, flavorText, type, slot, equipEffects,
 				price, questItem, consumable, usableInField, usableInBattle, useDescription, icon,
-				useScript);
+				useScript
+		});
 	}
 
 	public static enum Type implements INamedEnum {
