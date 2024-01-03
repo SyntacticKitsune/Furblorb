@@ -3,7 +3,9 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,10 +25,13 @@ import net.syntactickitsune.furblorb.api.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.api.io.FurballReader;
 import net.syntactickitsune.furblorb.api.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.script.visual.expression.BooleanExpression;
+import net.syntactickitsune.furblorb.api.script.visual.expression.ComparisonExpressionNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.FloatExpression;
 import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.api.script.visual.expression.LogicalExpression;
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
+import net.syntactickitsune.furblorb.api.script.visual.impl.expression.simple.SimpleExpression;
+import net.syntactickitsune.furblorb.api.script.visual.impl.statement.simple.SimpleStatement;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 final class FurblorbTest {
@@ -171,5 +176,30 @@ final class FurblorbTest {
 		assertDoesNotThrow(() -> new StringExpression());
 		assertDoesNotThrow(() -> new LogicalExpression());
 		assertDoesNotThrow(() -> new SceneNode());
+	}
+
+	@TestFactory
+	List<DynamicTest> checkSerializableHashCodeAndEqualsImplementations() {
+		return FurballSerializables.lookupAll().stream()
+				.map(md -> DynamicTest.dynamicTest(md.owner().getSimpleName(), () -> {
+					if (ComparisonExpressionNode.class.isAssignableFrom(md.owner())
+							|| SimpleExpression.class.isAssignableFrom(md.owner())
+							|| SimpleStatement.class.isAssignableFrom(md.owner()))
+						return;
+
+					final Method[] methods = md.owner().getDeclaredMethods();
+					boolean foundEquals = false;
+					boolean foundHashCode = false;
+
+					for (Method m : methods)
+						if ("equals".equals(m.getName()) && m.getParameterCount() == 1)
+							foundEquals = true;
+						else if ("hashCode".equals(m.getName()) && m.getParameterCount() == 0)
+							foundHashCode = true;
+
+					assertTrue(foundEquals, () -> "Missing equals() implementation");
+					assertTrue(foundHashCode, () -> "Missing hashCode() implementation");
+				}))
+				.toList();
 	}
 }

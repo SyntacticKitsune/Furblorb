@@ -9,12 +9,12 @@ public abstract class SimpleStatement extends StatementNode {
 	public final void write(Encoder to) {}
 
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		return this == obj || (obj != null && getClass() == obj.getClass());
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return 0;
 	}
 }
