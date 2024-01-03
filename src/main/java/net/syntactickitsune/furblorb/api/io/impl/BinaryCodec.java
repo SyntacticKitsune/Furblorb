@@ -39,10 +39,10 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
  * @author SyntacticKitsune
  * @see JsonCodec
  */
-public final class BinaryCodec extends Codec {
+public class BinaryCodec extends Codec {
 
 	private ByteBuffer buf;
-	private final boolean read;
+	protected final boolean read;
 
 	/**
 	 * <p>Constructs a new {@code BinaryCodec} with the specified backing buffer.</p>
@@ -639,11 +639,11 @@ public final class BinaryCodec extends Codec {
 			writeBoolean(false);
 	}
 
-	private void checkRead() {
+	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
-	private void checkWrite(int length) {
+	protected void checkWrite(int length) {
 		if (read) throw new UnsupportedOperationException("Codec is read-only");
 
 		if (buf.remaining() < length) {

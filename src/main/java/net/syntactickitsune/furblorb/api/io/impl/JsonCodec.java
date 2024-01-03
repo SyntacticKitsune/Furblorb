@@ -34,12 +34,12 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
  * @author SyntacticKitsune
  * @see BinaryCodec
  */
-public final class JsonCodec extends Codec {
+public class JsonCodec extends Codec {
 
-	private final JsonObject wrapped;
+	protected final JsonObject wrapped;
 	@Nullable
-	private final ExternalFileHandler externalFiles;
-	private final boolean read;
+	protected final ExternalFileHandler externalFiles;
+	protected final boolean read;
 
 	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
@@ -400,11 +400,11 @@ public final class JsonCodec extends Codec {
 		writeExternal(key, value, writer, externalWriter);
 	}
 
-	private void checkRead() {
+	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
-	private void checkWrite() {
+	protected void checkWrite() {
 		if (read) throw new UnsupportedOperationException("Codec is read-only");
 	}
 }
