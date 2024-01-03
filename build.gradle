@@ -63,9 +63,7 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 	exclude 'module-info.class'
 	exclude 'META-INF/maven/**'
 	exclude 'META-INF/versions/9/**'
-}
 
-jar {
 	manifest {
 		attributes 'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb'
 	}
