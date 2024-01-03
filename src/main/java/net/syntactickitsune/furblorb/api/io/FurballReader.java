@@ -26,7 +26,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  */
 public final class FurballReader {
 
-	static final char[] MAGIC = { 'F', 'U', 'R', 'B', 'A', 'L', 'L' };
+	static final byte[] MAGIC = { 'F', 'U', 'R', 'B', 'A', 'L', 'L' };
 
 	private final BinaryCodec codec;
 
@@ -79,9 +79,9 @@ public final class FurballReader {
 	public FurballMetadata readMetadata() throws FurblorbParsingException, FurballFormatException {
 		// Check magic:
 		for (int i = 0; i < MAGIC.length; i++) {
-			final char c = (char) codec.readByte();
-			if (c != MAGIC[i])
-				throw new FurblorbParsingException("Not a furball: expected " + MAGIC[i] + ", read " + c);
+			final byte b = codec.readByte();
+			if (b != MAGIC[i])
+				throw new FurblorbParsingException("Not a furball: expected " + (char) MAGIC[i] + ", read " + (char) b);
 		}
 
 		final byte formatVersion = codec.readByte();

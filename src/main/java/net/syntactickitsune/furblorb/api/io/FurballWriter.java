@@ -52,8 +52,7 @@ public final class FurballWriter {
 		Objects.requireNonNull(meta);
 
 		// Write magic.
-		for (int i = 0; i < FurballReader.MAGIC.length; i++)
-			codec.writeByte((byte) FurballReader.MAGIC[i]);
+		codec.writeBytes(FurballReader.MAGIC);
 
 		meta.write(codec);
 	}
