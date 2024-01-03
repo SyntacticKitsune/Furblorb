@@ -409,7 +409,7 @@ public final class BinaryCodec extends Codec {
 
 		if (buf.remaining() < length) {
 			final ByteBuffer old = buf;
-			buf = ByteBuffer.allocate(old.capacity() * 2);
+			buf = ByteBuffer.allocate(old.capacity() + Math.max(length, old.capacity()));
 			buf.order(old.order());
 			old.flip();
 			buf.put(old);
