@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
@@ -59,6 +60,7 @@ public final class SceneAsset extends FurballAsset {
 	 * Whether or not the scene represents a game entrypoint.
 	 * If multiple game entrypoints are discovered, the player must choose one when creating a new game.
 	 */
+	@RequiresFormatVersion(20)
 	public boolean gameStart = false;
 
 	/**
@@ -85,6 +87,7 @@ public final class SceneAsset extends FurballAsset {
 	/**
 	 * For {@linkplain #gameStart game entrypoints}, the description to show in the selection.
 	 */
+	@RequiresFormatVersion(20)
 	public String gameStartDescription = "";
 
 	public SceneAsset() {}

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.ScriptNode;
@@ -21,6 +22,7 @@ public final class CombatBeginStatement extends StatementBlockNode {
 	@Nullable
 	public List<ScriptNode> onStart;
 	@Nullable
+	@RequiresFormatVersion(20)
 	public List<ScriptNode> onRoundStart;
 	@Nullable
 	public List<ScriptNode> onRoundEnd;

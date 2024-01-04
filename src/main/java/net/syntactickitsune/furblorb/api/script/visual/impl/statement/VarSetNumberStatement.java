@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.api.script.visual.impl.statement;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
@@ -56,17 +57,29 @@ public final class VarSetNumberStatement extends StatementNode {
 		MULTIPLY("Multiply", true),
 		DIVIDE("Divide", true),
 		SET("Set", true),
+		@RequiresFormatVersion(20)
 		RANDOM("Random", true),
+		@RequiresFormatVersion(20)
 		SET_TIME_DAY("SetTimeDay", false),
+		@RequiresFormatVersion(20)
 		SET_TIME_HOUR("SetTimeHour", false),
+		@RequiresFormatVersion(20)
 		SET_TIME_HOUR_TOTAL("SetTimeHourTotal", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_STRENGTH("SetPlayerStrength", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_AGILITY("SetPlayerAgility", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_BODY("SetPlayerBody", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_WITS("SetPlayerWits", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_MONEY("SetPlayerMoney", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_LEVEL("SetPlayerLevel", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_HEALTH("SetPlayerHealth", false),
+		@RequiresFormatVersion(20)
 		SET_PLAYER_HEALTH_MAX("SetPlayerHealthMax", false);
 
 		private final String id;
