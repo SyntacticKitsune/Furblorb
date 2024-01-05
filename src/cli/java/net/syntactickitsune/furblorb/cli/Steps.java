@@ -3,9 +3,15 @@ package net.syntactickitsune.furblorb.cli;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +27,9 @@ import net.syntactickitsune.furblorb.api.io.FurballReader;
 import net.syntactickitsune.furblorb.api.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
+import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
+import net.syntactickitsune.furblorb.cli.scrambling.AssetShufflerRegistry;
+import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 final class Steps {
@@ -200,10 +209,11 @@ final class Steps {
 	static final record ShowMetadata() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! ID: %s\n", data.furball.meta.id);
-			System.out.printf("! Title: %s\n", data.furball.meta.title);
-			System.out.printf("! Author: %s\n", data.furball.meta.author);
-			System.out.printf("! Format Version: %d\n", data.furball.meta.formatVersion);
+			System.out.println("! Furball metadata:");
+			System.out.printf("ID: %s\n", data.furball.meta.id);
+			System.out.printf("Title: %s\n", data.furball.meta.title);
+			System.out.printf("Author: %s\n", data.furball.meta.author);
+			System.out.printf("Format Version: %d\n", data.furball.meta.formatVersion);
 		}
 	}
 
@@ -213,7 +223,7 @@ final class Steps {
 			System.out.printf("! %d dependenc%s:\n", data.furball.dependencies.size(), data.furball.dependencies.size() == 1 ? "y" : "ies");
 
 			for (FurballDependency dep : data.furball.dependencies)
-				System.out.printf("! %s  %s\n", dep.id(), dep.filename());
+				System.out.printf("%s  %s\n", dep.id(), dep.filename());
 		}
 	}
 
@@ -225,8 +235,69 @@ final class Steps {
 			for (FurballAsset asset : data.furball.assets) {
 				String str = asset.getClass().getSimpleName();
 				str = str.substring(0, str.length() - "Asset".length());
-				System.out.printf("! %s  %s  %s\n", asset.id, asset.filename, str);
+				System.out.printf("%s  %s  %s\n", asset.id, asset.filename, str);
 			}
+		}
+	}
+
+	static final record ListShufflers() implements Step {
+		@Override
+		public void run(WorkingData data) {
+			final var registry = AssetShufflerRegistry.getRegistry();
+
+			System.out.printf("! There are %d registered shufflers:\n", registry.size());
+
+			for (Map.Entry<String, AssetShuffler<?>> entry : registry.entrySet())
+				System.out.printf("%s: %s\n", entry.getKey(), entry.getValue().description());
+
+			System.out.printf("! To apply all of them: --shuffle %s\n", String.join(",", registry.keySet()));
+		}
+	}
+
+	static final record Shuffle(String keys, @Nullable String seed) implements Step {
+		@Override
+		public void run(WorkingData data) throws Exception {
+			final List<String> realKeys = List.of(keys.split(","));
+
+			final Function<RandomGeneratorFactory, RandomGenerator> func;
+
+			if (seed != null)
+				func = factory -> {
+					long seed;
+
+					try {
+						seed = Long.parseLong(this.seed);
+					} catch (NumberFormatException ignored) {
+						seed = this.seed.hashCode();
+					}
+
+					return factory.create(seed);
+				};
+			else
+				func = RandomGeneratorFactory::create;
+
+			final ShuffleRandom random = ShuffleRandom.of(func.apply(RandomGeneratorFactory.of("Xoshiro256PlusPlus")));
+			final Map<Class<?>, List<?>> assetCache = new HashMap<>();
+
+			for (String key : realKeys) {
+				final AssetShuffler shuffler = AssetShufflerRegistry.get(key);
+
+				if (shuffler == null) {
+					System.out.println("! No known shuffler with key " + key + ", skipping.");
+					continue;
+				}
+
+				final List<?> assets = assetCache.computeIfAbsent(shuffler.assetType(),
+						k -> data.furball.assets.stream()
+								.filter(asset -> k.isAssignableFrom(asset.getClass()))
+								.toList());
+
+				System.out.println("! Shuffling " + assets.size() + " assets using shuffler " + key + ".");
+
+				shuffler.shuffle(assets, random, data.furball);
+			}
+
+			System.out.println("! Shuffling completed.");
 		}
 	}
 }

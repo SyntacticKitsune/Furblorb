@@ -10,6 +10,9 @@ Informational options:
           Print this text and exit.
   --version
           Print Furblorb's version and exit.
+  --list-shufflers
+          Print a list of shufflers which can be used by
+          the shuffle operation (--shuffle) and exit.
 
 Note: "furball" in the following sections may be either a
       furball (.furball file) or a Finmer project (directory).
@@ -70,3 +73,10 @@ Manipulation options (these affect the read furball):
           the read file itself. All other metadata on the specified
           file will be discarded. Assets will replace any assets in
           the read furball that they share an ID with.
+  --shuffle <shuffler names> <seed>
+          Use the specified shufflers to shuffle the assets in the
+          read furball. The shuffler names argument must be a
+          comma-separated list of shuffler ids, which can be
+          found using --list-shufflers. The seed argument may be
+          either a number or a string. Numbers will be used
+          directly; strings will have their Java hash used.

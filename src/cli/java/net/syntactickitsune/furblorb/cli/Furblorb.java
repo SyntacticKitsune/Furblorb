@@ -178,6 +178,14 @@ public final class Furblorb {
 						skip = 1;
 					}
 				}
+				case "--shuffle" -> {
+					if (i + 2 == args.length)
+						System.out.println("--shuffle: expected two arguments.");
+					else {
+						steps.add(new Steps.Shuffle(args[i + 1], args[i + 2]));
+						skip = 2;
+					}
+				}
 
 				case "--help" -> {
 					System.out.print(HELP.replace("%VERSION%", VERSION));
@@ -185,6 +193,10 @@ public final class Furblorb {
 				}
 				case "--version" -> {
 					System.out.println(VERSION);
+					System.exit(0);
+				}
+				case "--list-shufflers" -> {
+					new Steps.ListShufflers().run(null);
 					System.exit(0);
 				}
 
