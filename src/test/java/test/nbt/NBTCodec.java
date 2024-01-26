@@ -84,57 +84,68 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public byte readByte(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asByte();
 	}
 
 	@Override
 	@Nullable
 	public byte[] readByteArray(@Nullable String key) {
+		checkRead();
 		return wrapped.containsKey(Objects.requireNonNull(key, "key")) ? wrapped.getByteArray(key) : null;
 	}
 
 	@Override
 	public boolean readBoolean(@Nullable String key) {
+		checkRead();
 		return wrapped.getBoolean(Objects.requireNonNull(key, "key"));
 	}
 
 	@Override
 	public short readShort(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asShort();
 	}
 
 	@Override
 	public int readInt(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asInt();
 	}
 
 	@Override
 	public long readLong(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asLong();
 	}
 
 	@Override
 	public float readFloat(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asFloat();
 	}
 
 	@Override
 	public double readDouble(@Nullable String key) {
+		checkRead();
 		return wrapped.getNumberTag(Objects.requireNonNull(key, "key")).asDouble();
 	}
 
 	@Override
 	public UUID readUUID(@Nullable String key) {
+		checkRead();
 		return UUID.fromString(readString(Objects.requireNonNull(key, "key")));
 	}
 
 	@Override
 	public String readString(@Nullable String key) {
+		checkRead();
 		return wrapped.containsKey(Objects.requireNonNull(key, "key")) ? wrapped.getString(key) : ""; // Coerce to "".
 	}
 
 	@Override
 	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
+		checkRead();
 		final E[] vals = type.getEnumConstants();
 		final ParsingStrategy.NumberType numberType = numberType(type);
 
@@ -152,6 +163,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		final ListTag<CompoundTag> arr = wrapped.getListTag(key).asCompoundTagList();
 		final List<T> ret = new ArrayList<>(arr.size());
 
@@ -163,6 +175,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		final ListTag<CompoundTag> listTag = wrapped.getListTag(key).asCompoundTagList();
 		final List<T> ret = new ArrayList<>(listTag.size());
 
@@ -177,6 +190,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public List<String> readStringList(@Nullable String key) {
+		checkRead();
 		final ListTag<StringTag> tag = wrapped.getListTag(key).asStringTagList();
 		final List<String> ret = new ArrayList<>(tag.size());
 
@@ -188,44 +202,52 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		return reader.apply(new NBTCodec(wrapped.getCompoundTag(key), read, formatVersion));
 	}
 
 	@Override
 	@Nullable
 	public <T> T readOptional(@Nullable String key, Function<Decoder, T> reader) {
+		checkRead();
 		return wrapped.containsKey(key) ? read(key, reader) : null;
 	}
 
 	@Override
 	public <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		checkRead();
 		return reader.apply(this, key);
 	}
 
 	@Override
 	@Nullable
 	public <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) {
+		checkRead();
 		return wrapped.containsKey(key) ? reader.apply(this, key) : null;
 	}
 
 	@Override
 	public void writeByte(@Nullable String key, byte value) {
+		checkWrite();
 		wrapped.putByte(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeByteArray(@Nullable String key, @Nullable byte[] value) {
+		checkWrite();
 		if (value != null)
 			wrapped.putByteArray(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeBoolean(@Nullable String key, boolean value) {
+		checkWrite();
 		wrapped.putBoolean(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeShort(@Nullable String key, short value) {
+		checkWrite();
 		if ((byte) value == value)
 			writeByte(key, (byte) value);
 		else
@@ -234,6 +256,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public void writeInt(@Nullable String key, int value) {
+		checkWrite();
 		// Optimization: try to write ints as smaller data types when possible.
 		if ((byte) value == value)
 			writeByte(key, (byte) value);
@@ -245,6 +268,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public void writeLong(@Nullable String key, long value) {
+		checkWrite();
 		if ((int) value == value)
 			writeInt(key, (int) value);
 
@@ -253,27 +277,32 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public void writeFloat(@Nullable String key, float value) {
+		checkWrite();
 		wrapped.putFloat(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeDouble(@Nullable String key, double value) {
+		checkWrite();
 		wrapped.putDouble(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public void writeUUID(@Nullable String key, UUID value) {
+		checkWrite();
 		writeString(Objects.requireNonNull(key, "key"), value.toString());
 	}
 
 	@Override
 	public void writeString(@Nullable String key, String value) {
+		checkWrite();
 		if (!value.isEmpty())
 			wrapped.putString(Objects.requireNonNull(key, "key"), value);
 	}
 
 	@Override
 	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) {
+		checkWrite();
 		Objects.requireNonNull(value, "value");
 
 		final ParsingStrategy.NumberType numberType = numberType(value.getClass());
@@ -286,6 +315,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final ListTag<CompoundTag> arr = new ListTag<>(CompoundTag.class);
 
 		for (T v : value) {
@@ -299,6 +329,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final ListTag<CompoundTag> arr = new ListTag<>(CompoundTag.class);
 
 		for (T v : value) {
@@ -315,6 +346,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public void writeStringList(@Nullable String key, List<String> value) {
+		checkWrite();
 		final ListTag<StringTag> arr = new ListTag<>(StringTag.class);
 
 		for (String v : value) arr.add(new StringTag(Objects.requireNonNull(v)));
@@ -324,6 +356,7 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		final CompoundTag tag = new CompoundTag();
 		writer.accept(value, new NBTCodec(tag, read, formatVersion));
 		wrapped.put(key, tag);
@@ -331,19 +364,30 @@ public final class NBTCodec extends Codec {
 
 	@Override
 	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) {
+		checkWrite();
 		if (value != null)
 			write(key, value, writer);
 	}
 
 	@Override
 	public <T> void writeExternal(@Nullable String key, T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		checkWrite();
 		writer.accept(key, value, this);
 	}
 
 	@Override
 	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) {
+		checkWrite();
 		if (value == null) return;
 
 		writeExternal(key, value, writer, externalWriter);
+	}
+
+	protected void checkRead() {
+		if (!read) throw new UnsupportedOperationException("Codec is write-only");
+	}
+
+	protected void checkWrite() {
+		if (read) throw new UnsupportedOperationException("Codec is read-only");
 	}
 }
