@@ -2,6 +2,8 @@ package net.syntactickitsune.furblorb.api.component;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.io.Decoder;
+import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 
 public final class StringMapping {
@@ -9,6 +11,20 @@ public final class StringMapping {
 	public String key;
 	public Rule rule;
 	public String newKey;
+
+	public StringMapping() {}
+
+	public StringMapping(Decoder in) {
+		key = in.readString("Key");
+		rule = in.readEnum("Rule", StringMapping.Rule.class);
+		newKey = in.readString("NewKey");
+	}
+
+	public void write(Encoder to) {
+		to.writeString("Key", key);
+		to.writeEnum("Rule", rule);
+		to.writeString("NewKey", newKey);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

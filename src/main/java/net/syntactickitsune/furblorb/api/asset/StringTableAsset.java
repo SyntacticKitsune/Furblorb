@@ -24,11 +24,7 @@ public final class StringTableAsset extends FurballAsset {
 	public StringTableAsset(Decoder in) {
 		super(in);
 
-		final List<Entry> entries = in.readList("Entries", dec -> {
-			final String k = dec.readString("Key");
-			final List<String> v = dec.readStringList("Text");
-			return new Entry(k, v);
-		});
+		final List<Entry> entries = in.readList("Entries", Entry::new);
 
 		for (Entry entry : entries)
 			table.put(entry.key, entry.values);
@@ -45,10 +41,7 @@ public final class StringTableAsset extends FurballAsset {
 				.map(Entry::new)
 				.toList();
 
-		to.writeList("Entries", entries, (entry, enc) -> {
-			enc.writeString("Key", entry.key);
-			enc.writeStringList("Text", entry.values);
-		});
+		to.writeList("Entries", entries, Entry::write);
 	}
 
 	@Override
@@ -70,6 +63,15 @@ public final class StringTableAsset extends FurballAsset {
 
 		private Entry(Map.Entry<String, List<String>> entry) {
 			this(entry.getKey(), entry.getValue());
+		}
+
+		private Entry(Decoder in) {
+			this(in.readString("Key"), in.readStringList("Text"));
+		}
+
+		private void write(Encoder to) {
+			to.writeString("Key", key);
+			to.writeStringList("Text", values);
 		}
 	}
 }

@@ -31,18 +31,13 @@ public final class JournalAsset extends FurballAsset {
 	public JournalAsset(Decoder in) {
 		super(in);
 		title = in.readString("Title");
-
-		stages.addAll(in.readList("Stages", dec -> new Stage(dec.readInt("Key"), dec.readString("Text"))));
+		stages.addAll(in.readList("Stages", Stage::new));
 	}
 
 	@Override
 	protected void write0(Encoder to) {
 		to.writeString("Title", title);
-
-		to.writeList("Stages", stages, (s, enc) -> {
-			enc.writeInt("Key", s.key);
-			enc.writeString("Text", s.text);
-		});
+		to.writeList("Stages", stages, Stage::write);
 	}
 
 	@Override
@@ -63,5 +58,17 @@ public final class JournalAsset extends FurballAsset {
 	 * @param key The numeric identifier of the stage.
 	 * @param text The text describing the stage.
 	 */
-	public static record Stage(int key, String text) {}
+	public static record Stage(int key, String text) {
+
+		public Stage {}
+
+		public Stage(Decoder in) {
+			this(in.readInt("Key"), in.readString("Text"));
+		}
+
+		public void write(Encoder to) {
+			to.writeInt("Key", key);
+			to.writeString("Text", text);
+		}
+	}
 }

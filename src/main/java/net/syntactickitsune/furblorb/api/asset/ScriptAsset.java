@@ -27,19 +27,13 @@ public final class ScriptAsset extends FurballAsset {
 		super(in);
 
 		contents = in.readOptional("Contents", FurballSerializables::read);
-
-		dependencies.addAll(in.readList("LoadOrder", dec -> new LoadOrderDependency(
-				dec.readUUID("TargetAsset"), dec.readEnum("Relation", LoadOrderDependency.Relation.class))));
+		dependencies.addAll(in.readList("LoadOrder", LoadOrderDependency::new));
 	}
 
 	@Override
 	protected void write0(Encoder to) {
 		to.writeOptional("Contents", contents, Script::writeWithId);
-
-		to.writeList("LoadOrder", dependencies, (lod, enc) -> {
-			enc.writeUUID("TargetAsset", lod.targetAsset());
-			enc.writeEnum("Relation", lod.relation());
-		});
+		to.writeList("LoadOrder", dependencies, LoadOrderDependency::write);
 	}
 
 	@Override
