@@ -383,6 +383,15 @@ public final class NBTCodec extends Codec {
 		writeExternal(key, value, writer, externalWriter);
 	}
 
+	@Override
+	public void assertDoesNotExist(String key, String message) throws FurblorbParsingException {
+		checkRead();
+		Objects.requireNonNull(key, "key");
+		Objects.requireNonNull(message, "message");
+		if (wrapped.containsKey(key))
+			throw new FurblorbParsingException("Assertion \"" + key + " ≠ null\" failed: " + message);
+	}
+
 	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}

@@ -203,4 +203,20 @@ public interface Decoder {
 	 */
 	@Nullable
 	public <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader);
+
+	/**
+	 * <p>
+	 * Throws an exception if there is any data associated with {@code key} in this {@code Decoder}.
+	 * For keyless {@code Decoders}, this method may do nothing.
+	 * </p>
+	 * <p>
+	 * This method is intended for pointing out subtle errors in structured data that might otherwise go unnoticed,
+	 * such as using a field in an unsupported context.
+	 * </p>
+	 * @param key The key of the data which should not be present.
+	 * @param message Some informative string to tack onto the thrown exception.
+	 * @throws FurblorbParsingException If this {@code Decoder} supports keys and there exists data associated with the specified key.
+	 * @throws NullPointerException If either {@code key} or {@code message} are {@code null}.
+	 */
+	public void assertDoesNotExist(String key, String message) throws FurblorbParsingException;
 }

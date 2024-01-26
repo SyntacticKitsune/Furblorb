@@ -765,4 +765,7 @@ public class BinaryCodec extends Codec {
 
 	@Override
 	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writeOptional(value, (val, enc) -> writer.accept(key, val, enc)); }
+
+	@Override
+	public void assertDoesNotExist(String key, String message) throws FurblorbParsingException {}
 }

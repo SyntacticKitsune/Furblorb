@@ -70,10 +70,15 @@ public final class SceneNode {
 			if (scripts) {
 				onTrigger = in.readOptional("ScriptAction", FurballSerializables::read);
 				displayTest = in.readOptional("ScriptAppear", FurballSerializables::read);
+			} else {
+				in.assertDoesNotExist("ScriptAction", "unsupported for " + type.id + " nodes.");
+				in.assertDoesNotExist("ScriptAppear", "unsupported for " + type.id + " nodes.");
 			}
 
 			if (children)
 				this.children.addAll(in.readList("Children", SceneNode::new));
+			else
+				in.assertDoesNotExist("Children", type.id + " nodes may not have children.");
 		} catch (CascadingException e) {
 			e.path.add(0, key);
 			throw e;
