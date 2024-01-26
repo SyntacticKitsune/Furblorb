@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.script.Script;
 import net.syntactickitsune.furblorb.api.util.FurballUtil;
@@ -103,6 +104,11 @@ public final class SceneAsset extends FurballAsset {
 			gameStart = in.readBoolean("IsGameStart");
 			if (gameStart)
 				gameStartDescription = in.readString("GameStartDescription");
+			else
+				in.assertDoesNotExist("GameStartDescription", "IsGameStart must be enabled first");
+		} else {
+			in.assertDoesNotExist("IsGameStart", "unsupported in format version <20");
+			in.assertDoesNotExist("GameStartDescription", "unsupported in format version <20");
 		}
 
 		patch = in.readBoolean("IsPatch");
@@ -110,6 +116,14 @@ public final class SceneAsset extends FurballAsset {
 			injectMode = in.readEnum("InjectMode", InjectMode.class);
 			injectionTargetScene = in.readUUID("InjectTargetScene");
 			injectionTargetNode = in.readString("InjectTargetNode");
+
+			if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
+			if (onEnter != null) throw new FurblorbParsingException("ScriptEnter not allowed in patches");
+			if (onLeave != null) throw new FurblorbParsingException("ScriptLeave not allowed in patches");
+		} else {
+			in.assertDoesNotExist("InjectMode", "not a patch");
+			in.assertDoesNotExist("InjectTargetScene", "not a patch");
+			in.assertDoesNotExist("InjectTargetNode", "not a patch");
 		}
 
 		try {
