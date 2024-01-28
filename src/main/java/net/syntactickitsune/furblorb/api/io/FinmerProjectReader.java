@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -113,6 +114,15 @@ public final class FinmerProjectReader {
 		final Map<UUID, String> assetsById = new HashMap<>();
 
 		for (FurballAsset asset : furball.assets) {
+			if (assetsById.containsValue(asset.filename))
+				System.out.printf("! Warning: multiple assets with name %s: %s and %s\n", asset.filename,
+						assetsById.entrySet().stream()
+						.filter(entry -> asset.filename.equals(entry.getValue()))
+						.map(Map.Entry::getKey)
+						.map(Object::toString)
+						.collect(Collectors.joining(", ")),
+						asset.id);
+
 			final String name = assetsById.putIfAbsent(asset.id, asset.filename);
 			if (name != null)
 				System.out.printf("! Warning: multiple assets with id %s: %s and %s\n", asset.id, name, asset.filename);
