@@ -83,7 +83,7 @@ public final class FinmerProjectReader {
 	 * Attempts to read a {@link Furball} from the {@code FinmerProjectReader}'s {@link ExtendedExternalFileHandler}.
 	 * @return The read furball.
 	 * @throws FurblorbParsingException If a parsing error occurs.
-	 * @throws FurballFormatException If the furball described by the data has a format version that cannot be read by this {@code FinmerProjectReader}.
+	 * @throws UnsupportedFormatVersionException If the furball described by the data has a format version that cannot be read by this {@code FinmerProjectReader}.
 	 */
 	public Furball readFurball() {
 		final List<String> files = externalFiles.listFiles();

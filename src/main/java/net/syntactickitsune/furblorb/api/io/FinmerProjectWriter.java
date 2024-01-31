@@ -98,7 +98,7 @@ public final class FinmerProjectWriter {
 	/**
 	 * Writes the specified {@code Furball} to the {@code FinmerProjectWriter}'s project directory.
 	 * @param furball The furball to write.
-	 * @throws FurballFormatException If the furball has a format version that cannot be written by this {@code FinmerProjectWriter}.
+	 * @throws UnsupportedFormatVersionException If the furball has a format version that cannot be written by this {@code FinmerProjectWriter}.
 	 * @throws NullPointerException If {@code furball} is {@code null}.
 	 */
 	public void writeFurball(Furball furball) {

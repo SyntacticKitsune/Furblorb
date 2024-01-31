@@ -42,9 +42,9 @@ public final class FurballWriter {
 
 	static void checkFormatVersion(byte formatVersion) {
 		if (formatVersion < FurballMetadata.MINIMUM_VERSION)
-			throw new FurballFormatException(formatVersion, "Attempt to write a furball with a version older than min supported: " + formatVersion + " < " + FurballMetadata.MINIMUM_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version older than min supported: " + formatVersion + " < " + FurballMetadata.MINIMUM_VERSION);
 		if (formatVersion > FurballMetadata.LATEST_VERSION)
-			throw new FurballFormatException(formatVersion, "Attempt to write a furball with a version newer than max supported: " + formatVersion + " > " + FurballMetadata.LATEST_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version newer than max supported: " + formatVersion + " > " + FurballMetadata.LATEST_VERSION);
 	}
 
 	// There is absolutely no reason I can see for people wanting to write *only* the metadata.
@@ -61,10 +61,10 @@ public final class FurballWriter {
 	 * Writes the specified {@code Furball} to the {@code FurballWriter}'s backing buffer.
 	 * @param furball The furball to write.
 	 * @return {@code this}.
-	 * @throws FurballFormatException If the furball has a format version that cannot be written by this {@code FurballWriter}.
+	 * @throws UnsupportedFormatVersionException If the furball has a format version that cannot be written by this {@code FurballWriter}.
 	 * @throws NullPointerException If {@code furball} is {@code null}.
 	 */
-	public FurballWriter write(Furball furball) throws FurballFormatException {
+	public FurballWriter write(Furball furball) throws UnsupportedFormatVersionException {
 		Objects.requireNonNull(furball);
 
 		checkFormatVersion(furball.meta.formatVersion);

@@ -61,9 +61,9 @@ public final class FurballReader {
 
 	static void checkFormatVersion(byte formatVersion) {
 		if (formatVersion < FurballMetadata.MINIMUM_VERSION)
-			throw new FurballFormatException(formatVersion, "Furball too old: it has format version " + formatVersion + " but this parser only understands a minimum of " + FurballMetadata.MINIMUM_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Furball too old: it has format version " + formatVersion + " but this parser only understands a minimum of " + FurballMetadata.MINIMUM_VERSION);
 		if (formatVersion > FurballMetadata.LATEST_VERSION)
-			throw new FurballFormatException(formatVersion, "Furball too new: it has format version " + formatVersion + " but this parser only understands a maximum of " + FurballMetadata.LATEST_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Furball too new: it has format version " + formatVersion + " but this parser only understands a maximum of " + FurballMetadata.LATEST_VERSION);
 	}
 
 	/**
@@ -73,10 +73,10 @@ public final class FurballReader {
 	 * since it will attempt to re-read the metadata.
 	 * @return The read metadata.
 	 * @throws FurblorbParsingException If the data does not represent a furball or if some other parsing error occurs.
-	 * @throws FurballFormatException If the furball described by the data has a format version that cannot be read by this {@code FurballReader}.
+	 * @throws UnsupportedFormatVersionException If the furball described by the data has a format version that cannot be read by this {@code FurballReader}.
 	 * @see #readFurball()
 	 */
-	public FurballMetadata readMetadata() throws FurblorbParsingException, FurballFormatException {
+	public FurballMetadata readMetadata() throws FurblorbParsingException, UnsupportedFormatVersionException {
 		// Check magic:
 		for (int i = 0; i < MAGIC.length; i++) {
 			final byte b = codec.readByte();
@@ -97,9 +97,9 @@ public final class FurballReader {
 	 * It is important that the metadata of the furball is not read first, as that will cause the parsing to fail.
 	 * @return The read furball.
 	 * @throws FurblorbParsingException If the data does not represent a furball or if some other parsing error occurs.
-	 * @throws FurballFormatException If the furball described by the data has a format version that cannot be read by this {@code FurballReader}.
+	 * @throws UnsupportedFormatVersionException If the furball described by the data has a format version that cannot be read by this {@code FurballReader}.
 	 */
-	public Furball readFurball() throws FurblorbParsingException, FurballFormatException {
+	public Furball readFurball() throws FurblorbParsingException, UnsupportedFormatVersionException {
 		final FurballMetadata meta = readMetadata();
 		final Furball ret = new Furball(meta);
 

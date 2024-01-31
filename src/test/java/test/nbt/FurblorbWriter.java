@@ -7,7 +7,7 @@ import net.querz.nbt.tag.CompoundTag;
 import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.FurballMetadata;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
-import net.syntactickitsune.furblorb.api.io.FurballFormatException;
+import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 
 public final class FurblorbWriter {
 
@@ -30,9 +30,9 @@ public final class FurblorbWriter {
 
 	static void checkFormatVersion(byte formatVersion) {
 		if (formatVersion < FurballMetadata.MINIMUM_VERSION)
-			throw new FurballFormatException(formatVersion, "Attempt to write a furball with a version older than min supported: " + formatVersion + " < " + FurballMetadata.MINIMUM_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version older than min supported: " + formatVersion + " < " + FurballMetadata.MINIMUM_VERSION);
 		if (formatVersion > FurballMetadata.LATEST_VERSION)
-			throw new FurballFormatException(formatVersion, "Attempt to write a furball with a version newer than max supported: " + formatVersion + " > " + FurballMetadata.LATEST_VERSION);
+			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version newer than max supported: " + formatVersion + " > " + FurballMetadata.LATEST_VERSION);
 	}
 
 	// There is absolutely no reason I can see for people wanting to write *only* the metadata.
@@ -49,10 +49,10 @@ public final class FurblorbWriter {
 	 * Writes the specified {@code Furball} to the {@code FurblorbWriter}'s backing buffer.
 	 * @param furball The furball to write.
 	 * @return {@code this}.
-	 * @throws FurballFormatException If the furball has a format version that cannot be written by this {@code FurblorbWriter}.
+	 * @throws UnsupportedFormatVersionException If the furball has a format version that cannot be written by this {@code FurblorbWriter}.
 	 * @throws NullPointerException If {@code furball} is {@code null}.
 	 */
-	public FurblorbWriter write(Furball furball) throws FurballFormatException {
+	public FurblorbWriter write(Furball furball) throws UnsupportedFormatVersionException {
 		Objects.requireNonNull(furball);
 
 		checkFormatVersion(furball.meta.formatVersion);
