@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
  * A {@link FurblorbParsingException} thrown when a furball is read or written with an unsupported format version.
  * @author SyntacticKitsune
  */
-public final class FurballFormatException extends FurblorbParsingException {
+public final class UnsupportedFormatVersionException extends FurblorbParsingException {
 
 	private final byte formatVersion;
 
@@ -15,7 +15,7 @@ public final class FurballFormatException extends FurblorbParsingException {
 	 * @param formatVersion The format version of the offending furball.
 	 * @param message The exception detail message.
 	 */
-	public FurballFormatException(byte formatVersion, @Nullable String message) {
+	public UnsupportedFormatVersionException(byte formatVersion, @Nullable String message) {
 		super(message);
 		this.formatVersion = formatVersion;
 	}
