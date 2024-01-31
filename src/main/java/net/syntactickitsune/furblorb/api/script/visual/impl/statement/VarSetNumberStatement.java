@@ -1,11 +1,14 @@
 package net.syntactickitsune.furblorb.api.script.visual.impl.statement;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
+import net.syntactickitsune.furblorb.api.io.IllegalFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.FloatExpression;
@@ -30,6 +33,9 @@ public final class VarSetNumberStatement extends StatementNode {
 
 	@Override
 	public void write(Encoder to) {
+		if (op.formatVersion > to.formatVersion())
+			throw new IllegalFormatVersionException(op.formatVersion, to.formatVersion(), "serialize operation " + op.name());
+
 		to.writeString("VariableName", variable);
 		to.writeEnum("ValueOperation", op);
 
@@ -84,6 +90,7 @@ public final class VarSetNumberStatement extends StatementNode {
 
 		private final String id;
 		public final boolean binary;
+		private byte formatVersion = 19;
 
 		private Operation(String id, boolean binary) {
 			this.id = id;
@@ -93,6 +100,16 @@ public final class VarSetNumberStatement extends StatementNode {
 		@Override
 		public String id() {
 			return id;
+		}
+
+		static {
+			for (Field field : Operation.class.getDeclaredFields())
+				if (field.isAnnotationPresent(RequiresFormatVersion.class))
+					try {
+						((Operation) field.get(null)).formatVersion = field.getAnnotation(RequiresFormatVersion.class).value();
+					} catch (IllegalAccessException e) {
+						FurblorbUtil.throwAsUnchecked(e);
+					}
 		}
 	}
 }

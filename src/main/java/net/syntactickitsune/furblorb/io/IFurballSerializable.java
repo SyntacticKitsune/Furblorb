@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.io;
 
 import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.IllegalFormatVersionException;
 import net.syntactickitsune.furblorb.io.FurballSerializables.Metadata;
 
 /**
@@ -33,6 +34,12 @@ public interface IFurballSerializable {
 	 * @throws NullPointerException If {@code to} is {@code null}.
 	 */
 	public default void writeWithId(Encoder to) {
+		final Metadata<?> meta = metadata();
+		if (meta.minFormatVersion() > to.formatVersion())
+			throw new IllegalFormatVersionException(meta.minFormatVersion(), to.formatVersion(), "serialize " + getClass().getSimpleName());
+		if (meta.maxFormatVersion() < to.formatVersion())
+			throw new IllegalFormatVersionException(meta.maxFormatVersion(), to.formatVersion(), "serialize " + getClass().getSimpleName());
+
 		if (to.writeCompressedTypes())
 			to.writeInt("!Type", metadata().id());
 		else

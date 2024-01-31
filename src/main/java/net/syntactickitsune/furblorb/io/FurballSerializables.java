@@ -53,17 +53,20 @@ public final class FurballSerializables {
 					}
 				};
 
-				register(id, rs.value(), (Class) cls, ctor);
+				final byte minFormatVersion = rs.since() == 0 ? 19 : (byte) rs.since();
+				final byte maxFormatVersion = rs.until() == 0 ? Byte.MAX_VALUE : (byte) rs.until();
+
+				register(id, rs.value(), (Class) cls, ctor, minFormatVersion, maxFormatVersion);
 			} catch (Exception e) {
 				throw new IllegalStateException("Failed to register " + target, e);
 			}
 	}
 
-	private static <T extends IFurballSerializable> void register(int id, String name, Class<T> clazz, Constructor<T> ctor) {
+	private static <T extends IFurballSerializable> void register(int id, String name, Class<T> clazz, Constructor<T> ctor, byte minFormatVersion, byte maxFormatVersion) {
 		if (SERIALIZABLES_BY_ID.containsKey(id))
 			throw new IllegalArgumentException("Cannot register " + clazz.getName() + " under id " + id + ", as it is already owned by " + SERIALIZABLES_BY_ID.get(id).owner.getName());
 
-		final Metadata meta = new Metadata<>(id, name, ctor, clazz);
+		final Metadata meta = new Metadata<>(id, name, ctor, clazz, minFormatVersion, maxFormatVersion);
 
 		SERIALIZABLES_BY_ID.put(id, meta);
 		SERIALIZABLES_BY_TYPE.put(name, meta);
@@ -147,9 +150,11 @@ public final class FurballSerializables {
 	 * @param name The C# class name of the {@code IFurballSerializable}. This is discovered from {@link RegisterSerializable}.
 	 * @param ctor The {@code IFurballSerializable}'s one-parameter {@link Decoder} constructor.
 	 * @param owner The {@code IFurballSerializable} class.
+	 * @param minFormatVersion The minimum format version of the {@code IFurballSerializable}.
+	 * @param maxFormatVersion The maximum format version of the {@code IFurballSerializable}.
 	 */
 	@Internal
-	public static record Metadata<T extends IFurballSerializable>(int id, String name, Constructor<T> ctor, Class<T> owner) {}
+	public static record Metadata<T extends IFurballSerializable>(int id, String name, Constructor<T> ctor, Class<T> owner, byte minFormatVersion, byte maxFormatVersion) {}
 
 	/**
 	 * Represents an {@link IFurballSerializable}'s one-parameter {@link Decoder} constructor.

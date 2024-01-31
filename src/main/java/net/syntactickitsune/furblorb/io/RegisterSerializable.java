@@ -22,4 +22,9 @@ public @interface RegisterSerializable {
 	 * @return The format version this {@code class} was introduced.
 	 */
 	public int since() default 0;
+
+	/**
+	 * @return The format version this {@code class} was removed.
+	 */
+	public int until() default 0;
 }
