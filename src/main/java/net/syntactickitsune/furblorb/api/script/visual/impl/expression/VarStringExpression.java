@@ -25,8 +25,16 @@ public final class VarStringExpression extends ExpressionNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code VarStringExpression} with default values.
+	 */
 	public VarStringExpression() {}
 
+	/**
+	 * Decodes a {@code VarStringExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarStringExpression(Decoder in) {
 		variable = in.readString("VariableName");
 		expression = new StringExpression(in);

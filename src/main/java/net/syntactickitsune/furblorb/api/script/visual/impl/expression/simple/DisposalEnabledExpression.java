@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionIsDisposalEnabled")
 public final class DisposalEnabledExpression extends SimpleExpression {
 
+	/**
+	 * Constructs a new {@code DisposalEnabledExpression} with default values.
+	 */
 	public DisposalEnabledExpression() {}
 
+	/**
+	 * Decodes a {@code DisposalEnabledExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public DisposalEnabledExpression(Decoder in) {}
 }

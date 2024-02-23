@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandLogClear")
 public final class LogClearStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code LogClearStatement} with default values.
+	 */
 	public LogClearStatement() {}
 
+	/**
+	 * Decodes a {@code LogClearStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LogClearStatement(Decoder in) {}
 }

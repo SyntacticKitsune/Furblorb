@@ -39,8 +39,16 @@ public final class SceneNode {
 
 	public final List<SceneNode> children = new ArrayList<>();
 
+	/**
+	 * Constructs a new {@code SceneNode} with default values.
+	 */
 	public SceneNode() {}
 
+	/**
+	 * Decodes a {@code SceneNode} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SceneNode(Decoder in) {
 		type = in.readEnum("NodeType", Type.class);
 		key = in.readString("Key");

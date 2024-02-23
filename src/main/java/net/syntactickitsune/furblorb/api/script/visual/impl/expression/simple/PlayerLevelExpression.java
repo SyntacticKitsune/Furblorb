@@ -11,8 +11,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionPlayerLevel")
 public final class PlayerLevelExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code PlayerLevelExpression} with default values.
+	 */
 	public PlayerLevelExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerLevelExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerLevelExpression(Decoder in) {
 		super(in);
 	}

@@ -31,8 +31,16 @@ public final class CombatSetGrappledStatement extends StatementNode {
 	 */
 	public String targetName;
 
+	/**
+	 * Constructs a new {@code CombatSetGrappledStatement} with default values.
+	 */
 	public CombatSetGrappledStatement() {}
 
+	/**
+	 * Decodes a {@code CombatSetGrappledStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatSetGrappledStatement(Decoder in) {
 		mode = in.readEnum("Mode", Mode.class);
 		instigatorName = in.readString("InstigatorName");

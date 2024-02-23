@@ -20,8 +20,16 @@ public final class JournalCloseStatement extends StatementNode {
 	 */
 	public UUID journalId;
 
+	/**
+	 * Constructs a new {@code JournalCloseStatement} with default values.
+	 */
 	public JournalCloseStatement() {}
 
+	/**
+	 * Decodes a {@code JournalCloseStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public JournalCloseStatement(Decoder in) {
 		journalId = in.readUUID("JournalGuid");
 	}

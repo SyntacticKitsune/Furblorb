@@ -24,8 +24,16 @@ public final class LogStatement extends StatementNode {
 	 */
 	public boolean raw;
 
+	/**
+	 * Constructs a new {@code LogStatement} with default values.
+	 */
 	public LogStatement() {}
 
+	/**
+	 * Decodes a {@code LogStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LogStatement(Decoder in) {
 		text = in.readString("Text");
 		raw = in.readBoolean("IsRaw");

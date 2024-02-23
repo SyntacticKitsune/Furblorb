@@ -9,7 +9,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionCombatActive")
 public final class CombatActiveExpression extends SimpleExpression {
 
+	/**
+	 * Constructs a new {@code CombatActiveExpression} with default values.
+	 */
 	public CombatActiveExpression() {}
 
+	/**
+	 * Decodes a {@code CombatActiveExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatActiveExpression(Decoder in) {}
 }

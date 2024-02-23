@@ -26,8 +26,16 @@ public final class PlayerSetEquipmentStatement extends StatementNode {
 	 */
 	public UUID itemId;
 
+	/**
+	 * Constructs a new {@code PlayerSetEquipmentStatement} with default values.
+	 */
 	public PlayerSetEquipmentStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetEquipmentStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetEquipmentStatement(Decoder in) {
 		slot = in.readEnum("EquipSlot", EquipmentSlot.class);
 		itemId = in.readUUID("ItemGuid");

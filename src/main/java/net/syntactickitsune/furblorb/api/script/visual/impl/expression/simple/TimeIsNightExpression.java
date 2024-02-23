@@ -15,7 +15,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable(value = "ConditionTimeIsNight", since = 20)
 public final class TimeIsNightExpression extends SimpleExpression {
 
+	/**
+	 * Constructs a new {@code TimeIsNightExpression} with default values.
+	 */
 	public TimeIsNightExpression() {}
 
+	/**
+	 * Decodes a {@code TimeIsNightExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public TimeIsNightExpression(Decoder in) {}
 }

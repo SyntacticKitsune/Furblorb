@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionIsExplorerEnabled")
 public final class ExplorerEnabledExpression extends SimpleExpression {
 
+	/**
+	 * Constructs a new {@code ExplorerEnabledExpression} with default values.
+	 */
 	public ExplorerEnabledExpression() {}
 
+	/**
+	 * Decodes a {@code ExplorerEnabledExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public ExplorerEnabledExpression(Decoder in) {}
 }

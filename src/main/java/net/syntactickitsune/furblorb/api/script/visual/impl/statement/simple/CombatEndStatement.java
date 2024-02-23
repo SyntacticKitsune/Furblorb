@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandCombatEnd")
 public final class CombatEndStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code CombatEndStatement} with default values.
+	 */
 	public CombatEndStatement() {}
 
+	/**
+	 * Decodes a {@code CombatEndStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatEndStatement(Decoder in) {}
 }

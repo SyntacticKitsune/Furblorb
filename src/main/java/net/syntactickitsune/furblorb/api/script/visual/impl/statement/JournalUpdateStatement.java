@@ -25,8 +25,16 @@ public final class JournalUpdateStatement extends StatementNode {
 	 */
 	public int stage;
 
+	/**
+	 * Constructs a new {@code JournalUpdateStatement} with default values.
+	 */
 	public JournalUpdateStatement() {}
 
+	/**
+	 * Decodes a {@code JournalUpdateStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public JournalUpdateStatement(Decoder in) {
 		journalId = in.readUUID("JournalGuid");
 		stage = in.readInt("Stage");

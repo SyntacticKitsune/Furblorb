@@ -24,8 +24,16 @@ public final class PlayerSpeciesExpression extends ExpressionNode {
 	 */
 	public boolean caseSensitive;
 
+	/**
+	 * Constructs a new {@code PlayerSpeciesExpression} with default values.
+	 */
 	public PlayerSpeciesExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerSpeciesExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSpeciesExpression(Decoder in) {
 		target = new StringExpression(in);
 		caseSensitive = in.readBoolean("IsCaseSensitive");

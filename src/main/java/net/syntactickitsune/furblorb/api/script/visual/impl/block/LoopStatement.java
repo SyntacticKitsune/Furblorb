@@ -29,8 +29,16 @@ public final class LoopStatement extends StatementBlockNode {
 	 */
 	public List<ScriptNode> body;
 
+	/**
+	 * Constructs a new {@code LoopStatement} with default values.
+	 */
 	public LoopStatement() {}
 
+	/**
+	 * Decodes a {@code LoopStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LoopStatement(Decoder in) {
 		body = read("LoopBody", in);
 	}

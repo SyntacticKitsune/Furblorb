@@ -18,8 +18,15 @@ public final class ExternalScript extends Script {
 	public String name;
 	public String contents;
 
+	/**
+	 * Constructs a new {@code ExternalScript} with no associated file.
+	 */
 	public ExternalScript() {}
 
+	/**
+	 * Decodes an {@code ExternalScript} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 */
 	public ExternalScript(Decoder in) {
 		name = in.readString("Name");
 		final byte[] bytes = in.readExternal(name + ".lua", Decoder::readByteArray, Function.identity());

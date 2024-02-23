@@ -19,8 +19,16 @@ public final class PlayerSetNameStatement extends StatementNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerSetNameStatement} with default values.
+	 */
 	public PlayerSetNameStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetNameStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetNameStatement(Decoder in) {
 		expression = new StringExpression(in);
 	}

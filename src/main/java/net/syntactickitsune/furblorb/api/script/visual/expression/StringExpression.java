@@ -21,8 +21,16 @@ public final class StringExpression implements IFurballSerializable {
 	 */
 	public String value;
 
+	/**
+	 * Constructs a new {@code StringExpression} with default values.
+	 */
 	public StringExpression() {}
 
+	/**
+	 * Decodes a {@code StringExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public StringExpression(Decoder in) {
 		mode = in.readEnum("OperandMode", ExpressionMode.class);
 		value = in.readString("OperandText");

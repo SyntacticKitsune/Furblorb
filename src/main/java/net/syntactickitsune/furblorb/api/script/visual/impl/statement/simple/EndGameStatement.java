@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandEndGame")
 public final class EndGameStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code EndGameStatement} with default values.
+	 */
 	public EndGameStatement() {}
 
+	/**
+	 * Decodes a {@code EndGameStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public EndGameStatement(Decoder in) {}
 }

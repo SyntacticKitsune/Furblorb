@@ -25,8 +25,16 @@ public final class TimeAdvanceStatement extends StatementNode {
 	 */
 	public IntExpression hours = new IntExpression();
 
+	/**
+	 * Constructs a new {@code TimeAdvanceStatement} with default values.
+	 */
 	public TimeAdvanceStatement() {}
 
+	/**
+	 * Decodes a {@code TimeAdvanceStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public TimeAdvanceStatement(Decoder in) {
 		hours = new IntExpression(in);
 	}

@@ -26,8 +26,16 @@ public final class IntExpression implements IFurballSerializable {
 	 */
 	public String ref;
 
+	/**
+	 * Constructs a new {@code IntExpression} with default values.
+	 */
 	public IntExpression() {}
 
+	/**
+	 * Decodes an {@code IntExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public IntExpression(Decoder in) {
 		mode = in.readEnum("OperandMode", ExpressionMode.class);
 		if (mode == ExpressionMode.LITERAL)

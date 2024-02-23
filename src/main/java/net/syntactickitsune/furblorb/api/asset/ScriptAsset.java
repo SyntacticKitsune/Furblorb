@@ -21,8 +21,16 @@ public final class ScriptAsset extends FurballAsset {
 	public Script contents;
 	public final List<LoadOrderDependency> dependencies = new ArrayList<>();
 
+	/**
+	 * Constructs a new {@code ScriptAsset} with default values.
+	 */
 	public ScriptAsset() {}
 
+	/**
+	 * Decodes a {@code ScriptAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public ScriptAsset(Decoder in) {
 		super(in);
 

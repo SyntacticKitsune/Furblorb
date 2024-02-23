@@ -23,8 +23,16 @@ public final class CombatParticipantGrappledExpression extends ExpressionNode {
 	 */
 	public String targetName = "";
 
+	/**
+	 * Constructs a new {@code CombatParticipantGrappledExpression} with default values.
+	 */
 	public CombatParticipantGrappledExpression() {}
 
+	/**
+	 * Decodes a {@code CombatParticipantGrappledExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatParticipantGrappledExpression(Decoder in) {
 		participantId = in.readString("ParticipantName");
 		targetName = in.readString("TargetName");

@@ -10,10 +10,20 @@ public record LoadOrderDependency(UUID targetAsset, Relation relation) {
 
 	public LoadOrderDependency {}
 
+	/**
+	 * Decodes a {@code LoadOrderDependency} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LoadOrderDependency(Decoder in) {
 		this(in.readUUID("TargetAsset"), in.readEnum("Relation", Relation.class));
 	}
 
+	/**
+	 * Writes this {@code LoadOrderDependency} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
 	public void write(Encoder to) {
 		to.writeUUID("TargetAsset", targetAsset);
 		to.writeEnum("Relation", relation);

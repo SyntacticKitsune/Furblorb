@@ -25,8 +25,16 @@ public final class InlineSnippetStatement extends StatementNode {
 	 */
 	public String contents;
 
+	/**
+	 * Constructs a new {@code InlineSnippetStatement} with default values.
+	 */
 	public InlineSnippetStatement() {}
 
+	/**
+	 * Decodes a {@code InlineSnippetStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public InlineSnippetStatement(Decoder in) {
 		contents = in.readString("Snippet");
 	}

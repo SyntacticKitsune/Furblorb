@@ -33,8 +33,16 @@ public final class PlayerSetSpeciesStatement extends StatementNode {
 	 */
 	public String coatAdjective;
 
+	/**
+	 * Constructs a new {@code PlayerSetSpeciesStatement} with default values.
+	 */
 	public PlayerSetSpeciesStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetSpeciesStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetSpeciesStatement(Decoder in) {
 		singular = in.readString("Singular");
 		plural = in.readString("Plural");

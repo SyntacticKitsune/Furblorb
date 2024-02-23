@@ -24,8 +24,16 @@ public final class PlayerNameExpression extends ExpressionNode {
 	 */
 	public boolean caseSensitive;
 
+	/**
+	 * Constructs a new {@code PlayerNameExpression} with default values.
+	 */
 	public PlayerNameExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerNameExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerNameExpression(Decoder in) {
 		target = new StringExpression(in);
 		caseSensitive = in.readBoolean("IsCaseSensitive");

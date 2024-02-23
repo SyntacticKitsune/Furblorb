@@ -20,8 +20,16 @@ public final class PlayerHasItemExpression extends ExpressionNode {
 	 */
 	public UUID itemId;
 
+	/**
+	 * Constructs a new {@code PlayerHasItemExpression} with default values.
+	 */
 	public PlayerHasItemExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerHasItemExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerHasItemExpression(Decoder in) {
 		itemId = in.readUUID("ItemGuid");
 	}

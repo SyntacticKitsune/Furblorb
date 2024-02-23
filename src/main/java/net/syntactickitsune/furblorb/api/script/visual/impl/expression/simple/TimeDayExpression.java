@@ -16,8 +16,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable(value = "ConditionTimeDay", since = 20)
 public final class TimeDayExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code TimeDayExpression} with default values.
+	 */
 	public TimeDayExpression() {}
 
+	/**
+	 * Decodes a {@code TimeDayExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public TimeDayExpression(Decoder in) {
 		super(in);
 	}

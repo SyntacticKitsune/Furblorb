@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandSaveDialog")
 public final class SaveDialogStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code SaveDialogStatement} with default values.
+	 */
 	public SaveDialogStatement() {}
 
+	/**
+	 * Decodes a {@code SaveDialogStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SaveDialogStatement(Decoder in) {}
 }

@@ -37,8 +37,16 @@ public final class CombatApplyBuffStatement extends StatementNode {
 	 */
 	public int duration; // Fun fact: the documentation on this field (in Finmer's source) is wrong.
 
+	/**
+	 * Constructs a new {@code CombatApplyBuffStatement} with default values.
+	 */
 	public CombatApplyBuffStatement() {}
 
+	/**
+	 * Decodes a {@code CombatApplyBuffStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatApplyBuffStatement(Decoder in) {
 		target = in.readEnum("Target", Target.class);
 		if (target == Target.NPC)

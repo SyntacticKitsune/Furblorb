@@ -23,8 +23,16 @@ public final class VarNumberExpression extends ExpressionNode {
 	// HACK: We use composition instead of inheritance because otherwise deserialization is impossible.
 	public ComparisonExpressionNode comparison = new RawComparisonExpressionNode();
 
+	/**
+	 * Constructs a new {@code VarNumberExpression} with default values.
+	 */
 	public VarNumberExpression() {}
 
+	/**
+	 * Decodes a {@code VarNumberExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarNumberExpression(Decoder in) {
 		variable = in.readString("VariableName");
 		comparison = new RawComparisonExpressionNode(in);

@@ -19,8 +19,16 @@ public final class PlayerStatExpression extends ComparisonExpressionNode {
 	 */
 	public Stat stat;
 
+	/**
+	 * Constructs a new {@code PlayerStatExpression} with default values.
+	 */
 	public PlayerStatExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerStatExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerStatExpression(Decoder in) {
 		super(in);
 		stat = in.readEnum("Stat", Stat.class);

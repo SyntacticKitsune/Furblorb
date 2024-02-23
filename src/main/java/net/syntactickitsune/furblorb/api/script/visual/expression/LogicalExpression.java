@@ -32,8 +32,16 @@ public final class LogicalExpression implements IFurballSerializable {
 	 */
 	public boolean target = true;
 
+	/**
+	 * Constructs a new {@code LogicalExpression} with default values.
+	 */
 	public LogicalExpression() {}
 
+	/**
+	 * Decodes a {@code LogicalExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LogicalExpression(Decoder in) {
 		mode = in.readEnum("Mode", Mode.class);
 		target = in.readBoolean("Operand");

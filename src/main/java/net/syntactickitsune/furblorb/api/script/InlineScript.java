@@ -15,8 +15,15 @@ public final class InlineScript extends Script {
 
 	public String contents;
 
+	/**
+	 * Constructs a new {@code InlineScript} with no contents.
+	 */
 	public InlineScript() {}
 
+	/**
+	 * Decodes an {@code InlineScript} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 */
 	public InlineScript(Decoder in) {
 		contents = in.readString("Script");
 	}

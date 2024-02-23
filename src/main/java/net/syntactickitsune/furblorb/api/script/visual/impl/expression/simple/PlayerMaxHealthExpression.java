@@ -11,8 +11,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionPlayerHealthMax")
 public final class PlayerMaxHealthExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code PlayerMaxHealthExpression} with default values.
+	 */
 	public PlayerMaxHealthExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerMaxHealthExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerMaxHealthExpression(Decoder in) {
 		super(in);
 	}

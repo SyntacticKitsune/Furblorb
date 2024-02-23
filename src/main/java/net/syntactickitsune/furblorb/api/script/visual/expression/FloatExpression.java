@@ -26,8 +26,16 @@ public final class FloatExpression implements IFurballSerializable {
 	 */
 	public String ref;
 
+	/**
+	 * Constructs a new {@code FloatExpression} with default values.
+	 */
 	public FloatExpression() {}
 
+	/**
+	 * Decodes a {@code FloatExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public FloatExpression(Decoder in) {
 		mode = in.readEnum("OperandMode", ExpressionMode.class);
 		if (mode == ExpressionMode.LITERAL)

@@ -16,8 +16,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable(value = "ConditionTimeHour", since = 20)
 public final class TimeHourExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code TimeHourExpression} with default values.
+	 */
 	public TimeHourExpression() {}
 
+	/**
+	 * Decodes a {@code TimeHourExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public TimeHourExpression(Decoder in) {
 		super(in);
 	}

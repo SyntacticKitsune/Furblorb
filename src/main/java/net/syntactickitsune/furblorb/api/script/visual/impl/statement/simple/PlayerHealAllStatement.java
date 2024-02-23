@@ -9,7 +9,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandPlayerHealAll")
 public final class PlayerHealAllStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code PlayerHealAllStatement} with default values.
+	 */
 	public PlayerHealAllStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerHealAllStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerHealAllStatement(Decoder in) {}
 }

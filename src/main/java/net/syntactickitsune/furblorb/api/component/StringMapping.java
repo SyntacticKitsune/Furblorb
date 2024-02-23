@@ -12,14 +12,27 @@ public final class StringMapping {
 	public Rule rule;
 	public String newKey;
 
+	/**
+	 * Constructs a new {@code StringMapping} with default values.
+	 */
 	public StringMapping() {}
 
+	/**
+	 * Decodes a {@code StringMapping} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public StringMapping(Decoder in) {
 		key = in.readString("Key");
 		rule = in.readEnum("Rule", StringMapping.Rule.class);
 		newKey = in.readString("NewKey");
 	}
 
+	/**
+	 * Writes this {@code StringMapping} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
 	public void write(Encoder to) {
 		to.writeString("Key", key);
 		to.writeEnum("Rule", rule);

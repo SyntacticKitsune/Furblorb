@@ -11,8 +11,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionPlayerHealth")
 public final class PlayerHealthExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code PlayerHealthExpression} with default values.
+	 */
 	public PlayerHealthExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerHealthExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerHealthExpression(Decoder in) {
 		super(in);
 	}

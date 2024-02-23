@@ -35,8 +35,16 @@ public final class CombatBeginStatement extends StatementBlockNode {
 	@Nullable
 	public List<ScriptNode> onCreatureReleased;
 
+	/**
+	 * Constructs a new {@code CombatBeginStatement} with default values.
+	 */
 	public CombatBeginStatement() {}
 
+	/**
+	 * Decodes a {@code CombatBeginStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatBeginStatement(Decoder in) {
 		includePlayer = in.readBoolean("IncludePlayer");
 		in.readBoolean("IncludeAllies");

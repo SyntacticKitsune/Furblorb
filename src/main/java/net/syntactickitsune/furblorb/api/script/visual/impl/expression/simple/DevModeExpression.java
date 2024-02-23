@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionIsDevModeEnabled")
 public final class DevModeExpression extends SimpleExpression {
 
+	/**
+	 * Constructs a new {@code DevModeExpression} with default values.
+	 */
 	public DevModeExpression() {}
 
+	/**
+	 * Decodes a {@code DevModeExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public DevModeExpression(Decoder in) {}
 }

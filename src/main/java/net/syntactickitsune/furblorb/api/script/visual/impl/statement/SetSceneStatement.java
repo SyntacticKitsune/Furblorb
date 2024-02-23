@@ -20,8 +20,16 @@ public final class SetSceneStatement extends StatementNode {
 	 */
 	public UUID sceneId;
 
+	/**
+	 * Constructs a new {@code SetSceneStatement} with default values.
+	 */
 	public SetSceneStatement() {}
 
+	/**
+	 * Decodes a {@code SetSceneStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SetSceneStatement(Decoder in) {
 		sceneId = in.readUUID("SceneGuid");
 	}

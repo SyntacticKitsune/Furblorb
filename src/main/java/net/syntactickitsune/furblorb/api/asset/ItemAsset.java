@@ -97,8 +97,16 @@ public final class ItemAsset extends FurballAsset {
 	 */
 	public ScriptAsset useScript;
 
+	/**
+	 * Constructs a new {@code ItemAsset} with default values.
+	 */
 	public ItemAsset() {}
 
+	/**
+	 * Decodes an {@code ItemAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public ItemAsset(Decoder in) {
 		super(in);
 		objectName = in.readString("ObjectName");
@@ -170,10 +178,25 @@ public final class ItemAsset extends FurballAsset {
 		});
 	}
 
+	/**
+	 * Represents the different types of items.
+	 */
 	public static enum Type implements INamedEnum {
 
+		/**
+		 * Represents items that have no specific gameplay use.
+		 * These would be fetch quest items, collectibles, perfectly generic items, etc.
+		 */
 		GENERIC("Generic"), // Like me!
+
+		/**
+		 * Represents items that can be equipped.
+		 */
 		EQUIPPABLE("Equipable"),
+
+		/**
+		 * Represents items that can be "used", such as consumables.
+		 */
 		USABLE("Usable");
 
 		private final String id;
@@ -188,10 +211,24 @@ public final class ItemAsset extends FurballAsset {
 		}
 	}
 
+	/**
+	 * Represents the different equipment slots an item may occupy.
+	 */
 	public static enum EquipmentSlot implements INamedEnum {
 
+		/**
+		 * The item occupies the weapon slot.
+		 */
 		WEAPON("Weapon"),
+
+		/**
+		 * The item occupies the armor slot.
+		 */
 		ARMOR("Armor"),
+
+		/**
+		 * The item occupies one of two accessory slots.
+		 */
 		ACCESSORY("Accessory");
 
 		private final String id;

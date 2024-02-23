@@ -36,8 +36,16 @@ public final class IfStatement extends StatementBlockNode {
 	 */
 	public List<ScriptNode> elseBody;
 
+	/**
+	 * Constructs a new {@code IfStatement} with default values.
+	 */
 	public IfStatement() {}
 
+	/**
+	 * Decodes a {@code IfStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public IfStatement(Decoder in) {
 		expression = new LogicalExpression(in);
 		hasElseBranch = in.readBoolean("HasElseBranch");

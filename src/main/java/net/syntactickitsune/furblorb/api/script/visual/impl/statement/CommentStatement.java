@@ -19,8 +19,16 @@ public final class CommentStatement extends StatementNode {
 	 */
 	public String comment;
 
+	/**
+	 * Constructs a new {@code CommentStatement} with default values.
+	 */
 	public CommentStatement() {}
 
+	/**
+	 * Decodes a {@code CommentStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CommentStatement(Decoder in) {
 		comment = in.readString("Comment");
 	}

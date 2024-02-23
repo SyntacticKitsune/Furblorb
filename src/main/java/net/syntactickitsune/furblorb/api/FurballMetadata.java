@@ -46,8 +46,17 @@ public final class FurballMetadata {
 	 */
 	public String author;
 
+	/**
+	 * Constructs a new {@code FurballMetadata} with default values.
+	 */
 	public FurballMetadata() {}
 
+	/**
+	 * Decodes the {@code FurballMetadata} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @param formatVersion The furball's format version.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public FurballMetadata(Decoder in, byte formatVersion) {
 		this.formatVersion = formatVersion;
 		id = in.readUUID("ID");
@@ -55,6 +64,11 @@ public final class FurballMetadata {
 		author = in.readString("Author");
 	}
 
+	/**
+	 * Writes this {@code FurballMetadata} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
 	public void write(Encoder to) {
 		to.writeByte("FormatVersion", formatVersion);
 		to.writeUUID("ID", id);

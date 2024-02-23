@@ -32,8 +32,16 @@ public final class PlayerSetStatStatement extends StatementNode {
 	 */
 	public IntExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerSetStatStatement} with default values.
+	 */
 	public PlayerSetStatStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetStatStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetStatStatement(Decoder in) {
 		stat = in.readEnum("Stat", Stat.class);
 		strategy = in.readEnum("StatOperation", Strategy.class);

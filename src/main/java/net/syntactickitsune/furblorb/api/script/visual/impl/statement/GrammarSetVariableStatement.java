@@ -25,8 +25,16 @@ public final class GrammarSetVariableStatement extends StatementNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code GrammarSetVariableStatement} with default values.
+	 */
 	public GrammarSetVariableStatement() {}
 
+	/**
+	 * Decodes a {@code GrammarSetVariableStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public GrammarSetVariableStatement(Decoder in) {
 		variable = in.readString("VariableName");
 		expression = new StringExpression(in);

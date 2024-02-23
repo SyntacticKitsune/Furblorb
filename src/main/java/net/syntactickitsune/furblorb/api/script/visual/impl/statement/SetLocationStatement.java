@@ -20,8 +20,16 @@ public final class SetLocationStatement extends StatementNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code SetLocationStatement} with default values.
+	 */
 	public SetLocationStatement() {}
 
+	/**
+	 * Decodes a {@code SetLocationStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SetLocationStatement(Decoder in) {
 		expression = new StringExpression(in);
 	}

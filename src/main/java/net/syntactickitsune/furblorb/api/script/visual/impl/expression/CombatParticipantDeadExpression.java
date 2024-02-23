@@ -19,8 +19,16 @@ public final class CombatParticipantDeadExpression extends ExpressionNode {
 	 */
 	public String participantId;
 
+	/**
+	 * Constructs a new {@code CombatParticipantDeadExpression} with default values.
+	 */
 	public CombatParticipantDeadExpression() {}
 
+	/**
+	 * Decodes a {@code CombatParticipantDeadExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatParticipantDeadExpression(Decoder in) {
 		participantId = in.readString("ParticipantName");
 	}

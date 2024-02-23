@@ -25,8 +25,16 @@ public final class PreysenseStatement extends StatementNode {
 	 */
 	public UUID creatureId;
 
+	/**
+	 * Constructs a new {@code PreysenseStatement} with default values.
+	 */
 	public PreysenseStatement() {}
 
+	/**
+	 * Decodes a {@code PreysenseStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PreysenseStatement(Decoder in) {
 		mode = in.readInt("Mode");
 		creatureId = in.readUUID("CreatureGuid");

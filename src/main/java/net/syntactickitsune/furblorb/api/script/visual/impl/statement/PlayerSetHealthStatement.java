@@ -26,8 +26,16 @@ public final class PlayerSetHealthStatement extends StatementNode {
 	 */
 	public IntExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerSetHealthStatement} with default values.
+	 */
 	public PlayerSetHealthStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetHealthStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetHealthStatement(Decoder in) {
 		strategy = in.readEnum("ValueOperation", Strategy.class);
 		expression = new IntExpression(in);

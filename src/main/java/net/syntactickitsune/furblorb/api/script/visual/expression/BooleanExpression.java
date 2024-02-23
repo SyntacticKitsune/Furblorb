@@ -26,8 +26,16 @@ public final class BooleanExpression implements IFurballSerializable {
 	 */
 	public String ref;
 
+	/**
+	 * Constructs a new {@code BooleanExpression} with default values.
+	 */
 	public BooleanExpression() {}
 
+	/**
+	 * Decodes a {@code BooleanExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public BooleanExpression(Decoder in) {
 		mode = in.readEnum("OperandMode", ExpressionMode.class);
 		if (mode == ExpressionMode.LITERAL)

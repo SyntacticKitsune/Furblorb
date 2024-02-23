@@ -36,8 +36,16 @@ public final class VarSetNumberStatement extends StatementNode {
 	 */
 	public FloatExpression expression; // Yo dawg, I heard ya like rounding errors, so I put some rounding errors in yer text-based game engine.
 
+	/**
+	 * Constructs a new {@code VarSetNumberStatement} with default values.
+	 */
 	public VarSetNumberStatement() {}
 
+	/**
+	 * Decodes a {@code VarSetNumberStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarSetNumberStatement(Decoder in) {
 		variable = in.readString("VariableName");
 		op = in.readEnum("ValueOperation", Operation.class);

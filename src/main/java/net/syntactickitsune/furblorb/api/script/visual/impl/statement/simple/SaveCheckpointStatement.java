@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandSaveCheckpoint")
 public final class SaveCheckpointStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code SaveCheckpointStatement} with default values.
+	 */
 	public SaveCheckpointStatement() {}
 
+	/**
+	 * Decodes a {@code SaveCheckpointStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SaveCheckpointStatement(Decoder in) {}
 }

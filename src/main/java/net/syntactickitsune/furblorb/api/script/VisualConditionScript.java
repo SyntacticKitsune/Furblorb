@@ -20,8 +20,15 @@ public final class VisualConditionScript extends Script {
 	 */
 	public LogicalExpression expression;
 
+	/**
+	 * Constructs a new {@code VisualConditionScript} with no condition.
+	 */
 	public VisualConditionScript() {}
 
+	/**
+	 * Decodes a {@code VisualConditionScript} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 */
 	public VisualConditionScript(Decoder in) {
 		expression = new LogicalExpression(in);
 	}

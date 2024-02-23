@@ -25,8 +25,16 @@ public final class GrammarSetContextStatement extends StatementNode {
 	 */
 	public UUID creature;
 
+	/**
+	 * Constructs a new {@code GrammarSetContextStatement} with default values.
+	 */
 	public GrammarSetContextStatement() {}
 
+	/**
+	 * Decodes a {@code GrammarSetContextStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public GrammarSetContextStatement(Decoder in) {
 		variable = in.readString("VariableName");
 		creature = in.readUUID("CreatureGuid");

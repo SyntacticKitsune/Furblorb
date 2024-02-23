@@ -20,8 +20,16 @@ public final class SetInventoryEnabledStatement extends StatementNode {
 	 */
 	public BooleanExpression expression;
 
+	/**
+	 * Constructs a new {@code SetInventoryEnabledStatement} with default values.
+	 */
 	public SetInventoryEnabledStatement() {}
 
+	/**
+	 * Decodes a {@code SetInventoryEnabledStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SetInventoryEnabledStatement(Decoder in) {
 		expression = new BooleanExpression(in);
 	}

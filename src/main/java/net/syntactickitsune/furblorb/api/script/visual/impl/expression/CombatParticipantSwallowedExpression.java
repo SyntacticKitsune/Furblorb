@@ -23,8 +23,16 @@ public final class CombatParticipantSwallowedExpression extends ExpressionNode {
 	 */
 	public String predatorName = "";
 
+	/**
+	 * Constructs a new {@code CombatParticipantSwallowedExpression} with default values.
+	 */
 	public CombatParticipantSwallowedExpression() {}
 
+	/**
+	 * Decodes a {@code CombatParticipantSwallowedExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatParticipantSwallowedExpression(Decoder in) {
 		participantId = in.readString("ParticipantName");
 		predatorName = in.readString("PredatorName");

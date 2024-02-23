@@ -91,8 +91,16 @@ public final class SceneAsset extends FurballAsset {
 	@RequiresFormatVersion(20)
 	public String gameStartDescription = "";
 
+	/**
+	 * Constructs a new {@code SceneAsset} with default values.
+	 */
 	public SceneAsset() {}
 
+	/**
+	 * Decodes a {@code SceneAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SceneAsset(Decoder in) {
 		super(in);
 

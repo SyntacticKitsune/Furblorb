@@ -10,7 +10,15 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("CommandLogSplit")
 public final class LogSplitStatement extends SimpleStatement {
 
+	/**
+	 * Constructs a new {@code LogSplitStatement} with default values.
+	 */
 	public LogSplitStatement() {}
 
+	/**
+	 * Decodes a {@code LogSplitStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public LogSplitStatement(Decoder in) {}
 }

@@ -20,8 +20,16 @@ public final class SetInstructionStatement extends StatementNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code SetInstructionStatement} with default values.
+	 */
 	public SetInstructionStatement() {}
 
+	/**
+	 * Decodes a {@code SetInstructionStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SetInstructionStatement(Decoder in) {
 		expression = new StringExpression(in);
 	}

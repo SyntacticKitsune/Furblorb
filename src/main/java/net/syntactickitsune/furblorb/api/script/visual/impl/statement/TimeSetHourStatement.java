@@ -22,8 +22,16 @@ public final class TimeSetHourStatement extends StatementNode {
 
 	public IntExpression hour = new IntExpression();
 
+	/**
+	 * Constructs a new {@code TimeSetHourStatement} with default values.
+	 */
 	public TimeSetHourStatement() {}
 
+	/**
+	 * Decodes a {@code TimeSetHourStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public TimeSetHourStatement(Decoder in) {
 		hour = new IntExpression(in);
 	}

@@ -112,8 +112,16 @@ public final class CreatureAsset extends FurballAsset {
 	 */
 	public boolean autoSwallowedByPlayer = false;
 
+	/**
+	 * Constructs a new {@code CreatureAsset} with default values.
+	 */
 	public CreatureAsset() {}
 
+	/**
+	 * Decodes a {@code CreatureAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CreatureAsset(Decoder in) {
 		super(in);
 
@@ -193,12 +201,24 @@ public final class CreatureAsset extends FurballAsset {
 		});
 	}
 
+	/**
+	 * Represents a vague "size" of a creature.
+	 * The size determines how many successful rolls are needed to swallow a creature,
+	 * and whether a creature can be swallowed.
+	 */
 	public static enum Size implements INamedEnum {
 
 		TINY("Tiny"),
+
 		SMALL("Small"),
+
+		/**
+		 * The default size of all creatures.
+		 */
 		MEDIUM("Medium"),
+
 		LARGE("Large"),
+
 		HUGE("Huge");
 
 		private final String id;
@@ -213,11 +233,30 @@ public final class CreatureAsset extends FurballAsset {
 		}
 	}
 
+	/**
+	 * Represents the genders of creatures.
+	 */
 	public static enum Gender implements INamedEnum {
 
+		/**
+		 * The creature is male, so he/him pronouns are in use.
+		 */
 		MALE("Male"),
+
+		/**
+		 * The creature is female, so she/her pronouns are in use.
+		 */
 		FEMALE("Female"),
+
+		/**
+		 * The creature is neutral, so they/them pronouns are in use.
+		 */
 		NEUTRAL("Neutral"),
+
+		/**
+		 * The creature is ungendered.
+		 * In this case that means that it/its pronouns are used.
+		 */
 		UNGENDERED("Ungendered");
 
 		private final String id;

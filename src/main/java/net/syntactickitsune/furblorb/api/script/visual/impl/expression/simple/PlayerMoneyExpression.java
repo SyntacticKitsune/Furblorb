@@ -11,8 +11,16 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("ConditionPlayerMoney")
 public final class PlayerMoneyExpression extends ComparisonExpressionNode {
 
+	/**
+	 * Constructs a new {@code PlayerMoneyExpression} with default values.
+	 */
 	public PlayerMoneyExpression() {}
 
+	/**
+	 * Decodes a {@code PlayerMoneyExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerMoneyExpression(Decoder in) {
 		super(in);
 	}

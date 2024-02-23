@@ -19,8 +19,16 @@ public final class StringTableAsset extends FurballAsset {
 
 	public final Map<String, List<String>> table = new LinkedHashMap<>();
 
+	/**
+	 * Constructs a new empty {@code StringTableAsset}.
+	 */
 	public StringTableAsset() {}
 
+	/**
+	 * Decodes a {@code StringTableAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public StringTableAsset(Decoder in) {
 		super(in);
 

@@ -25,8 +25,16 @@ public final class InlineSnippetExpression extends ExpressionNode {
 	 */
 	public String expression;
 
+	/**
+	 * Constructs a new {@code InlineSnippetExpression} with default values.
+	 */
 	public InlineSnippetExpression() {}
 
+	/**
+	 * Decodes a {@code InlineSnippetExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public InlineSnippetExpression(Decoder in) {
 		expression = in.readString("Snippet");
 	}

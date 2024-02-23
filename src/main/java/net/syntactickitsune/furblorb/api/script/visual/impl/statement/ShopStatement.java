@@ -37,8 +37,16 @@ public final class ShopStatement extends StatementNode {
 	 */
 	public Map<UUID, Integer> merchandise = new LinkedHashMap<>();
 
+	/**
+	 * Constructs a new {@code ShopStatement} with default values.
+	 */
 	public ShopStatement() {}
 
+	/**
+	 * Decodes a {@code ShopStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public ShopStatement(Decoder in) {
 		key = in.readString("Key");
 		title = in.readString("Title");

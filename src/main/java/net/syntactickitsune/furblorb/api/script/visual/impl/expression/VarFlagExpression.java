@@ -25,8 +25,16 @@ public final class VarFlagExpression extends ExpressionNode {
 	 */
 	public BooleanExpression target;
 
+	/**
+	 * Constructs a new {@code VarFlagExpression} with default values.
+	 */
 	public VarFlagExpression() {}
 
+	/**
+	 * Decodes a {@code VarFlagExpression} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarFlagExpression(Decoder in) {
 		variable = in.readString("VariableName");
 		target = new BooleanExpression(in);

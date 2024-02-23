@@ -20,8 +20,16 @@ public final class SleepStatement extends StatementNode {
 	 */
 	public FloatExpression seconds = new FloatExpression();
 
+	/**
+	 * Constructs a new {@code SleepStatement} with default values.
+	 */
 	public SleepStatement() {}
 
+	/**
+	 * Decodes a {@code SleepStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public SleepStatement(Decoder in) {
 		seconds = new FloatExpression(in);
 	}

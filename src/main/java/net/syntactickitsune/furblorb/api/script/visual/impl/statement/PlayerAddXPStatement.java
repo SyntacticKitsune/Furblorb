@@ -20,8 +20,16 @@ public final class PlayerAddXPStatement extends StatementNode {
 	 */
 	public IntExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerAddXPStatement} with default values.
+	 */
 	public PlayerAddXPStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerAddXPStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerAddXPStatement(Decoder in) {
 		expression = new IntExpression(in);
 	}

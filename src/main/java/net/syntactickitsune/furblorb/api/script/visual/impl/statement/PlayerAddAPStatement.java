@@ -19,8 +19,16 @@ public final class PlayerAddAPStatement extends StatementNode {
 	 */
 	public IntExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerAddAPStatement} with default values.
+	 */
 	public PlayerAddAPStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerAddAPStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerAddAPStatement(Decoder in) {
 		expression = new IntExpression(in);
 	}

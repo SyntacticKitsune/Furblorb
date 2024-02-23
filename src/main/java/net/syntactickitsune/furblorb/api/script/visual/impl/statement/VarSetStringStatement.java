@@ -25,8 +25,16 @@ public final class VarSetStringStatement extends StatementNode {
 	 */
 	public StringExpression expression;
 
+	/**
+	 * Constructs a new {@code VarSetStringStatement} with default values.
+	 */
 	public VarSetStringStatement() {}
 
+	/**
+	 * Decodes a {@code VarSetStringStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarSetStringStatement(Decoder in) {
 		variable = in.readString("VariableName");
 		expression = new StringExpression(in);

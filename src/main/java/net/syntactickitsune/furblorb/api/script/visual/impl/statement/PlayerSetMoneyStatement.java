@@ -25,8 +25,16 @@ public final class PlayerSetMoneyStatement extends StatementNode {
 	 */
 	public IntExpression expression;
 
+	/**
+	 * Constructs a new {@code PlayerSetMoneyStatement} with default values.
+	 */
 	public PlayerSetMoneyStatement() {}
 
+	/**
+	 * Decodes a {@code PlayerSetMoneyStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public PlayerSetMoneyStatement(Decoder in) {
 		strategy = in.readEnum("ValueOperation", Strategy.class);
 		expression = new IntExpression(in);

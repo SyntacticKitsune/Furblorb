@@ -25,8 +25,16 @@ public final class VarSetFlagStatement extends StatementNode {
 	 */
 	public BooleanExpression expression;
 
+	/**
+	 * Constructs a new {@code VarSetFlagStatement} with default values.
+	 */
 	public VarSetFlagStatement() {}
 
+	/**
+	 * Decodes a {@code VarSetFlagStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public VarSetFlagStatement(Decoder in) {
 		variable = in.readString("VariableName");
 		expression = new BooleanExpression(in);

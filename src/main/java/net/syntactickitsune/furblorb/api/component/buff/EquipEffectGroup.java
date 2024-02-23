@@ -21,8 +21,16 @@ public final class EquipEffectGroup implements IFurballSerializable {
 	public int duration = 1;
 	public final List<Buff> buffs = new ArrayList<>();
 
+	/**
+	 * Constructs a new {@code EquipEffectGroup} with default values.
+	 */
 	public EquipEffectGroup() {}
 
+	/**
+	 * Decodes an {@code EquipEffectGroup} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public EquipEffectGroup(Decoder in) {
 		trigger = in.readEnum("ProcStyle", Trigger.class);
 		if (trigger != Trigger.ALWAYS) {

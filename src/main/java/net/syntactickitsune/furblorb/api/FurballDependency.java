@@ -24,10 +24,20 @@ public record FurballDependency(UUID id, String filename) {
 		Objects.requireNonNull(filename, "filename");
 	}
 
+	/**
+	 * Decodes a {@code FurballDependency} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public FurballDependency(Decoder in) {
 		this(in.readUUID("ID"), in.readString("FileNameHint"));
 	}
 
+	/**
+	 * Writes this {@code FurballDependency} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
 	public void write(Encoder to) {
 		to.writeUUID("ID", id);
 		to.writeString("FileNameHint", filename);

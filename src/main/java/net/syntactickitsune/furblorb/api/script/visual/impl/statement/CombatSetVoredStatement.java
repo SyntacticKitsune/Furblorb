@@ -31,8 +31,16 @@ public final class CombatSetVoredStatement extends StatementNode {
 	 */
 	public String preyName;
 
+	/**
+	 * Constructs a new {@code CombatSetVoredStatement} with default values.
+	 */
 	public CombatSetVoredStatement() {}
 
+	/**
+	 * Decodes a {@code CombatSetVoredStatement} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public CombatSetVoredStatement(Decoder in) {
 		mode = in.readEnum("Mode", Mode.class);
 		predatorName = in.readString("PredatorName");

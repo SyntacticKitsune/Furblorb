@@ -21,8 +21,15 @@ public final class VisualActionScript extends Script { // Microsoft two seconds 
 	 */
 	public final List<ScriptNode> nodes = new ArrayList<>();
 
+	/**
+	 * Constructs a new empty {@code VisualActionScript}.
+	 */
 	public VisualActionScript() {}
 
+	/**
+	 * Decodes a {@code VisualActionScript} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 */
 	public VisualActionScript(Decoder in) {
 		nodes.addAll(in.readOptionalList("Nodes", FurballSerializables::read));
 	}

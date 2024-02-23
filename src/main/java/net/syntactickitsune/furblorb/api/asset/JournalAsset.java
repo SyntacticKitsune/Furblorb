@@ -26,8 +26,16 @@ public final class JournalAsset extends FurballAsset {
 	 */
 	public final List<Stage> stages = new ArrayList<>();
 
+	/**
+	 * Constructs a new {@code JournalAsset} with default values.
+	 */
 	public JournalAsset() {}
 
+	/**
+	 * Decodes a {@code JournalAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	public JournalAsset(Decoder in) {
 		super(in);
 		title = in.readString("Title");
