@@ -7,12 +7,16 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
- * Represents one of Finmer's "inline scripts."
- * Inline here is in the sense of what say, DFU considers inline -- something defined in the same file, rather than in another.
+ * Represents an "inline" script, that is, a script which has been written in the same file.
+ * Occasionally may also be known as a "snippet."
+ * @see ExternalScript
  */
 @RegisterSerializable("ScriptDataInline")
 public final class InlineScript extends Script {
 
+	/**
+	 * The contents of the script.
+	 */
 	public String contents;
 
 	/**

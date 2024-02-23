@@ -6,6 +6,11 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 
+/**
+ * Represents a load order dependency on a single script.
+ * @param targetAsset The asset ID of the script the dependency is for.
+ * @param relation The dependency relation.
+ */
 public record LoadOrderDependency(UUID targetAsset, Relation relation) {
 
 	public LoadOrderDependency {}

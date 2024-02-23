@@ -9,13 +9,20 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
- * Represents one of Finmer's external scripts.
- * Contrast to {@link InlineScript}, these are scripts that came from other files.
+ * Represents an "external" script, which is a script whose contents are defined in some other file.
+ * @see InlineScript
  */
 @RegisterSerializable("ScriptDataExternal")
 public final class ExternalScript extends Script {
 
+	/**
+	 * The name of the associated file.
+	 */
 	public String name;
+
+	/**
+	 * The contents of the file.
+	 */
 	public String contents;
 
 	/**

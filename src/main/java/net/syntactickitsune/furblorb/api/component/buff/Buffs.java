@@ -6,6 +6,10 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * The class containing all the different {@link Buff} implementations.
+ * @author SyntacticKitsune
+ */
 public final class Buffs {
 
 	@RegisterSerializable("BuffAttackDice")

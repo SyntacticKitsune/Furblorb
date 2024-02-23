@@ -18,7 +18,14 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("AssetScript")
 public final class ScriptAsset extends FurballAsset {
 
+	/**
+	 * The contents of the script.
+	 */
 	public Script contents;
+
+	/**
+	 * A list of dependencies the script has on other scripts.
+	 */
 	public final List<LoadOrderDependency> dependencies = new ArrayList<>();
 
 	/**

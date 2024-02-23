@@ -28,7 +28,14 @@ import net.syntactickitsune.furblorb.io.IFurballSerializable;
  */
 public sealed abstract class FurballAsset implements IFurballSerializable, Comparable<FurballAsset> permits CreatureAsset, ItemAsset, JournalAsset, SceneAsset, ScriptAsset, StringTableAsset {
 
+	/**
+	 * The asset's ID.
+	 */
 	public UUID id;
+
+	/**
+	 * The asset's file name.
+	 */
 	public String filename;
 
 	FurballAsset() {}

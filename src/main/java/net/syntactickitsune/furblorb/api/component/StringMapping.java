@@ -2,10 +2,15 @@ package net.syntactickitsune.furblorb.api.component;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.asset.CreatureAsset;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 
+/**
+ * Represents a single "remapping" rule for strings logged during combat.
+ * @see CreatureAsset#strings
+ */
 public final class StringMapping {
 
 	public String key;

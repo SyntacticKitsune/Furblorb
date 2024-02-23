@@ -17,6 +17,9 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable("AssetStringTable")
 public final class StringTableAsset extends FurballAsset {
 
+	/**
+	 * The table actually containing mappings of keys to table entries.
+	 */
 	public final Map<String, List<String>> table = new LinkedHashMap<>();
 
 	/**
