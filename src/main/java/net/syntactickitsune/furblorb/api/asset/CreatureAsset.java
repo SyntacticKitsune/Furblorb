@@ -56,10 +56,8 @@ public final class CreatureAsset extends FurballAsset {
 
 	/**
 	 * Various "flags" on the creature.
-	 * Each flag is OR-ed with each other to compose this value.
-	 * See {@link CreatureFlags} for a list.
 	 */
-	public int flags = 0;
+	public CreatureFlags flags = new CreatureFlags();
 
 	/**
 	 * The creature's level.
@@ -126,7 +124,7 @@ public final class CreatureAsset extends FurballAsset {
 		agility = in.readInt("Agility");
 		body = in.readInt("Body");
 		wits = in.readInt("Wits");
-		flags = in.readInt("Flags");
+		flags = new CreatureFlags(in.readInt("Flags"));
 		level = in.readInt("Level");
 		size = in.readEnum("Size", Size.class);
 		gender = in.readEnum("Gender", Gender.class);
@@ -154,7 +152,7 @@ public final class CreatureAsset extends FurballAsset {
 		to.writeInt("Agility", agility);
 		to.writeInt("Body", body);
 		to.writeInt("Wits", wits);
-		to.writeInt("Flags", flags);
+		to.writeInt("Flags", flags.pack());
 		to.writeInt("Level", level);
 		to.writeEnum("Size", size);
 		to.writeEnum("Gender", gender);
@@ -180,10 +178,10 @@ public final class CreatureAsset extends FurballAsset {
 		return id.equals(a.id) && filename.equals(a.filename) && autoSwallowedByPlayer == a.autoSwallowedByPlayer
 				&& autoSwallowPlayer == a.autoSwallowPlayer && predatorDisposal == a.predatorDisposal
 				&& predatorDigests == a.predatorDigests && predatorEnabled == a.predatorEnabled && gender == a.gender
-				&& size == a.size && level == a.level && flags == a.flags && wits == a.wits && body == a.body
-				&& agility == a.agility && strength == a.strength && Objects.equals(strings, a.strings)
-				&& Arrays.equals(equipment, a.equipment) && Objects.equals(objectAlias, a.objectAlias)
-				&& Objects.equals(objectName, a.objectName);
+				&& size == a.size && level == a.level && wits == a.wits && body == a.body
+				&& agility == a.agility && strength == a.strength && Objects.equals(flags, a.flags)
+				&& Objects.equals(strings, a.strings) && Arrays.equals(equipment, a.equipment)
+				&& Objects.equals(objectAlias, a.objectAlias) && Objects.equals(objectName, a.objectName);
 	}
 
 	@Override
