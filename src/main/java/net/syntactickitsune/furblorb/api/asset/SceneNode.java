@@ -14,7 +14,9 @@ import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.script.Script;
 import net.syntactickitsune.furblorb.api.util.FurballUtil;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
+import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+@RegisterSerializable(value = "SceneNode", since = 20) // TODO: May not be the right class name.
 public final class SceneNode {
 
 	public Type type;
