@@ -25,13 +25,13 @@ public final class CreatureAsset extends FurballAsset {
 	 * The name of the creature.
 	 * This field name mirrors that of {@link ItemAsset}.
 	 */
-	public String objectName;
+	public String objectName = "";
 
 	/**
 	 * An alternative name for the creature -- most frequently the definite article ("the") followed by {@link #objectName}.
 	 * This field name mirrors that of {@link ItemAsset}.
 	 */
-	public String objectAlias;
+	public String objectAlias = "";
 
 	/**
 	 * The creature's strength stat.

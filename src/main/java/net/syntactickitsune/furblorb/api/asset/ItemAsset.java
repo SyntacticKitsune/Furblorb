@@ -25,18 +25,18 @@ public final class ItemAsset extends FurballAsset {
 	/**
 	 * The name of the item.
 	 */
-	public String objectName;
+	public String objectName = "";
 
 	/**
 	 * An alternative name for the item.
 	 */
-	public String objectAlias;
+	public String objectAlias = "";
 
 	/**
 	 * The "flavor text" of the item.
 	 * This is also called a description or tooltip in other games.
 	 */
-	public String flavorText; // This is what we here in the business call a "description."
+	public String flavorText = ""; // This is what we here in the business call a "description."
 
 	/**
 	 * The type of item.
