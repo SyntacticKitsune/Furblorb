@@ -8,6 +8,15 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * <p>
+ * From <a href="https://docs.finmer.dev/script-reference/world">the documentation</a>:
+ * "Advances the time of the world clock so that the current hour matches the input hour number."
+ * </p>
+ * <p>
+ * This expression is only available from format version 20 (Finmer v1.0.1) onwards.
+ * </p>
+ */
 @RegisterSerializable(value = "CommandTimeSetHour", since = 20)
 public final class TimeSetHourStatement extends StatementNode {
 

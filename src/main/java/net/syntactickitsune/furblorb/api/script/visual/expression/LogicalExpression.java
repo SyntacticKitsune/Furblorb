@@ -12,10 +12,24 @@ import net.syntactickitsune.furblorb.api.io.ParsingStrategy.NumberType;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
+/**
+ * Represents a {@code boolean} expression like inside an if-statement.
+ */
 public final class LogicalExpression implements IFurballSerializable {
 
+	/**
+	 * The conditions being tested.
+	 */
 	public final List<ExpressionNode> conditions = new ArrayList<>();
+
+	/**
+	 * The mode: either "and" or "or".
+	 */
 	public Mode mode = Mode.AND;
+
+	/**
+	 * The target value, i.e. what the value of the expression should be for the check to succeed.
+	 */
 	public boolean target = true;
 
 	public LogicalExpression() {}
@@ -47,10 +61,22 @@ public final class LogicalExpression implements IFurballSerializable {
 		return Objects.hash(conditions, mode, target);
 	}
 
+	/**
+	 * Represents the modes of a {@link LogicalExpression}.
+	 */
 	@ParsingStrategy(NumberType.INT)
 	public static enum Mode implements INamedEnum {
 
+		/**
+		 * Logical AND: all of the conditions must be {@code true} for the overall result to be {@code true}.
+		 * In other words: <code>a&nbsp;&amp;&amp;&nbsp;b&nbsp;&amp;&amp;&nbsp;c</code>.
+		 */
 		AND("All"),
+
+		/**
+		 * Logical OR: if any of the conditions are {@code true}, the overall result is {@code true}.
+		 * In other words: <code>a&nbsp;||&nbsp;b&nbsp;||&nbsp;c</code>.
+		 */
 		OR("Any");
 
 		private final String id;

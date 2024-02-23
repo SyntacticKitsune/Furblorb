@@ -10,12 +10,30 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementBlockNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.LogicalExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Represents a Lua if-statement, optionally with an else branch.
+ */
 @RegisterSerializable("CommandIf")
 public final class IfStatement extends StatementBlockNode {
 
+	/**
+	 * The if-statement's condition.
+	 */
 	public LogicalExpression expression;
+
+	/**
+	 * Whether or not the if-statement has an else branch.
+	 */
 	public boolean hasElseBranch; // You know, this could just be detected by whether the else body has anything in it.
+
+	/**
+	 * The contents of the if-statement.
+	 */
 	public List<ScriptNode> body;
+
+	/**
+	 * The contents of the if-statement's else branch.
+	 */
 	public List<ScriptNode> elseBody;
 
 	public IfStatement() {}

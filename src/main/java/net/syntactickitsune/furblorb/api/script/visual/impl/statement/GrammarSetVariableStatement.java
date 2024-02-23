@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/grammar">the documentation</a>:
+ * "Registers a replacement variable. After this function is called, any text in string tables in the form of <code>{!name}</code> will be replaced with {@code value}."
+ */
 @RegisterSerializable("CommandGrammarSetVariable")
 public final class GrammarSetVariableStatement extends StatementNode {
 
+	/**
+	 * The variable.
+	 */
 	public String variable;
+
+	/**
+	 * The replacement expression.
+	 */
 	public StringExpression expression;
 
 	public GrammarSetVariableStatement() {}

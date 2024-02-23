@@ -14,11 +14,26 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.FloatExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Represents a pretty generic statement that sets a variable to the number produced by your choice of 30 different things.
+ * See {@link Operation} for details.
+ */
 @RegisterSerializable("CommandVarSetNumber")
 public final class VarSetNumberStatement extends StatementNode {
 
+	/**
+	 * The name of the variable to store the result in.
+	 */
 	public String variable = "";
+
+	/**
+	 * The operation to perform.
+	 */
 	public Operation op = Operation.SET;
+
+	/**
+	 * For "binary" operations, the corresponding expression.
+	 */
 	public FloatExpression expression; // Yo dawg, I heard ya like rounding errors, so I put some rounding errors in yer text-based game engine.
 
 	public VarSetNumberStatement() {}
@@ -55,6 +70,9 @@ public final class VarSetNumberStatement extends StatementNode {
 		return Objects.hash(variable, op, expression);
 	}
 
+	/**
+	 * Represents the different operations that may be performed.
+	 */
 	@ParsingStrategy(ParsingStrategy.NumberType.INT)
 	public static enum Operation implements INamedEnum {
 

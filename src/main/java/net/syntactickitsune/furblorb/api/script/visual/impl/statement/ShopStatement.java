@@ -10,12 +10,31 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Handles setup and display of <a href="https://docs.finmer.dev/script-reference/shop">shops</a>.
+ */
 @RegisterSerializable("CommandShop")
 public final class ShopStatement extends StatementNode {
 
+	/**
+	 * The unique "internal" name of the shop.
+	 * This is the name that the shop's save data is associated with.
+	 */
 	public String key;
+
+	/**
+	 * The name of the shop that is presented to the player.
+	 */
 	public String title;
+
+	/**
+	 * The interval, in hours, between restocks of the shop.
+	 */
 	public int restockInterval = 12;
+
+	/**
+	 * A {@code Map} containing the various things on sale.
+	 */
 	public Map<UUID, Integer> merchandise = new LinkedHashMap<>();
 
 	public ShopStatement() {}

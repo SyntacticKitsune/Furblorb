@@ -3,6 +3,11 @@ package net.syntactickitsune.furblorb.api.script.visual.impl.expression.simple;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 
+/**
+ * A "simple" expression is an expression that takes no parameters and can therefore be a singleton.
+ * This is the parent class of all such expressions.
+ * @author SyntacticKitsune
+ */
 public abstract class SimpleExpression extends ExpressionNode {
 
 	@Override

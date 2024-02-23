@@ -8,9 +8,15 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Sets the player's current name.
+ */
 @RegisterSerializable("CommandPlayerSetName")
 public final class PlayerSetNameStatement extends StatementNode {
 
+	/**
+	 * The value to change the player's name to.
+	 */
 	public StringExpression expression;
 
 	public PlayerSetNameStatement() {}

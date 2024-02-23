@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:
+ * "Sets the text displayed above the compass."
+ */
 @RegisterSerializable("CommandSetLocation")
 public final class SetLocationStatement extends StatementNode {
 
+	/**
+	 * The expression representing the text to display.
+	 */
 	public StringExpression expression;
 
 	public SetLocationStatement() {}

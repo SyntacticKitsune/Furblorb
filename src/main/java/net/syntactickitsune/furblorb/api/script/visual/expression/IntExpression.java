@@ -6,10 +6,24 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
+/**
+ * Represents an {@code int} expression which may be a literal {@code int}, a variable reference, or a script.
+ */
 public final class IntExpression implements IFurballSerializable {
 
+	/**
+	 * The mode, determining whether the expression is a literal, a variable reference, or a script.
+	 */
 	public ExpressionMode mode = ExpressionMode.LITERAL;
+
+	/**
+	 * The literal {@code int} value, for {@link ExpressionMode#LITERAL}.
+	 */
 	public int literal;
+
+	/**
+	 * The variable or script reference, for {@link ExpressionMode#VARIABLE} and {@link ExpressionMode#SCRIPT}, respectively.
+	 */
 	public String ref;
 
 	public IntExpression() {}

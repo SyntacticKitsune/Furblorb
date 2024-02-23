@@ -10,12 +10,15 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
- * Represents part of Finmer's "visual" scripting pieces.
- * (Or the programming language for Microsoft's new Flash player.)
+ * Represents a series of statements built using Finmer's visual scripting framework.
+ * Kinda like a {@link Runnable} -- does whatever given zero parameters and yields no result.
  */
 @RegisterSerializable("ScriptDataVisualAction")
 public final class VisualActionScript extends Script { // Microsoft two seconds after Flash gets popular.
 
+	/**
+	 * The list of statements to execute.
+	 */
 	public final List<ScriptNode> nodes = new ArrayList<>();
 
 	public VisualActionScript() {}

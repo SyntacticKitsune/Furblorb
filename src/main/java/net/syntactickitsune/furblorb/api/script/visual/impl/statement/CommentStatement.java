@@ -7,9 +7,16 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Not a statement in and of itself; it doesn't execute anything.
+ * A {@code CommentStatement} is just that: a comment.
+ */
 @RegisterSerializable("CommandComment")
 public final class CommentStatement extends StatementNode {
 
+	/**
+	 * The comment itself.
+	 */
 	public String comment;
 
 	public CommentStatement() {}

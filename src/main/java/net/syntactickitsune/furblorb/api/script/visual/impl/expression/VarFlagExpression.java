@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.BooleanExpress
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/storage">the documentation</a>:
+ * "Returns the state of a flag (boolean)."
+ */
 @RegisterSerializable("ConditionVarFlag")
 public final class VarFlagExpression extends ExpressionNode {
 
+	/**
+	 * The name of the flag.
+	 */
 	public String variable = "";
+
+	/**
+	 * The expression to compare the flag to.
+	 */
 	public BooleanExpression target;
 
 	public VarFlagExpression() {}

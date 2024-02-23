@@ -8,9 +8,15 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Checks whether the player has a specified item equipped.
+ */
 @RegisterSerializable("ConditionPlayerEquipment")
 public final class PlayerHasEquippedExpression extends ExpressionNode {
 
+	/**
+	 * The asset ID of the item in question.
+	 */
 	public UUID itemId;
 
 	public PlayerHasEquippedExpression() {}

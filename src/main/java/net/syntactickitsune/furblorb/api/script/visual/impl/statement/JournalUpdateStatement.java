@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/journal">the documentation</a>:
+ * "Sets the specified quest to the specified stage number (as preconfigured in the Journal asset), and updates the journal list."
+ */
 @RegisterSerializable("CommandJournalUpdate")
 public final class JournalUpdateStatement extends StatementNode {
 
+	/**
+	 * The ID of the journal entry to update.
+	 */
 	public UUID journalId;
+
+	/**
+	 * The new stage value.
+	 */
 	public int stage;
 
 	public JournalUpdateStatement() {}

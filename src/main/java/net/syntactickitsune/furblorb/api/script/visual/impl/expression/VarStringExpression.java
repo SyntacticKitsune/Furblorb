@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/storage">the documentation</a>:
+ * "Returns a string from storage."
+ */
 @RegisterSerializable("ConditionVarString")
 public final class VarStringExpression extends ExpressionNode {
 
+	/**
+	 * The name of the string to retrieve.
+	 */
 	public String variable;
+
+	/**
+	 * The expression to compare the string to.
+	 */
 	public StringExpression expression;
 
 	public VarStringExpression() {}

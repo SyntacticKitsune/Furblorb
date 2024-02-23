@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/grammar">the documentation</a>:
+ * "Attaches the specified object to a context, so that if the specified name is later used in a grammar tag, this object will be used to resolve the grammar tag."
+ */
 @RegisterSerializable("CommandGrammarSetContext")
 public final class GrammarSetContextStatement extends StatementNode {
 
+	/**
+	 * The name.
+	 */
 	public String variable;
+
+	/**
+	 * The object to associate with the name.
+	 */
 	public UUID creature;
 
 	public GrammarSetContextStatement() {}

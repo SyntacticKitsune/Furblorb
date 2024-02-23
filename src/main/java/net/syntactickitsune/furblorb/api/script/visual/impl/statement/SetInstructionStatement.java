@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:
+ * "Sets the default tooltip text displayed above the choice buttons, if no other tooltip is currently active."
+ */
 @RegisterSerializable("CommandSetInstruction")
 public final class SetInstructionStatement extends StatementNode {
 
+	/**
+	 * The expression representing the default tooltip text.
+	 */
 	public StringExpression expression;
 
 	public SetInstructionStatement() {}

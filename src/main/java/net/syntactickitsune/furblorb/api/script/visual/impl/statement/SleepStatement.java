@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.FloatExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:
+ * "Pauses execution of the script for the specified time."
+ */
 @RegisterSerializable("CommandSleep")
 public final class SleepStatement extends StatementNode {
 
+	/**
+	 * The number of seconds to pause for.
+	 */
 	public FloatExpression seconds = new FloatExpression();
 
 	public SleepStatement() {}

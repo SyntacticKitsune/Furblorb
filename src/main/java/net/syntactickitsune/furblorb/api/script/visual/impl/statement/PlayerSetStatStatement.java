@@ -11,11 +11,25 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.api.script.visual.impl.statement.PlayerSetHealthStatement.Strategy;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Modifies one of the player's stats.
+ */
 @RegisterSerializable("CommandPlayerSetStat")
 public final class PlayerSetStatStatement extends StatementNode {
 
+	/**
+	 * The stat to modify.
+	 */
 	public Stat stat;
+
+	/**
+	 * Determines whether to add or set the value.
+	 */
 	public Strategy strategy;
+
+	/**
+	 * The value to add or set.
+	 */
 	public IntExpression expression;
 
 	public PlayerSetStatStatement() {}

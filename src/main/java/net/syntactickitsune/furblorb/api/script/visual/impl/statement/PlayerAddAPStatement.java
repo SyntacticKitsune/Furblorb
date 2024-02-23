@@ -8,9 +8,15 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Gives the player some number of additional ability points (AP).
+ */
 @RegisterSerializable("CommandPlayerAddAP")
 public final class PlayerAddAPStatement extends StatementNode {
 
+	/**
+	 * The number of ability points to add.
+	 */
 	public IntExpression expression;
 
 	public PlayerAddAPStatement() {}

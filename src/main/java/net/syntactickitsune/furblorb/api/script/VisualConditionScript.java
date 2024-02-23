@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.api.script;
 
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
@@ -8,11 +9,15 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.LogicalExpress
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
- * Represents part of Finmer's "visual" scripting pieces.
+ * Represents a {@code boolean} expression built using Finmer's visual scripting framework.
+ * Kinda like a {@link BooleanSupplier} -- yields a {@code boolean} given zero parameters.
  */
 @RegisterSerializable("ScriptDataVisualCondition")
 public final class VisualConditionScript extends Script {
 
+	/**
+	 * The {@code LogicalExpression} representing the overall condition.
+	 */
 	public LogicalExpression expression;
 
 	public VisualConditionScript() {}

@@ -7,10 +7,20 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Checks whether a specified participant is swallowed, and optionally by who.
+ */
 @RegisterSerializable("ConditionCombatParSwallowed")
 public final class CombatParticipantSwallowedExpression extends ExpressionNode {
 
+	/**
+	 * The ID of the participant in question.
+	 */
 	public String participantId;
+
+	/**
+	 * If specified, the name of the target predator of the interaction.
+	 */
 	public String predatorName = "";
 
 	public CombatParticipantSwallowedExpression() {}

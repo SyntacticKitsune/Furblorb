@@ -8,10 +8,20 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode
 import net.syntactickitsune.furblorb.api.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Compares the player's species to some other value.
+ */
 @RegisterSerializable("ConditionPlayerSpecies")
 public final class PlayerSpeciesExpression extends ExpressionNode {
 
+	/**
+	 * The value being compared against.
+	 */
 	public StringExpression target;
+
+	/**
+	 * Whether or not the comparison is case sensitive.
+	 */
 	public boolean caseSensitive;
 
 	public PlayerSpeciesExpression() {}

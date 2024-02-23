@@ -7,10 +7,21 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Logs some message to the log pane.
+ * The {@code raw} parameter determines whether the message is logged verbatim, rather than interpreted as the name of a string.
+ */
 @RegisterSerializable("CommandLog")
 public final class LogStatement extends StatementNode {
 
+	/**
+	 * The message to log.
+	 */
 	public String text = "";
+
+	/**
+	 * Whether to log the message verbatim instead of looking it up in a string table.
+	 */
 	public boolean raw;
 
 	public LogStatement() {}

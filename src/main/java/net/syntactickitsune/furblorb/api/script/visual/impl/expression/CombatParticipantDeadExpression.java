@@ -7,9 +7,16 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/creature">the documentation</a>:
+ * "Returns whether this Creature currently has 0 HP."
+ */
 @RegisterSerializable("ConditionCombatParDead")
 public final class CombatParticipantDeadExpression extends ExpressionNode {
 
+	/**
+	 * The ID of the participant in question.
+	 */
 	public String participantId;
 
 	public CombatParticipantDeadExpression() {}

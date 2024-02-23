@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/player">the documentation</a>:
+ * "Grants the specified number of XP to the player, levelling them up if the requirements are met."
+ */
 @RegisterSerializable("CommandPlayerAddXP")
 public final class PlayerAddXPStatement extends StatementNode {
 
+	/**
+	 * The amount of XP to add.
+	 */
 	public IntExpression expression;
 
 	public PlayerAddXPStatement() {}

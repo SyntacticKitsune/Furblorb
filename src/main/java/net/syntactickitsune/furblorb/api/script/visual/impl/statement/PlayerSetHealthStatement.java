@@ -10,10 +10,20 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Modifies the player's current health.
+ */
 @RegisterSerializable("CommandPlayerSetHealth")
 public final class PlayerSetHealthStatement extends StatementNode {
 
+	/**
+	 * Determines whether to add or set the value.
+	 */
 	public Strategy strategy;
+
+	/**
+	 * The value to add or set.
+	 */
 	public IntExpression expression;
 
 	public PlayerSetHealthStatement() {}

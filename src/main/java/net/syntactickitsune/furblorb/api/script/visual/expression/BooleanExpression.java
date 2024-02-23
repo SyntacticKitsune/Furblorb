@@ -6,10 +6,24 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
+/**
+ * Represents a {@code boolean} expression which may be a literal {@code boolean}, a variable reference, or a script.
+ */
 public final class BooleanExpression implements IFurballSerializable {
 
+	/**
+	 * The mode, determining whether the expression is a literal, a variable reference, or a script.
+	 */
 	public ExpressionMode mode = ExpressionMode.LITERAL;
+
+	/**
+	 * The literal {@code boolean} value, for {@link ExpressionMode#LITERAL}.
+	 */
 	public boolean literal;
+
+	/**
+	 * The variable or script reference, for {@link ExpressionMode#VARIABLE} and {@link ExpressionMode#SCRIPT}, respectively.
+	 */
 	public String ref;
 
 	public BooleanExpression() {}

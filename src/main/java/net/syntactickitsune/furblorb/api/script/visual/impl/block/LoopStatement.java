@@ -16,10 +16,17 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 // (I suppose you just slap a break statement when you're done?)
 //
 // I'm going to be honest though, my favorite kind of loop probably has to be:
-//   repeat with C running through ridiculous line comments:
+//   repeat with C running through unusual line comments:
+/**
+ * Represents a forever-repeating loop.
+ * That is, {@code while true do ... end}.
+ */
 @RegisterSerializable("CommandLoop")
 public final class LoopStatement extends StatementBlockNode {
 
+	/**
+	 * The contents of the loop.
+	 */
 	public List<ScriptNode> body;
 
 	public LoopStatement() {}

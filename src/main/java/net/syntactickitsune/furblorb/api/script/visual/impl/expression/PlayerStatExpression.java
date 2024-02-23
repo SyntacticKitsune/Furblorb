@@ -8,9 +8,15 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.ComparisonExpr
 import net.syntactickitsune.furblorb.api.script.visual.impl.statement.PlayerSetStatStatement.Stat;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Checks the value of a stat and compares it to something.
+ */
 @RegisterSerializable("ConditionPlayerStat")
 public final class PlayerStatExpression extends ComparisonExpressionNode {
 
+	/**
+	 * The stat to check.
+	 */
 	public Stat stat;
 
 	public PlayerStatExpression() {}

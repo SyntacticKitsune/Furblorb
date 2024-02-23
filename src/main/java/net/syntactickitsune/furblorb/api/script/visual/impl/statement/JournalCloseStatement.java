@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/journal">the documentation</a>:
+ * "Removes a quest from the player's journal."
+ */
 @RegisterSerializable("CommandJournalClose")
 public final class JournalCloseStatement extends StatementNode {
 
+	/**
+	 * The ID of the journal entry to remove.
+	 */
 	public UUID journalId;
 
 	public JournalCloseStatement() {}

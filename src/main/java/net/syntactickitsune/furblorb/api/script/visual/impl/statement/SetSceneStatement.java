@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:
+ * "Switches to a different scene."
+ */
 @RegisterSerializable("CommandSetScene")
 public final class SetSceneStatement extends StatementNode {
 
+	/**
+	 * The ID of the scene to switch to.
+	 */
 	public UUID sceneId;
 
 	public SetSceneStatement() {}

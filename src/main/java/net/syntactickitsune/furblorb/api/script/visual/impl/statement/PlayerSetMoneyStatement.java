@@ -9,10 +9,20 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.api.script.visual.impl.statement.PlayerSetHealthStatement.Strategy;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Modifies the player's current money.
+ */
 @RegisterSerializable("CommandPlayerSetMoney")
 public final class PlayerSetMoneyStatement extends StatementNode {
 
+	/**
+	 * Determines whether to add or set the value.
+	 */
 	public Strategy strategy;
+
+	/**
+	 * The value to add or set.
+	 */
 	public IntExpression expression;
 
 	public PlayerSetMoneyStatement() {}

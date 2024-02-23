@@ -8,11 +8,27 @@ import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/combat">the documentation</a>:
+ * "Forces the two specified participants to enter into a grapple. The instigator will be 'on top', i.e. able to release or swallow the target."
+ * Also allows the inverse: breaking grapples apart.
+ */
 @RegisterSerializable("CommandCombatSetGrappled")
 public final class CombatSetGrappledStatement extends StatementNode {
 
+	/**
+	 * Whether to set or unset the grapple.
+	 */
 	public Mode mode;
+
+	/**
+	 * The name of the instigator.
+	 */
 	public String instigatorName;
+
+	/**
+	 * The name of the target.
+	 */
 	public String targetName;
 
 	public CombatSetGrappledStatement() {}

@@ -8,10 +8,21 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.BooleanExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/storage">the documentation</a>:
+ * "Saves a flag with the specified key to persistent storage."
+ */
 @RegisterSerializable("CommandVarSetFlag")
 public final class VarSetFlagStatement extends StatementNode {
 
+	/**
+	 * The key to associate the flag with.
+	 */
 	public String variable;
+
+	/**
+	 * The flag to save.
+	 */
 	public BooleanExpression expression;
 
 	public VarSetFlagStatement() {}

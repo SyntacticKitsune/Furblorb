@@ -6,6 +6,16 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
+/**
+ * <p>
+ * The parent class of all visual scripting statement block nodes.
+ * A block in this context meaning that it contains other statements as children.
+ * (Think if-statements or loops.)
+ * </p>
+ * <p>
+ * See the {@code visual.impl.block} package for all of the {@code StatementBlockNode} implementations.
+ * </p>
+ */
 public abstract class StatementBlockNode extends StatementNode {
 
 	protected static List<ScriptNode> read(String key, Decoder in) {

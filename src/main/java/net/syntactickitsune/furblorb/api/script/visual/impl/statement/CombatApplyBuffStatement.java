@@ -10,13 +10,32 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/combat">the documentation</a>:
+ * "Applies a temporary effect to a participant (may be the Player or an NPC)."
+ */
 @RegisterSerializable("CommandCombatApplyBuff")
 public final class CombatApplyBuffStatement extends StatementNode {
 
+	/**
+	 * The target of the statement.
+	 */
 	public Target target;
+
+	/**
+	 * For {@link Target#NPC}, determines the participant to apply the buff to.
+	 */
 	public String participantId = "";
+
+	/**
+	 * The effect to apply.
+	 */
 	public Buff effect;
-	public int duration; // Fun fact: the documentation on this field is wrong.
+
+	/**
+	 * The number of turns to apply the buff for.
+	 */
+	public int duration; // Fun fact: the documentation on this field (in Finmer's source) is wrong.
 
 	public CombatApplyBuffStatement() {}
 
@@ -50,6 +69,9 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		return Objects.hash(target, participantId, effect, duration);
 	}
 
+	/**
+	 * The target of buff application. Either a player or NPC.
+	 */
 	public static enum Target implements INamedEnum {
 
 		PLAYER("Player"),

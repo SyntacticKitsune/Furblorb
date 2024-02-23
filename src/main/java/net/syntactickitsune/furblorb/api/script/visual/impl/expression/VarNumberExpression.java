@@ -8,10 +8,18 @@ import net.syntactickitsune.furblorb.api.script.visual.expression.ComparisonExpr
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/storage">the documentation</a>:
+ * "Returns a number from storage."
+ */
 @RegisterSerializable("ConditionVarNumber")
 public final class VarNumberExpression extends ExpressionNode {
 
+	/**
+	 * The name of the number to retrieve.
+	 */
 	public String variable;
+
 	// HACK: We use composition instead of inheritance because otherwise deserialization is impossible.
 	public ComparisonExpressionNode comparison = new RawComparisonExpressionNode();
 

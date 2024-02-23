@@ -7,10 +7,20 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Checks whether a specified participant is grappling with anyone, and optionally, if they're grappling with a specific person.
+ */
 @RegisterSerializable("ConditionCombatParGrappling")
 public final class CombatParticipantGrappledExpression extends ExpressionNode {
 
+	/**
+	 * The ID of the participant in question.
+	 */
 	public String participantId;
+
+	/**
+	 * If specified, the other person to check whether the participant is grappling with.
+	 */
 	public String targetName = "";
 
 	public CombatParticipantGrappledExpression() {}

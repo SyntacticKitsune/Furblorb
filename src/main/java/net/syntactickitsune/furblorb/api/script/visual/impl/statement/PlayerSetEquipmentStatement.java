@@ -10,10 +10,20 @@ import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Sets the equipment in a specified equipment slot of the player.
+ */
 @RegisterSerializable("CommandPlayerSetEquipment")
 public final class PlayerSetEquipmentStatement extends StatementNode {
 
+	/**
+	 * The equipment slot to change.
+	 */
 	public EquipmentSlot slot;
+
+	/**
+	 * The asset ID of the item to assign to the slot.
+	 */
 	public UUID itemId;
 
 	public PlayerSetEquipmentStatement() {}

@@ -8,9 +8,16 @@ import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.BooleanExpression;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:
+ * "Sets whether or not the player can access their Character Sheet. If true, access is allowed, if false, the button will be greyed out."
+ */
 @RegisterSerializable("CommandSetInventoryEnabled")
 public final class SetInventoryEnabledStatement extends StatementNode {
 
+	/**
+	 * The expression acting as the function parameter.
+	 */
 	public BooleanExpression expression;
 
 	public SetInventoryEnabledStatement() {}

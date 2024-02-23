@@ -7,12 +7,30 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Changes the player's species.
+ */
 @RegisterSerializable("CommandPlayerSetSpecies")
 public final class PlayerSetSpeciesStatement extends StatementNode {
 
+	/**
+	 * The singular form of the species.
+	 */
 	public String singular;
+
+	/**
+	 * The plural form of the species.
+	 */
 	public String plural;
+
+	/**
+	 * The coat of the species, like fur or scales.
+	 */
 	public String coatNoun;
+
+	/**
+	 * An adjective describing the species's coat.
+	 */
 	public String coatAdjective;
 
 	public PlayerSetSpeciesStatement() {}
