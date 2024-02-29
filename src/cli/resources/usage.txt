@@ -66,6 +66,8 @@ Manipulation options (these affect the read furball):
           Remove ("drop") the asset with the specified ID.
   --drop-asset-name <filename>
           Remove ("drop") the asset with the specified filename.
+  --sort-assets
+          Sort all of the assets.
   --merge <file>
           Merge the specified furball into the read furball. Any
           dependencies that the specified file has will be

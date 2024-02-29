@@ -178,6 +178,9 @@ public final class Furblorb {
 						skip = 1;
 					}
 				}
+				case "--sort-assets" -> {
+					steps.add(new Steps.SortAssets());
+				}
 				case "--shuffle" -> {
 					if (i + 2 == args.length)
 						System.out.println("--shuffle: expected two arguments.");

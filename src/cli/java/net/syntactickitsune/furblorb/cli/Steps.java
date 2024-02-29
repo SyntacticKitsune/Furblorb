@@ -3,6 +3,7 @@ package net.syntactickitsune.furblorb.cli;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -167,6 +168,14 @@ final class Steps {
 					it.remove();
 				}
 			}
+		}
+	}
+
+	static final record SortAssets() implements Step {
+		@Override
+		public void run(WorkingData data) throws Exception {
+			Collections.sort(data.furball.assets);
+			System.out.println("! Sorted all assets.");
 		}
 	}
 
