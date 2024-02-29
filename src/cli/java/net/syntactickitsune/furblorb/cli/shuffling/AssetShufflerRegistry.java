@@ -1,14 +1,14 @@
-package net.syntactickitsune.furblorb.cli.scrambling;
+package net.syntactickitsune.furblorb.cli.shuffling;
 
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.syntactickitsune.furblorb.cli.scrambling.impl.ItemFlavorText;
-import net.syntactickitsune.furblorb.cli.scrambling.impl.ItemNames;
-import net.syntactickitsune.furblorb.cli.scrambling.impl.SceneChoiceText;
-import net.syntactickitsune.furblorb.cli.scrambling.impl.StringTables;
+import net.syntactickitsune.furblorb.cli.shuffling.impl.ItemFlavorText;
+import net.syntactickitsune.furblorb.cli.shuffling.impl.ItemNames;
+import net.syntactickitsune.furblorb.cli.shuffling.impl.SceneChoiceText;
+import net.syntactickitsune.furblorb.cli.shuffling.impl.StringTables;
 
 /**
  * Tracks every known {@link AssetShuffler} so that the CLI can actually invoke them.

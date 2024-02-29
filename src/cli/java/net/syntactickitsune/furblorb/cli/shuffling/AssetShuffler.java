@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.cli.scrambling;
+package net.syntactickitsune.furblorb.cli.shuffling;
 
 import java.util.ArrayList;
 import java.util.List;

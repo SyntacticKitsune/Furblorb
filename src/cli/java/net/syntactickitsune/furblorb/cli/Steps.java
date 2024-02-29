@@ -28,9 +28,9 @@ import net.syntactickitsune.furblorb.api.io.FurballReader;
 import net.syntactickitsune.furblorb.api.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
-import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
-import net.syntactickitsune.furblorb.cli.scrambling.AssetShufflerRegistry;
-import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
+import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
+import net.syntactickitsune.furblorb.cli.shuffling.AssetShufflerRegistry;
+import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 final class Steps {

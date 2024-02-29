@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.cli.scrambling.impl;
+package net.syntactickitsune.furblorb.cli.shuffling.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.asset.StringTableAsset;
-import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
-import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
+import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
+import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 
 /**
  * An {@link AssetShuffler} that shuffles the contents of all {@linkplain StringTableAsset string tables} (or at least, the ones that won't break).

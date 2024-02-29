@@ -1,12 +1,12 @@
-package net.syntactickitsune.furblorb.cli.scrambling.impl;
+package net.syntactickitsune.furblorb.cli.shuffling.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.asset.ItemAsset;
-import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
-import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
+import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
+import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 
 /**
  * An {@link AssetShuffler} that shuffles the flavor text of all {@linkplain ItemAsset items}.
