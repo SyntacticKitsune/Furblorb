@@ -169,8 +169,7 @@ public class BinaryCodec extends Codec {
 	 * @return The read value.
 	 * @throws UnsupportedOperationException If this codec is write-only.
 	 */
-	@Nullable
-	public byte[] readByteArray() {
+	public byte @Nullable [] readByteArray() {
 		final int len = readInt();
 		if (len < 0) return null;
 		return readBytes(len);
@@ -181,7 +180,7 @@ public class BinaryCodec extends Codec {
 	 * @param value The value to write. May be {@code null}.
 	 * @throws UnsupportedOperationException If this codec is read-only.
 	 */
-	public void writeByteArray(@Nullable byte[] value) {
+	public void writeByteArray(byte @Nullable [] value) {
 		if (value == null)
 			writeInt(-1);
 		else {
@@ -720,7 +719,7 @@ public class BinaryCodec extends Codec {
 	public void writeByte(@Nullable String key, byte value) { writeByte(value); }
 
 	@Override
-	public void writeByteArray(@Nullable String key, @Nullable byte[] value) { writeByteArray(value); }
+	public void writeByteArray(@Nullable String key, byte @Nullable [] value) { writeByteArray(value); }
 
 	@Override
 	public void writeBoolean(@Nullable String key, boolean value) { writeBoolean(value); }

@@ -57,8 +57,7 @@ public interface Decoder {
 	 * @return The read value.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	@Nullable
-	public byte[] readByteArray(@Nullable String key);
+	public byte @Nullable [] readByteArray(@Nullable String key);
 
 	/**
 	 * Reads the next {@code boolean} from this {@code Decoder}'s sequence.

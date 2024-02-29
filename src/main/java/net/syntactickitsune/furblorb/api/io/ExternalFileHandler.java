@@ -46,8 +46,7 @@ public interface ExternalFileHandler {
 	 * @throws NullPointerException If {@code filename} is {@code null}.
 	 * @throws UnsupportedOperationException If the {@code ExternalFileHandler} does not support reading files (like if it's write-only).
 	 */
-	@Nullable
-	public default byte[] readExternalFile(String filename) {
+	public default byte @Nullable [] readExternalFile(String filename) {
 		throw new UnsupportedOperationException();
 	}
 

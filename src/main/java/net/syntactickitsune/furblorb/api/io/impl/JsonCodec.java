@@ -102,8 +102,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	@Nullable
-	public byte[] readByteArray(@Nullable String key) {
+	public byte @Nullable [] readByteArray(@Nullable String key) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final byte[] ret = new byte[arr.size()];
@@ -260,7 +259,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public void writeByteArray(@Nullable String key, @Nullable byte[] value) {
+	public void writeByteArray(@Nullable String key, byte @Nullable [] value) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.length);
 

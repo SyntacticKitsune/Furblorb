@@ -93,8 +93,7 @@ public final class NBTCodec extends Codec {
 	}
 
 	@Override
-	@Nullable
-	public byte[] readByteArray(@Nullable String key) {
+	public byte @Nullable [] readByteArray(@Nullable String key) {
 		checkRead();
 		return wrapped.containsKey(Objects.requireNonNull(key, "key")) ? wrapped.getByteArray(key) : null;
 	}
@@ -237,7 +236,7 @@ public final class NBTCodec extends Codec {
 	}
 
 	@Override
-	public void writeByteArray(@Nullable String key, @Nullable byte[] value) {
+	public void writeByteArray(@Nullable String key, byte @Nullable [] value) {
 		checkWrite();
 		if (value != null)
 			wrapped.putByteArray(Objects.requireNonNull(key, "key"), value);

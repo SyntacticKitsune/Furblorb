@@ -61,7 +61,7 @@ public interface Encoder {
 	 * @param value The value to write. May be {@code null}.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public void writeByteArray(@Nullable String key, @Nullable byte[] value);
+	public void writeByteArray(@Nullable String key, byte @Nullable [] value);
 
 	/**
 	 * Writes the given {@code boolean}.

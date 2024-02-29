@@ -185,8 +185,7 @@ public final class FinmerProjectReader {
 		}
 
 		@Override
-		@Nullable
-		public byte[] readExternalFile(String filename) {
+		public byte @Nullable [] readExternalFile(String filename) {
 			final Path file = projectDirectory.resolve(filename);
 			try {
 				// We need to "normalize" the line endings of text files so that the furball is the expected size.

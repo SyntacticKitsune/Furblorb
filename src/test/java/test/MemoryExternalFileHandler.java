@@ -44,8 +44,7 @@ final class MemoryExternalFileHandler implements ExtendedExternalFileHandler {
 	}
 
 	@Override
-	@Nullable
-	public byte[] readExternalFile(String filename) {
+	public byte @Nullable [] readExternalFile(String filename) {
 		if (!read) throw new UnsupportedOperationException();
 		return contents.get(Objects.requireNonNull(filename, "filename"));
 	}

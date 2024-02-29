@@ -89,8 +89,7 @@ public final class ItemAsset extends FurballAsset {
 	 * An array containing the raw bytes of the item's icon in PNG format.
 	 * May be {@code null}, which indicates that the item lacks an icon.
 	 */
-	@Nullable
-	public byte[] icon; // Sorry, we're storing PNGs now???
+	public byte @Nullable [] icon; // Sorry, we're storing PNGs now???
 
 	/**
 	 * For usable items, a script to run when the item is used.
