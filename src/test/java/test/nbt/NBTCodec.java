@@ -180,7 +180,7 @@ public final class NBTCodec extends Codec {
 	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
 		final ListTag<CompoundTag> listTag = wrapped.getListTag(key).asCompoundTagList();
-		final List<T> ret = new ArrayList<>(listTag.size());
+		final List<@Nullable T> ret = new ArrayList<>(listTag.size());
 
 		for (CompoundTag tag : listTag)
 			if (!tag.containsKey("__null__"))
@@ -335,7 +335,7 @@ public final class NBTCodec extends Codec {
 		checkWrite();
 		final ListTag<CompoundTag> arr = new ListTag<>(CompoundTag.class);
 
-		for (T v : value) {
+		for (@Nullable T v : value) {
 			final CompoundTag tag = new CompoundTag();
 			if (v != null)
 				writer.accept(v, new NBTCodec(tag, read, formatVersion));

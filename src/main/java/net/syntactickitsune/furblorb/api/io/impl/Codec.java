@@ -3,6 +3,8 @@ package net.syntactickitsune.furblorb.api.io.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.syntactickitsune.furblorb.api.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
@@ -66,6 +68,7 @@ public abstract class Codec implements Encoder, Decoder {
 
 	protected final ParsingStrategy.NumberType numberType(Class<? extends Enum> clazz) {
 		return ENUM_NUMBER_CACHE.computeIfAbsent(clazz, k -> {
+			@Nullable
 			final ParsingStrategy ps = k.getAnnotation(ParsingStrategy.class);
 			if (ps != null) return ps.value();
 

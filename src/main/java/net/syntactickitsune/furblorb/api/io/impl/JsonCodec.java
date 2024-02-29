@@ -193,7 +193,7 @@ public class JsonCodec extends Codec {
 	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
-		final List<T> ret = new ArrayList<>(arr.size());
+		final List<@Nullable T> ret = new ArrayList<>(arr.size());
 
 		for (int i = 0; i < arr.size(); i++)
 			if (arr.get(i) instanceof JsonObject obj)
@@ -344,7 +344,7 @@ public class JsonCodec extends Codec {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
-		for (T v : value)
+		for (@Nullable T v : value)
 			if (v == null)
 				arr.add(JsonNull.INSTANCE);
 			else {
