@@ -83,7 +83,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--format-version: expected a version argument.");
 					else {
-						steps.add(new Steps.AdjustFormatVersion(Byte.valueOf(args[i + 1])));
+						steps.add(new Steps.AdjustFormatVersion(Byte.parseByte(args[i + 1])));
 						skip = 1;
 					}
 				}
