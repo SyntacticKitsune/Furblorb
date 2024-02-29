@@ -57,6 +57,14 @@ tasks.withType(AbstractArchiveTask).configureEach {
 	reproducibleFileOrder = true
 }
 
+tasks.withType(Jar).configureEach {
+	manifest {
+		attributes([
+			'Automatic-Module-Name': 'net.syntactickitsune.furblorb'
+		])
+	}
+}
+
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
 	archiveClassifier = 'cli'
 	from sourceSets.cli.output
@@ -65,7 +73,10 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 	exclude 'META-INF/versions/9/**'
 
 	manifest {
-		attributes 'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb'
+		attributes([
+			'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb',
+			'Automatic-Module-Name': 'net.syntactickitsune.furblorb'
+		])
 	}
 }
 
