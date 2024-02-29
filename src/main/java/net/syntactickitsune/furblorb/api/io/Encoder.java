@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.api.io;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -204,4 +205,26 @@ public interface Encoder {
 	 * @throws NullPointerException If {@code value}, {@code writer}, or {@code externalWriter} are {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys or attempts to write the value to an external file.
 	 */
 	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter);
+
+	/**
+	 * <p>
+	 * Throws an exception if {@code value} is <i>not</i> {@code null}.
+	 * For {@code Encoders} with {@link #validate()} set to {@code false}, this method may do nothing.
+	 * </p>
+	 * <p>
+	 * This method is intended for pointing out subtle errors in structured data that might otherwise go unnoticed,
+	 * such as using a field in an unsupported context.
+	 * </p>
+	 * @param key The key of the data which should not be present.
+	 * @param value The value that should not exist.
+	 * @param message Some informative string to tack onto the thrown exception.
+	 * @throws FurblorbParsingException If the specified value is {@code null}.
+	 * @throws NullPointerException If either {@code key} or {@code message} are {@code null}.
+	 */
+	public default void assertDoesNotExist(String key, Object value, String message) {
+		Objects.requireNonNull(key, "key");
+		Objects.requireNonNull(message, "message");
+		if (validate() && value != null)
+			throw new FurblorbParsingException("Assertion \"" + key + " = null\" failed: " + message);
+	}
 }

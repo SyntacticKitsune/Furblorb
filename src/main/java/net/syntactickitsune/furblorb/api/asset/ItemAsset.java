@@ -116,6 +116,9 @@ public final class ItemAsset extends FurballAsset {
 		if (type == Type.EQUIPPABLE) {
 			slot = in.readEnum("EquipSlot", EquipmentSlot.class);
 			equipEffects.addAll(in.readOptionalList("EquipEffects", FurballSerializables::read));
+		} else {
+			in.assertDoesNotExist("EquipSlot", "Only equippable items may have equipment slots");
+			in.assertDoesNotExist("EquipEffects", "Only equippable items may have effects");
 		}
 
 		price = in.readInt("PurchaseValue");
@@ -127,6 +130,12 @@ public final class ItemAsset extends FurballAsset {
 			usableInBattle = in.readBoolean("CanUseInBattle");
 			useDescription = in.readString("UseDescription");
 			useScript = in.readOptional("UseScript", FurballSerializables::read);
+		} else {
+			in.assertDoesNotExist("IsConsumable", "Only usable items may be consumable");
+			in.assertDoesNotExist("CanUseInField", "Only usable items may be used in field");
+			in.assertDoesNotExist("CanUseInBattle", "Only usable items may be used in battle");
+			in.assertDoesNotExist("UseDescription", "Only usable items may have use descriptions");
+			in.assertDoesNotExist("UseScript", "Only usable items may have use scripts");
 		}
 
 		icon = in.readExternal(filename + ".png", Decoder::readByteArray, Function.identity());
@@ -138,10 +147,15 @@ public final class ItemAsset extends FurballAsset {
 		to.writeString("ObjectAlias", objectAlias);
 		to.writeString("FlavorText", flavorText);
 		to.writeEnum("ItemType", type);
+
 		if (type == Type.EQUIPPABLE) {
 			to.writeEnum("EquipSlot", slot);
 			to.writeOptionalList("EquipEffects", equipEffects, EquipEffectGroup::writeWithId);
+		} else {
+			to.assertDoesNotExist("EquipSlot", slot, "Only equippable items may have equipment slots");
+			to.assertDoesNotExist("EquipEffects", equipEffects.isEmpty() ? null : equipEffects, "Only equippable items may have effects");
 		}
+
 		to.writeInt("PurchaseValue", price);
 		to.writeBoolean("IsQuestItem", questItem);
 
@@ -151,6 +165,9 @@ public final class ItemAsset extends FurballAsset {
 			to.writeBoolean("CanUseInBattle", usableInBattle);
 			to.writeString("UseDescription", useDescription);
 			to.writeOptional("UseScript", useScript, ScriptAsset::writeWithId);
+		} else if (to.validate()) {
+			to.assertDoesNotExist("UseDescription", useDescription.isEmpty() ? null : "", "Only usable items may have use descriptions");
+			to.assertDoesNotExist("UseScript", useScript, "Only usable items may have use scripts");
 		}
 
 		to.writeExternal(filename + ".png", icon, (key, v, enc) -> enc.writeByteArray(key, v), Function.identity());

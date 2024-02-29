@@ -125,9 +125,11 @@ public final class SceneAsset extends FurballAsset {
 			injectionTargetScene = in.readUUID("InjectTargetScene");
 			injectionTargetNode = in.readString("InjectTargetNode");
 
-			if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
-			if (onEnter != null) throw new FurblorbParsingException("ScriptEnter not allowed in patches");
-			if (onLeave != null) throw new FurblorbParsingException("ScriptLeave not allowed in patches");
+			if (in.validate()) {
+				if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
+				if (onEnter != null) throw new FurblorbParsingException("ScriptEnter not allowed in patches");
+				if (onLeave != null) throw new FurblorbParsingException("ScriptLeave not allowed in patches");
+			}
 		} else {
 			in.assertDoesNotExist("InjectMode", "not a patch");
 			in.assertDoesNotExist("InjectTargetScene", "not a patch");
@@ -152,6 +154,8 @@ public final class SceneAsset extends FurballAsset {
 			to.writeBoolean("IsGameStart", gameStart);
 			if (gameStart)
 				to.writeString("GameStartDescription", gameStartDescription);
+			else
+				to.assertDoesNotExist("GameStartDescription", gameStartDescription.isEmpty() ? null : "", "IsGameStart must be enabled first");
 		}
 
 		to.writeBoolean("IsPatch", patch);
@@ -159,6 +163,12 @@ public final class SceneAsset extends FurballAsset {
 			to.writeEnum("InjectMode", injectMode);
 			to.writeUUID("InjectTargetScene", injectionTargetScene);
 			to.writeString("InjectTargetNode", injectionTargetNode);
+
+			if (to.validate()) {
+				if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
+				if (onEnter != null) throw new FurblorbParsingException("ScriptEnter not allowed in patches");
+				if (onLeave != null) throw new FurblorbParsingException("ScriptLeave not allowed in patches");
+			}
 		}
 
 		to.write("Root", root, SceneNode::write);

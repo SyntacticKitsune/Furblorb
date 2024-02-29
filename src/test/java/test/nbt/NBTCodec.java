@@ -393,7 +393,7 @@ public final class NBTCodec extends Codec {
 		Objects.requireNonNull(key, "key");
 		Objects.requireNonNull(message, "message");
 		if (validate() && wrapped.containsKey(key))
-			throw new FurblorbParsingException("Assertion \"" + key + " ≠ null\" failed: " + message);
+			throw new FurblorbParsingException("Assertion \"" + key + " = null\" failed: " + message);
 	}
 
 	protected void checkRead() {
