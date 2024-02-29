@@ -11,6 +11,10 @@ import net.syntactickitsune.furblorb.api.asset.StringTableAsset;
 import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
 
+/**
+ * An {@link AssetShuffler} that shuffles the contents of all {@linkplain StringTableAsset string tables} (or at least, the ones that won't break).
+ * @author SyntacticKitsune
+ */
 public final class StringTables implements AssetShuffler<StringTableAsset> {
 
 	@Override

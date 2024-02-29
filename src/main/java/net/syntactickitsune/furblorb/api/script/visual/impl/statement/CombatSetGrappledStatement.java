@@ -67,9 +67,19 @@ public final class CombatSetGrappledStatement extends StatementNode {
 		return Objects.hash(mode, instigatorName, targetName);
 	}
 
+	/**
+	 * Determines whether to set or unset a state.
+	 */
 	public static enum Mode implements INamedEnum {
 
+		/**
+		 * The state should be set.
+		 */
 		SET("Set"),
+
+		/**
+		 * The state should be unset.
+		 */
 		UNSET("Unset");
 
 		private final String id;

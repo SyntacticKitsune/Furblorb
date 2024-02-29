@@ -68,6 +68,10 @@ public final class NBTCodec extends Codec {
 		this.formatVersion = formatVersion;
 	}
 
+	/**
+	 * Returns the {@code NBTCodec}'s backing {@code CompoundTag}.
+	 * @return The backing {@code CompoundTag}.
+	 */
 	public CompoundTag unwrap() {
 		return wrapped;
 	}

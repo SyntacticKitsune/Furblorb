@@ -8,6 +8,10 @@ import net.syntactickitsune.furblorb.api.asset.ItemAsset;
 import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
 
+/**
+ * An {@link AssetShuffler} that shuffles the names of all {@linkplain ItemAsset items}.
+ * @author SyntacticKitsune
+ */
 public final class ItemNames implements AssetShuffler<ItemAsset> {
 
 	@Override

@@ -51,6 +51,11 @@ public interface ExternalFileHandler {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * Normalizes the line endings of the specified {@code String}.
+	 * @param in The input string.
+	 * @return The input string, with normalized line endings.
+	 */
 	public default String normalizeLineEndings(String in) {
 		return in.replace("\r\n", "\n");
 	}

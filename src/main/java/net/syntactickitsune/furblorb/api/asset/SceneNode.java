@@ -306,11 +306,26 @@ public final class SceneNode {
 	/**
 	 * Represents the different directions available for {@link Type#COMPASS COMPASS} {@linkplain SceneNode scene nodes}.
 	 */
-	public static enum Direction implements INamedEnum { // What kind of person goes counter-clockwise‽‽
+	public static enum Direction implements INamedEnum {
 
+		/**
+		 * The north direction, which corresponds to the upper directional button.
+		 */
 		NORTH("North"),
+
+		/**
+		 * The west direction, which corresponds to the left directional button.
+		 */
 		WEST("West"),
+
+		/**
+		 * The south direction, which corresponds to the lower directional button.
+		 */
 		SOUTH("South"),
+
+		/**
+		 * The east direction, which corresponds to the right directional button.
+		 */
 		EAST("East");
 
 		private final String id;

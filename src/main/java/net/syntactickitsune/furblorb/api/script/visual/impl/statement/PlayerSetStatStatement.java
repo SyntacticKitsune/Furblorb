@@ -67,12 +67,30 @@ public final class PlayerSetStatStatement extends StatementNode {
 		return Objects.hash(stat, strategy, expression);
 	}
 
+	/**
+	 * Identifies the stat being modified in the {@link PlayerSetStatStatement}.
+	 */
 	@ParsingStrategy(ParsingStrategy.NumberType.INT)
 	public static enum Stat implements INamedEnum {
 
+		/**
+		 * The strength stat is being modified.
+		 */
 		STRENGTH("Strength"),
+
+		/**
+		 * The agility stat is being modified.
+		 */
 		AGILITY("Agility"),
+
+		/**
+		 * The body stat is being modified.
+		 */
 		BODY("Body"),
+
+		/**
+		 * The wits stat is being modified.
+		 */
 		WITS("Wits");
 
 		private final String id;

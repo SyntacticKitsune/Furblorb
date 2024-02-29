@@ -9,6 +9,11 @@ import net.syntactickitsune.furblorb.api.asset.SceneNode;
 import net.syntactickitsune.furblorb.cli.scrambling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.scrambling.ShuffleRandom;
 
+/**
+ * An {@link AssetShuffler} that shuffles the titles and tooltips of all {@link SceneAsset}
+ * {@linkplain net.syntactickitsune.furblorb.api.asset.SceneNode.Type#CHOICE choice nodes}.
+ * @author SyntacticKitsune
+ */
 public final class SceneChoiceText implements AssetShuffler<SceneAsset> {
 
 	@Override

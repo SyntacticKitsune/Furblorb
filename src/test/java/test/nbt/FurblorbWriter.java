@@ -7,8 +7,13 @@ import net.querz.nbt.tag.CompoundTag;
 import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.FurballMetadata;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
+import net.syntactickitsune.furblorb.api.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 
+/**
+ * A {@link FurballWriter} for {@link NBTCodec}.
+ * @author SyntacticKitsune
+ */
 public final class FurblorbWriter {
 
 	private final NBTCodec codec;

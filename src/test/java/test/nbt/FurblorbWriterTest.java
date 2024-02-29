@@ -11,6 +11,11 @@ import net.syntactickitsune.furblorb.api.io.FurballReader;
 
 import test.TestUtil;
 
+/**
+ * Testing for {@link FurblorbWriter}.
+ * This isn't a real JUnit test or anything, since these NBT-based "furblorbs" are more of an experiment than anything.
+ * @author SyntacticKitsune
+ */
 public final class FurblorbWriterTest {
 
 	public static void main(String[] args) throws IOException {

@@ -59,10 +59,20 @@ public final class PlayerSetHealthStatement extends StatementNode {
 		return Objects.hash(strategy, expression);
 	}
 
+	/**
+	 * Determines whether to add or set a value.
+	 */
 	@ParsingStrategy(ParsingStrategy.NumberType.INT)
 	public static enum Strategy implements INamedEnum {
 
+		/**
+		 * The value should be added to the existing one.
+		 */
 		ADD("Add"),
+
+		/**
+		 * The value should overwrite the existing one.
+		 */
 		SET("Set");
 
 		private final String id;

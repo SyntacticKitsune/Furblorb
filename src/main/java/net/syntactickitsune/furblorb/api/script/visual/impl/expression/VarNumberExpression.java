@@ -20,6 +20,9 @@ public final class VarNumberExpression extends ExpressionNode {
 	 */
 	public String variable;
 
+	/**
+	 * The comparison to perform on the stored number.
+	 */
 	// HACK: We use composition instead of inheritance because otherwise deserialization is impossible.
 	public ComparisonExpressionNode comparison = new RawComparisonExpressionNode();
 

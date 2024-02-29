@@ -18,8 +18,18 @@ import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.FurblorbUtil;
 
+/**
+ * Various utilities used in Furblorb's tests.
+ * @author SyntacticKitsune
+ */
 public final class TestUtil {
 
+	/**
+	 * Reads and returns all bytes of the specified resource.
+	 * @param path The path to the resource to read.
+	 * @return An array consisting of all bytes of the specified resource.
+	 * @throws IOException If an I/O error occurs reading the resource.
+	 */
 	public static byte[] readAllBytes(String path) throws IOException {
 		try (InputStream is = TestUtil.class.getResourceAsStream(path);
 				BufferedInputStream bis = new BufferedInputStream(is)) {

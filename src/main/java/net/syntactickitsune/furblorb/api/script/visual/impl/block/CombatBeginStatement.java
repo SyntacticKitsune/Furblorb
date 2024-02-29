@@ -14,24 +14,67 @@ import net.syntactickitsune.furblorb.api.script.visual.ScriptNode;
 import net.syntactickitsune.furblorb.api.script.visual.StatementBlockNode;
 import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
+/**
+ * Begins combat with a specified configuration.
+ */
 @RegisterSerializable("CommandCombatBegin")
 public final class CombatBeginStatement extends StatementBlockNode {
 
+	/**
+	 * Whether to include the player in the combat.
+	 */
 	public boolean includePlayer;
+
+	/**
+	 * The NPC participants to include in the combat.
+	 */
 	public final List<Participant> participants = new ArrayList<>();
+
+	/**
+	 * A series of statements to run when the combat begins.
+	 */
 	@Nullable
 	public List<ScriptNode> onStart;
+
+	/**
+	 * <p>
+	 * A series of statements to run any time a round of combat begins.
+	 * </p>
+	 * <p>
+	 * Only available from format version 20 (Finmer v1.0.1) onwards.
+	 * </p>
+	 */
 	@Nullable
 	@RequiresFormatVersion(20)
 	public List<ScriptNode> onRoundStart;
+
+	/**
+	 * A series of statements to run any time a round of combat ends.
+	 */
 	@Nullable
 	public List<ScriptNode> onRoundEnd;
+
+	/**
+	 * A series of statements to run when the player is killed.
+	 */
 	@Nullable
 	public List<ScriptNode> onPlayerKilled;
+
+	/**
+	 * A series of statements to run when an NPC is killed.
+	 */
 	@Nullable
 	public List<ScriptNode> onCreatureKilled;
+
+	/**
+	 * A series of statements to run when an NPC is consumed.
+	 */
 	@Nullable
 	public List<ScriptNode> onCreatureVored;
+
+	/**
+	 * A series of statements to run when an NPC is released.
+	 */
 	@Nullable
 	public List<ScriptNode> onCreatureReleased;
 
@@ -113,5 +156,11 @@ public final class CombatBeginStatement extends StatementBlockNode {
 		}
 	}
 
+	/**
+	 * Represents an NPC participant in combat.
+	 * @param id The participant ID. Used to identify the participant in combat.
+	 * @param creature The asset ID of the participant.
+	 * @param ally Whether the participant is an ally of the player versus an enemy.
+	 */
 	public static record Participant(String id, UUID creature, boolean ally) {}
 }

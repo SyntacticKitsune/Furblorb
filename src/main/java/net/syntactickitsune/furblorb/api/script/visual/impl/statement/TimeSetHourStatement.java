@@ -20,6 +20,9 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 @RegisterSerializable(value = "CommandTimeSetHour", since = 20)
 public final class TimeSetHourStatement extends StatementNode {
 
+	/**
+	 * The hour to advance to.
+	 */
 	public IntExpression hour = new IntExpression();
 
 	/**

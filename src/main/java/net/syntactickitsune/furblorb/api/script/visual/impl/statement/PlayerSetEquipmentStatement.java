@@ -59,12 +59,31 @@ public final class PlayerSetEquipmentStatement extends StatementNode {
 		return Objects.hash(slot, itemId);
 	}
 
+	/**
+	 * Represents the available equipment slots.
+	 * This is different from {@link net.syntactickitsune.furblorb.api.asset.ItemAsset.EquipmentSlot} because this one disambiguates between the two accessory slots.
+	 */
 	@ParsingStrategy(ParsingStrategy.NumberType.INT)
 	public static enum EquipmentSlot implements INamedEnum {
 
+		/**
+		 * The weapon equipment slot.
+		 */
 		WEAPON("Weapon"),
+
+		/**
+		 * The armor equipment slot.
+		 */
 		ARMOR("Armor"),
+
+		/**
+		 * The first accessory equipment slot.
+		 */
 		ACCESSORY_1("Accessory1"),
+
+		/**
+		 * The second accessory equipment slot.
+		 */
 		ACCESSORY_2("Accessory2");
 
 		private final String id;

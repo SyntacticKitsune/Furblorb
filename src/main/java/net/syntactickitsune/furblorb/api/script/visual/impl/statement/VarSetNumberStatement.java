@@ -85,37 +85,166 @@ public final class VarSetNumberStatement extends StatementNode {
 	public static enum Operation implements INamedEnum {
 
 		// Java-style enums go brrr.
+
+		/**
+		 * Add the specified number to the variable.
+		 */
 		ADD("Add", true),
+
+		/**
+		 * Multiply the variable by the specified number.
+		 */
 		MULTIPLY("Multiply", true),
+
+		/**
+		 * Divide the variable by the specified number.
+		 */
 		DIVIDE("Divide", true),
+
+		/**
+		 * Set the variable to the specified number.
+		 */
 		SET("Set", true),
+
+		/**
+		 * <p>
+		 * Set the variable to a random number.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		RANDOM("Random", true),
+
+		/**
+		 * <p>
+		 * Set the variable to the current day.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_TIME_DAY("SetTimeDay", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the current hour.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_TIME_HOUR("SetTimeHour", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the total number of hours passed.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_TIME_HOUR_TOTAL("SetTimeHourTotal", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's strength stat.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_STRENGTH("SetPlayerStrength", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's agility stat.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_AGILITY("SetPlayerAgility", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's body stat.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_BODY("SetPlayerBody", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's wits stat.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_WITS("SetPlayerWits", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's money count.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_MONEY("SetPlayerMoney", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's level.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_LEVEL("SetPlayerLevel", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's current health.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_HEALTH("SetPlayerHealth", false),
+
+		/**
+		 * <p>
+		 * Set the variable to the player's maximum health.
+		 * </p>
+		 * <p>
+		 * Only available from format version 20 (Finmer v1.0.1) onwards.
+		 * </p>
+		 */
 		@RequiresFormatVersion(20)
 		SET_PLAYER_HEALTH_MAX("SetPlayerHealthMax", false);
 
 		private final String id;
+
+		/**
+		 * Whether the {@code Operation} has two parameters, rather than one.
+		 */
 		public final boolean binary;
+
 		private byte formatVersion = 19;
 
 		private Operation(String id, boolean binary) {

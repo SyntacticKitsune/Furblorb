@@ -17,9 +17,23 @@ import net.syntactickitsune.furblorb.api.asset.SceneNode;
  */
 public interface AssetShuffler<T extends FurballAsset> {
 
+	/**
+	 * @return A {@code class} representing the type of asset the {@code AssetShuffler} shuffles.
+	 */
 	public Class<T> assetType();
+
+	/**
+	 * Returns an informative description of what the shuffler does, for display via the relevant CLI option.
+	 * @return The description of the shuffler.
+	 */
 	public String description();
 
+	/**
+	 * Performs shuffling of the specified assets.
+	 * @param assets The assets to shuffle.
+	 * @param rand The random to use for shuffling the assets.
+	 * @param furball The furball containing the assets.
+	 */
 	public void shuffle(List<T> assets, ShuffleRandom rand, Furball furball);
 
 	/**

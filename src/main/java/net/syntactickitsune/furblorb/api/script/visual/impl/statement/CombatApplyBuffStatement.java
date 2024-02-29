@@ -82,7 +82,14 @@ public final class CombatApplyBuffStatement extends StatementNode {
 	 */
 	public static enum Target implements INamedEnum {
 
+		/**
+		 * The buff will be applied to the player.
+		 */
 		PLAYER("Player"),
+
+		/**
+		 * The buff will be applied to an NPC.
+		 */
 		NPC("NPC");
 
 		private final String id;
