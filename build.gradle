@@ -27,13 +27,13 @@ configurations {
 testing {
 	suites {
 		test {
-		    useJUnitJupiter()
+			useJUnitJupiter()
 		}
 	}
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 	maven {
 		url 'https://jitpack.io/'
 		content {
@@ -82,13 +82,13 @@ processCliResources {
 
 	inputs.property 'version', version
 
-    from(sourceSets.cli.resources.srcDirs) {
-        include 'version.txt'
+	from(sourceSets.cli.resources.srcDirs) {
+		include 'version.txt'
 
-        expand 'version':version
-    }
+		expand 'version':version
+	}
 
-    from(sourceSets.cli.resources.srcDirs) {
-        exclude 'version.txt'
-    }
+	from(sourceSets.cli.resources.srcDirs) {
+		exclude 'version.txt'
+	}
 }
