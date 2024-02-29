@@ -334,7 +334,7 @@ public class JsonCodec extends Codec {
 		for (T v : value) {
 			final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
 			writer.accept(v, codec);
-			arr.add(codec.unwrap());
+			arr.add(codec.wrapped);
 		}
 
 		wrapped.add(key, arr);
@@ -351,7 +351,7 @@ public class JsonCodec extends Codec {
 			else {
 				final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
 				writer.accept(v, codec);
-				arr.add(codec.unwrap());
+				arr.add(codec.wrapped);
 			}
 
 		wrapped.add(key, arr);
@@ -372,7 +372,7 @@ public class JsonCodec extends Codec {
 		checkWrite();
 		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
 		writer.accept(value, codec);
-		wrapped.add(key, codec.unwrap());
+		wrapped.add(key, codec.wrapped);
 	}
 
 	@Override
