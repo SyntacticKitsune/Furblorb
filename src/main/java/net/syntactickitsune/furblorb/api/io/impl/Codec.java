@@ -23,6 +23,8 @@ public abstract class Codec implements Encoder, Decoder {
 
 	protected byte formatVersion = UNSET_FORMAT_VERSION;
 
+	protected boolean validate = true;
+
 	@Override
 	public byte formatVersion() {
 		if (formatVersion == UNSET_FORMAT_VERSION) throw new FurblorbException("Format version is unset");
@@ -47,6 +49,19 @@ public abstract class Codec implements Encoder, Decoder {
 	 */
 	public void setFormatVersion(byte value) {
 		formatVersion = value;
+	}
+
+	@Override
+	public boolean validate() {
+		return validate;
+	}
+
+	/**
+	 * Changes {@linkplain #validate() validate} to the specified value.
+	 * @param value The new value.
+	 */
+	public void setValidate(boolean value) {
+		validate = value;
 	}
 
 	protected final ParsingStrategy.NumberType numberType(Class<? extends Enum> clazz) {

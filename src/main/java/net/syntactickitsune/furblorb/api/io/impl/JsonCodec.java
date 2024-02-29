@@ -409,7 +409,7 @@ public class JsonCodec extends Codec {
 		checkRead();
 		Objects.requireNonNull(key, "key");
 		Objects.requireNonNull(message, "message");
-		if (wrapped.has(key))
+		if (validate() && wrapped.has(key))
 			throw new FurblorbParsingException("Assertion \"" + key + " ≠ null\" failed: " + message);
 	}
 

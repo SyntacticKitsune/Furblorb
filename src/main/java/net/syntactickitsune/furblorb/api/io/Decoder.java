@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.api.asset.SceneAsset;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**
@@ -34,6 +35,13 @@ public interface Decoder {
 	 * @return The format version.
 	 */
 	public byte formatVersion();
+
+	/**
+	 * A method called to decide whether serialization code should perform sanity checks on their content.
+	 * For example, {@link SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
+	 * @return Whether serialization code should perform checks on the current state.
+	 */
+	public boolean validate();
 
 	/**
 	 * Reads the next {@code byte} from this {@code Decoder}'s sequence.
@@ -207,7 +215,7 @@ public interface Decoder {
 	/**
 	 * <p>
 	 * Throws an exception if there is any data associated with {@code key} in this {@code Decoder}.
-	 * For keyless {@code Decoders}, this method may do nothing.
+	 * For keyless {@code Decoders} or {@code Decoders} with {@link #validate()} set to {@code false}, this method may do nothing.
 	 * </p>
 	 * <p>
 	 * This method is intended for pointing out subtle errors in structured data that might otherwise go unnoticed,

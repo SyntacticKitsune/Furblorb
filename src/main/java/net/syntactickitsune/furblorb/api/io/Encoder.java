@@ -8,6 +8,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.api.FurblorbException;
+import net.syntactickitsune.furblorb.api.asset.SceneAsset;
 import net.syntactickitsune.furblorb.api.util.TriConsumer;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
@@ -37,6 +38,13 @@ public interface Encoder {
 	 * @throws FurblorbException If no format version has been set.
 	 */
 	public byte formatVersion();
+
+	/**
+	 * A method called to decide whether serialization code should perform sanity checks on their content.
+	 * For example, {@link SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
+	 * @return Whether serialization code should perform checks on the current state.
+	 */
+	public boolean validate();
 
 	/**
 	 * Writes the given {@code byte}.
