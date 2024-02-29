@@ -68,12 +68,27 @@ public final class JournalAsset extends FurballAsset {
 	 */
 	public static record Stage(int key, String text) {
 
+		/**
+		 * Constructs a {@code Stage} with the specified values.
+		 * @param key The numeric identifier of the stage.
+		 * @param text The text describing the stage.
+		 */
 		public Stage {}
 
+		/**
+		 * Decodes a {@code Stage} from the specified {@code Decoder}.
+		 * @param in The {@code Decoder}.
+		 * @throws NullPointerException If {@code in} is {@code null}.
+		 */
 		public Stage(Decoder in) {
 			this(in.readInt("Key"), in.readString("Text"));
 		}
 
+		/**
+		 * Writes this {@code Stage} to the specified {@code Encoder}.
+		 * @param to The {@code Encoder}.
+		 * @throws NullPointerException If {@code to} is {@code null}.
+		 */
 		public void write(Encoder to) {
 			to.writeInt("Key", key);
 			to.writeString("Text", text);

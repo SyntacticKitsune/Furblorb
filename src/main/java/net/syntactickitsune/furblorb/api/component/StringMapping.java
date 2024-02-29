@@ -13,8 +13,19 @@ import net.syntactickitsune.furblorb.api.io.INamedEnum;
  */
 public final class StringMapping {
 
+	/**
+	 * The key that is being remapped.
+	 */
 	public String key;
+
+	/**
+	 * Determines when to use this {@code StringMapping}.
+	 */
 	public Rule rule;
+
+	/**
+	 * The new key -- that is, the one that the original key is remapped to.
+	 */
 	public String newKey;
 
 	/**
@@ -56,12 +67,34 @@ public final class StringMapping {
 		return Objects.hash(key, rule, newKey);
 	}
 
+	/**
+	 * The different events in which a {@link StringMapping} may take effect.
+	 */
 	public static enum Rule implements INamedEnum {
 
+		/**
+		 * The mapping is always in effect.
+		 */
 		ALWAYS("Always"),
+
+		/**
+		 * The mapping is only in effect when the NPC is acting on the player.
+		 */
 		NPC_TO_PLAYER("NpcToPlayer"),
+
+		/**
+		 * The mapping is only in effect when the player is acting on the NPC.
+		 */
 		PLAYER_TO_NPC("PlayerToNpc"),
+
+		/**
+		 * The mapping is only in effect when the NPC is acting on another NPC.
+		 */
 		NPC_TO_NPC_AS_INSTIGATOR("NpcToNpcAsInstigator"),
+
+		/**
+		 * The mapping is only in effect when the NPC is being acted upon by another NPC.
+		 */
 		NPC_TO_NPC_AS_TARGET("NpcToNpcAsTarget");
 
 		private final String id;

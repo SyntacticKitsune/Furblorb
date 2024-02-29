@@ -19,27 +19,87 @@ import net.syntactickitsune.furblorb.io.RegisterSerializable;
 /**
  * Represents an individual node in a {@code SceneAsset}'s node tree.
  */
-@RegisterSerializable(value = "SceneNode", since = 20) // TODO: May not be the right class name.
+@RegisterSerializable(value = "SceneNode", since = 20) // TODO: May not be the right class name, since Finmer's SceneNode is contained within AssetScene.
 public final class SceneNode {
 
+	/**
+	 * Identifies the kind of node, and in particular what fields it has available to it.
+	 */
 	public Type type;
+
+	/**
+	 * Identifies the node itself, for referencing by {@linkplain Type#LINK link nodes} or patches.
+	 */
 	public String key = "";
 
+	/**
+	 * The title of {@linkplain Type#CHOICE choice nodes}.
+	 * Specifically, the text displayed on the button.
+	 */
 	public String title = "";
+
+	/**
+	 * The tooltip of {@linkplain Type#CHOICE choice nodes}.
+	 * Specifically, the text displayed above the button when hovering over it.
+	 */
 	public String tooltip = "";
+
+	/**
+	 * Whether to "visually accentuate" a {@linkplain Type#CHOICE choice node}'s button.
+	 * (The asset documentation doesn't mention this option and the field's documentation is just as unenlightening.)
+	 */
 	public boolean highlight = false;
+
+	/**
+	 * The size of a {@linkplain Type#CHOICE choice node}'s button, as a multiplier of its normal size.
+	 */
 	public float buttonWidth = 1;
 
+	/**
+	 * Defines the directional button of a {@linkplain Type#COMPASS compass node}.
+	 */
 	public Direction compassLink = Direction.NORTH;
+
+	/**
+	 * The target scene of a {@linkplain Type#COMPASS compass node}.
+	 */
 	public UUID compassTarget = FurballUtil.EMPTY_UUID;
 
+	/**
+	 * The target node of a {@linkplain Type#LINK link node}.
+	 */
 	public String linkTarget = "";
 
+	/**
+	 * <p>
+	 * A script invoked when the scene node is "triggered."
+	 * For {@linkplain Type#COMPASS compass} and {@linkplain Type#CHOICE choice} nodes, this is when the button is clicked.
+	 * For {@linkplain Type#STATE state} nodes, this is when the state is reached.
+	 * </p>
+	 * <p>
+	 * Finmer's documentation (and the editor) call this "Actions Taken".
+	 * </p>
+	 */
 	@Nullable
 	public Script onTrigger;
+
+	/**
+	 * <p>
+	 * A script invoked to determine the eligibility of a {@linkplain Type#CHOICE choice} or {@linkplain Type#STATE state}.
+	 * For choice nodes, the script determines whether the choice is visible.
+	 * For state nodes, the script determines whether the state is visited.
+	 * </p>
+	 * <p>
+	 * Finmer's documentation (and the editor) call this "Appears When".
+	 * </p>
+	 */
 	@Nullable
 	public Script displayTest; // Don't forget to register your stuff using ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DisplayTest.class, () -> new DisplayTest(...));
 
+	/**
+	 * A list of child nodes.
+	 * Only {@linkplain Type#ROOT root}, {@linkplain Type#STATE state}, and {@linkplain Type#CHOICE choice} may have children.
+	 */
 	public final List<SceneNode> children = new ArrayList<>();
 
 	/**
@@ -100,6 +160,11 @@ public final class SceneNode {
 		}
 	}
 
+	/**
+	 * Writes this {@code SceneNode} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
 	public void write(Encoder to) {
 		to.writeEnum("NodeType", type);
 		to.writeString("Key", key);
@@ -152,12 +217,78 @@ public final class SceneNode {
 		return Objects.hash(type, key, title, tooltip, highlight, buttonWidth, compassLink, compassTarget, linkTarget, onTrigger, displayTest, children);
 	}
 
+	/**
+	 * Represents the different types a {@linkplain SceneNode scene node} may be.
+	 */
 	public static enum Type implements INamedEnum {
 
+		/**
+		 * <p>
+		 * Represents the root {@linkplain SceneNode scene node} of a {@link SceneAsset}.
+		 * Root nodes are treated like {@linkplain #CHOICE choice nodes} by the game, meaning that one cannot place choice nodes directly inside a root node.
+		 * </p>
+		 * <p>
+		 * Root nodes may contain children, but may not contain scripts.
+		 * </p>
+		 */
 		ROOT("Root"),
+
+		/**
+		 * <p>
+		 * Represents a "state" {@linkplain SceneNode scene node}.
+		 * </p>
+		 * <p>
+		 * State nodes represent a branch in the dialogue tree, and frequently contain choices.
+		 * For those who have experience with Twine, these are (in a sense) similar to passages.
+		 * </p>
+		 * <p>
+		 * State nodes may contain both children and scripts.
+		 * </p>
+		 */
 		STATE("State"),
+
+		/**
+		 * <p>
+		 * Represents a choice {@linkplain SceneNode scene node}.
+		 * </p>
+		 * <p>
+		 * Choice nodes represent options the player may choose to change the game state in some way.
+		 * (For example, letting the player ask a predefined question in dialogue.)
+		 * Choice nodes are presented to the player as buttons with titles and tooltips.
+		 * </p>
+		 * <p>
+		 * Choice nodes may contain both children ({@linkplain #STATE state nodes} or {@linkplain #LINK link nodes}) and scripts.
+		 * </p>
+		 */
 		CHOICE("Choice"),
+
+		/**
+		 * <p>
+		 * Represents a link {@linkplain SceneNode scene node}.
+		 * </p>
+		 * <p>
+		 * Link nodes are a way of "duplicating" part of the scene tree.
+		 * In essence, they replace themselves with the node it points to.
+		 * This is reminiscent of pointers or {@code GOTO}/{@code JUMP} statements,
+		 * </p>
+		 * <p>
+		 * Link nodes may not contain children nor scripts.
+		 * </p>
+		 */
 		LINK("Link"),
+
+		/**
+		 * <p>
+		 * Represents a "compass" {@linkplain SceneNode scene node}.
+		 * </p>
+		 * <p>
+		 * Compass nodes are similar to {@linkplain #CHOICE choices}, but may only change the current scene <i>or</i> run a script.
+		 * Compass nodes are presented as directional buttons to the left of the "log" or console.
+		 * </p>
+		 * <p>
+		 * Compass nodes may contain scripts, but not children.
+		 * </p>
+		 */
 		COMPASS("Compass");
 
 		private final String id;
@@ -172,6 +303,9 @@ public final class SceneNode {
 		}
 	}
 
+	/**
+	 * Represents the different directions available for {@link Type#COMPASS COMPASS} {@linkplain SceneNode scene nodes}.
+	 */
 	public static enum Direction implements INamedEnum { // What kind of person goes counter-clockwise‽‽
 
 		NORTH("North"),
@@ -191,10 +325,20 @@ public final class SceneNode {
 		}
 	}
 
+	/**
+	 * A wrapper for exceptions thrown when deserializing {@link SceneNode SceneNodes} that tracks the path to the problematic node.
+	 * This makes it easier to diagnose scene deserialization errors.
+	 * @author SyntacticKitsune
+	 */
 	public static final class CascadingException extends FurblorbException {
 
 		final List<String> path = new ArrayList<>();
 
+		/**
+		 * Constructs a {@code CascadingException} with the specified values.
+		 * @param mostRecent The name of the scene node that is catching the exception.
+		 * @param cause The exception in question.
+		 */
 		public CascadingException(String mostRecent, Throwable cause) {
 			super(cause);
 			path.add(mostRecent);

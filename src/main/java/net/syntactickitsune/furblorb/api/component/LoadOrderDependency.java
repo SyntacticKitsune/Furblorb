@@ -13,6 +13,11 @@ import net.syntactickitsune.furblorb.api.io.INamedEnum;
  */
 public record LoadOrderDependency(UUID targetAsset, Relation relation) {
 
+	/**
+	 * Constructs a {@code LoadOrderDependency} with the specified values.
+	 * @param targetAsset The asset ID of the script the dependency is for.
+	 * @param relation The dependency relation.
+	 */
 	public LoadOrderDependency {}
 
 	/**
@@ -34,9 +39,19 @@ public record LoadOrderDependency(UUID targetAsset, Relation relation) {
 		to.writeEnum("Relation", relation);
 	}
 
+	/**
+	 * Determines the relation between the two scripts in a {@link LoadOrderDependency}.
+	 */
 	public static enum Relation implements INamedEnum {
 
+		/**
+		 * This script should load before the specified script.
+		 */
 		BEFORE("Before"),
+
+		/**
+		 * This script should load after the specified script.
+		 */
 		AFTER("After");
 
 		private final String id;

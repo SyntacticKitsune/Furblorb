@@ -101,6 +101,10 @@ public class BinaryCodec extends Codec {
 		return true;
 	}
 
+	/**
+	 * Returns the current position of the {@code BinaryCodec}'s backing buffer.
+	 * @return The current position of the backing buffer.
+	 */
 	public int position() {
 		return buf.position();
 	}

@@ -77,6 +77,10 @@ public class JsonCodec extends Codec {
 		this(new JsonObject(), externalFiles, false, formatVersion);
 	}
 
+	/**
+	 * Returns the {@code JsonCodec}'s backing {@link JsonObject}.
+	 * @return The backing {@link JsonObject}.
+	 */
 	public JsonObject unwrap() {
 		return wrapped;
 	}

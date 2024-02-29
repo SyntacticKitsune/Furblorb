@@ -208,8 +208,14 @@ public final class CreatureAsset extends FurballAsset {
 	 */
 	public static enum Size implements INamedEnum {
 
+		/**
+		 * The smallest size -- two sizes smaller than {@link #MEDIUM} (the default).
+		 */
 		TINY("Tiny"),
 
+		/**
+		 * In between {@link #TINY} and {@link #MEDIUM}.
+		 */
 		SMALL("Small"),
 
 		/**
@@ -217,8 +223,14 @@ public final class CreatureAsset extends FurballAsset {
 		 */
 		MEDIUM("Medium"),
 
+		/**
+		 * In between {@link #MEDIUM} and {@link #HUGE}.
+		 */
 		LARGE("Large"),
 
+		/**
+		 * The largest size -- two sizes larger than {@link #MEDIUM} (the default).
+		 */
 		HUGE("Huge");
 
 		private final String id;

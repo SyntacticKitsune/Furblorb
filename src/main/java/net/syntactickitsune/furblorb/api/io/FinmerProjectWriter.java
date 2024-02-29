@@ -71,6 +71,11 @@ public final class FinmerProjectWriter {
 		externalFiles.writeExternalFile(to, (bomChar + j).getBytes(StandardCharsets.UTF_8));
 	}
 
+	/**
+	 * Converts the specified {@code JsonElement} into a {@code String} with tab indention.
+	 * @param elem The element to convert.
+	 * @return The converted {@code String}.
+	 */
 	@Internal
 	public static String toJson(JsonElement elem) {
 		final StringWriter sw = new StringWriter();

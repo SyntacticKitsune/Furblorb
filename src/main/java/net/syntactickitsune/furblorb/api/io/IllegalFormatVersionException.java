@@ -10,6 +10,12 @@ public final class IllegalFormatVersionException extends FurblorbParsingExceptio
 	private final byte requiredFormatVersion;
 	private final byte providedFormatVersion;
 
+	/**
+	 * Constructs a new {@code IllegalFormatVersionException} with the specified values.
+	 * @param requiredFormatVersion The format version required for the feature.
+	 * @param providedFormatVersion The current (illegal) format version.
+	 * @param message The feature or action in question.
+	 */
 	public IllegalFormatVersionException(byte requiredFormatVersion, byte providedFormatVersion, String message) {
 		super("Cannot " + message + " in format version " + providedFormatVersion + " as it requires format version " + requiredFormatVersion);
 		this.requiredFormatVersion = requiredFormatVersion;
