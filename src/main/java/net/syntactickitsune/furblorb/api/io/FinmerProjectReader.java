@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -175,8 +176,8 @@ public final class FinmerProjectReader {
 
 		@Override
 		public List<String> listFiles() {
-			try {
-				return Files.list(projectDirectory)
+			try (Stream<Path> stream = Files.list(projectDirectory)) {
+				return stream
 						.map(path -> path.getFileName().toString())
 						.toList();
 			} catch (IOException e) {
