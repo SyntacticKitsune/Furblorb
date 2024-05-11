@@ -99,7 +99,7 @@ final class Steps {
 	static final record ChangeTitle(String value) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! Changed title %s → %s.", data.furball.meta.title, value);
+			System.out.printf("! Changed title %s => %s.", data.furball.meta.title, value);
 			data.furball.meta.title = value;
 		}
 	}
@@ -107,7 +107,7 @@ final class Steps {
 	static final record ChangeAuthor(String value) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! Changed author %s → %s.", data.furball.meta.author, value);
+			System.out.printf("! Changed author %s => %s.", data.furball.meta.author, value);
 			data.furball.meta.author = value;
 		}
 	}
