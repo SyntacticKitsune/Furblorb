@@ -40,13 +40,15 @@ final class Steps {
 		public void run(WorkingData data) throws Exception {
 			final String kind;
 
-			if (Files.isDirectory(from)) {
-				data.furball = new FinmerProjectReader(from).readFurball();
+			final String filename = from.getFileName().toString();
+			if (filename.endsWith(".fnproj")) {
+				data.furball = new FinmerProjectReader(FinmerProjectReader.DefaultExternalFileHandler.forProjectFile(from)).readFurball();
 				kind = "Finmer project";
-			} else {
+			} else if (filename.endsWith(".furball")) {
 				data.furball = new FurballReader(Files.readAllBytes(from)).readFurball();
 				kind = "furball";
-			}
+			} else
+				throw new IllegalArgumentException("Don't know how to read from " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
 
 			System.out.printf("! Read %s \"%s\" by %s with %d assets (format version %d).\n", kind,
 					data.furball.meta.title, data.furball.meta.author, data.furball.assets.size(), data.furball.meta.formatVersion);
@@ -67,17 +69,19 @@ final class Steps {
 
 			final String kind;
 
-			if (to.getFileName().toString().endsWith(".furball")) {
+			final String filename = to.getFileName().toString();
+			if (filename.endsWith(".furball")) {
 				final BinaryCodec codec = new BinaryCodec(false);
 				new FurballWriter(codec).write(data.furball);
 
 				Files.write(to, codec.toByteArray(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
 				kind = "furball";
-			} else {
-				new FinmerProjectWriter(to).writeFurball(data.furball);
+			} else if (filename.endsWith(".fnproj")) {
+				new FinmerProjectWriter(FinmerProjectWriter.DefaultExternalFileHandler.forProjectFile(to)).writeFurball(data.furball);
 				kind = "Finmer project";
-			}
+			} else
+				throw new IllegalArgumentException("Don't know how to write to " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
 
 			System.out.printf("! Completed: wrote a %s to %s\n", kind, to().toAbsolutePath());
 		}
@@ -132,7 +136,7 @@ final class Steps {
 			if (json.charAt(0) == 65279) json = json.substring(1); // Remove the BOM, if present.
 
 			final JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-			final JsonCodec codec = new JsonCodec(obj, new FinmerProjectReader.DefaultExternalFileHandler(assetPath.getParent()), true, data.formatVersion());
+			final JsonCodec codec = new JsonCodec(obj, new FinmerProjectReader.DefaultExternalFileHandler(assetPath.getParent(), assetPath), true, data.formatVersion());
 			final FurballAsset asset = FurballSerializables.read(codec);
 
 			System.out.printf("! Inserted asset %s (%s).\n", asset.filename, asset.id);
@@ -149,7 +153,7 @@ final class Steps {
 					System.out.printf("! Extracting asset %s (%s) to %s.\n", asset.filename, asset.id, dest.toAbsolutePath());
 					{
 						final JsonObject obj = new JsonObject();
-						final JsonCodec codec = new JsonCodec(obj, new FinmerProjectWriter.DefaultExternalFileHandler(dest.getParent()), false, data.formatVersion());
+						final JsonCodec codec = new JsonCodec(obj, new FinmerProjectWriter.DefaultExternalFileHandler(dest.getParent(), dest), false, data.formatVersion());
 						asset.writeWithId(codec);
 						Files.writeString(dest, FinmerProjectWriter.toJson(obj), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 					}

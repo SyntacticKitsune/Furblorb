@@ -32,7 +32,7 @@ import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
  * <p>
  * Using this class is as simple as:
  * <code><pre>
- * new FinmerProjectWriter(projectDirectory).writeFurball(furball);</pre></code>
+ * new FinmerProjectWriter(DefaultExtendedFileHandler.fromProjectFile(projectFile)).writeFurball(furball);</pre></code>
  * </p>
  * @author SyntacticKitsune
  * @see FinmerProjectReader
@@ -53,22 +53,13 @@ public final class FinmerProjectWriter {
 		this.externalFiles = Objects.requireNonNull(externalFiles, "externalFiles");
 	}
 
-	/**
-	 * Constructs a new {@code FinmerProjectWriter} with the specified Finmer project directory.
-	 * @param projectDirectory The project directory to write to.
-	 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
-	 */
-	public FinmerProjectWriter(Path projectDirectory) {
-		this(new DefaultExternalFileHandler(projectDirectory));
-	}
-
-	private void writeJson(JsonObject json, String to) {
+	private byte[] toBytes(JsonObject json) {
 		final String j = externalFiles.normalizeLineEndings(toJson(json));
 		// Unfortunately, we must insert a UTF-8 BOM character.
 		// I swear I'm going to throw whoever thought UTF-8 BOM was a good idea.
 		final char bomChar = (char) 65279;
 
-		externalFiles.writeExternalFile(to, (bomChar + j).getBytes(StandardCharsets.UTF_8));
+		return (bomChar + j).getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -97,7 +88,7 @@ public final class FinmerProjectWriter {
 
 		codec.writeList("Dependencies", furball.dependencies, FurballDependency::write);
 
-		writeJson(codec.unwrap(), externalFiles.projectFilename());
+		externalFiles.writeProjectFile(toBytes(codec.unwrap()));
 	}
 
 	/**
@@ -114,29 +105,49 @@ public final class FinmerProjectWriter {
 		for (FurballAsset asset : furball.assets) {
 			final JsonCodec codec = new JsonCodec(externalFiles, furball.meta.formatVersion);
 			asset.writeWithId(codec);
-			writeJson(codec.unwrap(), asset.filename + ".json");
+			externalFiles.writeExternalFile(asset.filename + ".json", toBytes(codec.unwrap()));
 		}
 	}
 
 	/**
 	 * The default writing implementation of {@link ExtendedExternalFileHandler}, which writes projects to a directory on the filesystem.
-	 * @param projectDirectory The project directory to write to.
+	 * @param projectDirectory The directory containing the project file (usually) and its associated assets.
+	 * @param projectFile The project file itself. It need not be in the project directory, but this may confuse Finmer's editor.
 	 * @author SyntacticKitsune
 	 */
-	public static record DefaultExternalFileHandler(Path projectDirectory) implements ExtendedExternalFileHandler {
+	public static record DefaultExternalFileHandler(Path projectDirectory, Path projectFile) implements ExtendedExternalFileHandler {
 
 		/**
 		 * Constructs a new {@code DefaultExternalFileHandler}.
-		 * @param projectDirectory The project directory to write to.
-		 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
+		 * @param projectDirectory The directory containing the project file (usually) and its associated assets.
+		 * @param projectFile The project file itself. It need not be in the project directory, but this may confuse Finmer's editor.
+		 * @throws NullPointerException If {@code projectDirectory} or {@code projectFile} are {@code null}.
 		 */
 		public DefaultExternalFileHandler {
 			Objects.requireNonNull(projectDirectory, "projectDirectory");
+			Objects.requireNonNull(projectFile, "projectFile");
 		}
 
-		@Override
-		public String projectFilename() {
-			return projectDirectory.getFileName().toString() + ".fnproj";
+		/**
+		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project file.
+		 * The project directory is assumed to be the enclosing directory of the project file.
+		 * @param projectFile The project file.
+		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @throws NullPointerException If {@code projectFile} is {@code null}.
+		 */
+		public static DefaultExternalFileHandler forProjectFile(Path projectFile) {
+			return new DefaultExternalFileHandler(projectFile.getParent(), projectFile);
+		}
+
+		/**
+		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project directory.
+		 * The project file is assumed to be named after the project directory.
+		 * @param projectDirectory The directory containing the project file and its associated assets.
+		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
+		 */
+		public static DefaultExternalFileHandler forProjectDirectory(Path projectDirectory) {
+			return new DefaultExternalFileHandler(projectDirectory, projectDirectory.resolve(projectDirectory.getFileName().toString() + ".fnproj"));
 		}
 
 		@Override

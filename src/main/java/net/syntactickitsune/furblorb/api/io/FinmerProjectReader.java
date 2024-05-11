@@ -36,7 +36,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  * <p>
  * Using this class is as simple as:
  * <code><pre>
- * Furball furball = new FinmerProjectReader(projectDirectory).readFurball();</pre></code>
+ * Furball furball = new FinmerProjectReader(DefaultExternalFileHandler.fromProjectFile(projectFile)).readFurball();</pre></code>
  * </p>
  * @author SyntacticKitsune
  * @see FinmerProjectWriter
@@ -55,19 +55,13 @@ public final class FinmerProjectReader {
 		this.externalFiles = Objects.requireNonNull(externalFiles, "externalFiles");
 	}
 
-	/**
-	 * Constructs a new {@code FinmerProjectReader} with the specified Finmer project directory.
-	 * @param projectDirectory The project directory to read from.
-	 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
-	 */
-	public FinmerProjectReader(Path projectDirectory) {
-		this(new DefaultExternalFileHandler(projectDirectory));
-	}
-
 	private JsonObject readJson(String filename) {
 		final byte[] bytes = externalFiles.readExternalFile(filename);
 		if (bytes == null) throw new FurblorbParsingException("ExternalFileHandler returned null for " + filename);
+		return readJson(bytes);
+	}
 
+	private static JsonObject readJson(byte[] bytes) {
 		String j = new String(bytes, StandardCharsets.UTF_8);
 		if (j.charAt(0) == 65279) j = j.substring(1); // Remove the BOM, if present.
 
@@ -89,7 +83,7 @@ public final class FinmerProjectReader {
 	public Furball readFurball() {
 		final List<String> files = externalFiles.listFiles();
 
-		final JsonObject proj = readJson(externalFiles.projectFilename());
+		final JsonObject proj = readJson(externalFiles.readProjectFile());
 		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, true, proj.get("FormatVersion").getAsByte());
 		final FurballMetadata meta = readMetadata(projCodec);
 		final Furball furball = new Furball(meta);
@@ -141,9 +135,23 @@ public final class FinmerProjectReader {
 	public static interface ExtendedExternalFileHandler extends ExternalFileHandler {
 
 		/**
-		 * @return The name of the project file. This is frequently the directory name + ".fnproj".
+		 * Reads the contents of the project file into a new byte array and returns it.
+		 * @return The project file bytes.
+		 * @throws UnsupportedOperationException If the {@code ExternalFileHandler} does not support reading files (like if it's write-only).
 		 */
-		public String projectFilename();
+		public default byte[] readProjectFile() {
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * Writes the given bytes to the project file.
+		 * @param contents The bytes to write to the project file.
+		 * @throws NullPointerException If {@code contents} is {@code null}.
+		 * @throws UnsupportedOperationException If the {@code ExternalFileHandler} does not support writing files (like if it's read-only).
+		 */
+		public default void writeProjectFile(byte[] contents) {
+			throw new UnsupportedOperationException();
+		}
 
 		/**
 		 * Finds and returns a {@code List} consisting of all of the files found in the root directory.
@@ -155,23 +163,43 @@ public final class FinmerProjectReader {
 
 	/**
 	 * The default reading implementation of {@link ExtendedExternalFileHandler}, which reads projects from a directory on the filesystem.
-	 * @param projectDirectory The project directory to read from.
+	 * @param projectDirectory The directory containing the project file and its associated assets.
+	 * @param projectFile The project file itself.
 	 * @author SyntacticKitsune
 	 */
-	public static record DefaultExternalFileHandler(Path projectDirectory) implements ExtendedExternalFileHandler {
+	public static record DefaultExternalFileHandler(Path projectDirectory, Path projectFile) implements ExtendedExternalFileHandler {
 
 		/**
 		 * Constructs a new {@code DefaultExternalFileHandler}.
-		 * @param projectDirectory The project directory to read from.
-		 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
+		 * @param projectDirectory The directory containing the project file (usually) and its associated assets.
+		 * @param projectFile The project file itself. It need not be in the project directory, but this may confuse Finmer's editor.
+		 * @throws NullPointerException If {@code projectDirectory} or {@code projectFile} are {@code null}.
 		 */
 		public DefaultExternalFileHandler {
 			Objects.requireNonNull(projectDirectory, "projectDirectory");
+			Objects.requireNonNull(projectFile, "projectFile");
 		}
 
-		@Override
-		public String projectFilename() {
-			return projectDirectory.getFileName().toString() + ".fnproj";
+		/**
+		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project file.
+		 * The project directory is assumed to be the enclosing directory of the project file.
+		 * @param projectFile The project file.
+		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @throws NullPointerException If {@code projectFile} is {@code null}.
+		 */
+		public static DefaultExternalFileHandler forProjectFile(Path projectFile) {
+			return new DefaultExternalFileHandler(projectFile.getParent(), projectFile);
+		}
+
+		/**
+		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project directory.
+		 * The project file is assumed to be named after the project directory.
+		 * @param projectDirectory The directory containing the project file and its associated assets.
+		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
+		 */
+		public static DefaultExternalFileHandler forProjectDirectory(Path projectDirectory) {
+			return new DefaultExternalFileHandler(projectDirectory, projectDirectory.resolve(projectDirectory.getFileName().toString() + ".fnproj"));
 		}
 
 		@Override
@@ -186,8 +214,16 @@ public final class FinmerProjectReader {
 		}
 
 		@Override
+		public byte[] readProjectFile() {
+			return readExternalFile(projectFile, projectFile.getFileName().toString());
+		}
+
+		@Override
 		public byte @Nullable [] readExternalFile(String filename) {
-			final Path file = projectDirectory.resolve(filename);
+			return readExternalFile(projectDirectory.resolve(filename), filename);
+		}
+
+		private byte @Nullable [] readExternalFile(Path file, String filename) {
 			try {
 				// We need to "normalize" the line endings of text files so that the furball is the expected size.
 				if (filename.endsWith(".lua")) {

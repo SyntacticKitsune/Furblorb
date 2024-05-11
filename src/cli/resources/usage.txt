@@ -1,8 +1,8 @@
 Furblorb: an unpacker/packer for Finmer "furballs"
 
 Usage: java -jar Furblorb-%VERSION%.jar <arguments...>
-Ex. 1: java -jar Furblorb-%VERSION%.jar --read Core.furball --write Core
-Ex. 2: java -jar Furblorb-%VERSION%.jar --read Core --write Core.furball
+Ex. 1: java -jar Furblorb-%VERSION%.jar --read Core.furball --write Core/Core.fnproj
+Ex. 2: java -jar Furblorb-%VERSION%.jar --read Core/Core.fnproj --write Core.furball
 
 Informational options:
 
@@ -20,13 +20,14 @@ Note: "furball" in the following sections may be either a
 I/O options:
 
   --read <file>
-          Read from the specified file.
-          The file must be a valid furball.
+          Read from the specified file. The file must
+          either be a furball (".furball") or a Finmer
+          project (".fnproj").
   --write <file>
           Write to the specified file. Furblorb assumes
           it should write a furball if the filename ends
-          in ".furball" and that it should write a
-          Finmer project otherwise.
+          in ".furball" and that it should write a Finmer
+          project if the filename ends with ".fnproj".
   --format-version <version>
           Write in the specified format version.
           Warning: changing the format version can

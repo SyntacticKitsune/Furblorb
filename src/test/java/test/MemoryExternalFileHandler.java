@@ -32,9 +32,18 @@ final class MemoryExternalFileHandler implements ExtendedExternalFileHandler {
 		return Collections.unmodifiableMap(contents);
 	}
 
-	@Override
-	public String projectFilename() {
+	private String projectFile() {
 		return projectName + ".fnproj";
+	}
+
+	@Override
+	public byte[] readProjectFile() {
+		return readExternalFile(projectFile());
+	}
+
+	@Override
+	public void writeProjectFile(byte[] contents) {
+		writeExternalFile(projectFile(), contents);
 	}
 
 	@Override
