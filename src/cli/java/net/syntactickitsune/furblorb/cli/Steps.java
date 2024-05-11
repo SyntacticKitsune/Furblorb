@@ -23,7 +23,9 @@ import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.FurballDependency;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectReader;
+import net.syntactickitsune.furblorb.api.io.FinmerProjectReader.ReadOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectWriter;
+import net.syntactickitsune.furblorb.api.io.FinmerProjectWriter.WriteOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.FurballReader;
 import net.syntactickitsune.furblorb.api.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
@@ -42,7 +44,7 @@ final class Steps {
 
 			final String filename = from.getFileName().toString();
 			if (filename.endsWith(".fnproj")) {
-				data.furball = new FinmerProjectReader(FinmerProjectReader.DefaultExternalFileHandler.forProjectFile(from)).readFurball();
+				data.furball = new FinmerProjectReader(ReadOnlyExternalFileHandler.forProjectFile(from)).readFurball();
 				kind = "Finmer project";
 			} else if (filename.endsWith(".furball")) {
 				data.furball = new FurballReader(Files.readAllBytes(from)).readFurball();
@@ -78,7 +80,7 @@ final class Steps {
 
 				kind = "furball";
 			} else if (filename.endsWith(".fnproj")) {
-				new FinmerProjectWriter(FinmerProjectWriter.DefaultExternalFileHandler.forProjectFile(to)).writeFurball(data.furball);
+				new FinmerProjectWriter(WriteOnlyExternalFileHandler.forProjectFile(to)).writeFurball(data.furball);
 				kind = "Finmer project";
 			} else
 				throw new IllegalArgumentException("Don't know how to write to " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
@@ -136,7 +138,7 @@ final class Steps {
 			if (json.charAt(0) == 65279) json = json.substring(1); // Remove the BOM, if present.
 
 			final JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-			final JsonCodec codec = new JsonCodec(obj, new FinmerProjectReader.DefaultExternalFileHandler(assetPath.getParent(), assetPath), true, data.formatVersion());
+			final JsonCodec codec = new JsonCodec(obj, new ReadOnlyExternalFileHandler(assetPath.getParent(), assetPath), true, data.formatVersion());
 			final FurballAsset asset = FurballSerializables.read(codec);
 
 			System.out.printf("! Inserted asset %s (%s).\n", asset.filename, asset.id);
@@ -153,7 +155,7 @@ final class Steps {
 					System.out.printf("! Extracting asset %s (%s) to %s.\n", asset.filename, asset.id, dest.toAbsolutePath());
 					{
 						final JsonObject obj = new JsonObject();
-						final JsonCodec codec = new JsonCodec(obj, new FinmerProjectWriter.DefaultExternalFileHandler(dest.getParent(), dest), false, data.formatVersion());
+						final JsonCodec codec = new JsonCodec(obj, new WriteOnlyExternalFileHandler(dest.getParent(), dest), false, data.formatVersion());
 						asset.writeWithId(codec);
 						Files.writeString(dest, FinmerProjectWriter.toJson(obj), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 					}

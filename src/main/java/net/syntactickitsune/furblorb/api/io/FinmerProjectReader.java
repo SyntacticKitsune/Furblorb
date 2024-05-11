@@ -36,7 +36,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  * <p>
  * Using this class is as simple as:
  * <code><pre>
- * Furball furball = new FinmerProjectReader(DefaultExternalFileHandler.fromProjectFile(projectFile)).readFurball();</pre></code>
+ * Furball furball = new FinmerProjectReader(ReadOnlyExternalFileHandler.fromProjectFile(projectFile)).readFurball();</pre></code>
  * </p>
  * @author SyntacticKitsune
  * @see FinmerProjectWriter
@@ -167,39 +167,39 @@ public final class FinmerProjectReader {
 	 * @param projectFile The project file itself.
 	 * @author SyntacticKitsune
 	 */
-	public static record DefaultExternalFileHandler(Path projectDirectory, Path projectFile) implements ExtendedExternalFileHandler {
+	public static record ReadOnlyExternalFileHandler(Path projectDirectory, Path projectFile) implements ExtendedExternalFileHandler {
 
 		/**
-		 * Constructs a new {@code DefaultExternalFileHandler}.
+		 * Constructs a new {@code ReadOnlyExternalFileHandler}.
 		 * @param projectDirectory The directory containing the project file (usually) and its associated assets.
 		 * @param projectFile The project file itself. It need not be in the project directory, but this may confuse Finmer's editor.
 		 * @throws NullPointerException If {@code projectDirectory} or {@code projectFile} are {@code null}.
 		 */
-		public DefaultExternalFileHandler {
+		public ReadOnlyExternalFileHandler {
 			Objects.requireNonNull(projectDirectory, "projectDirectory");
 			Objects.requireNonNull(projectFile, "projectFile");
 		}
 
 		/**
-		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project file.
+		 * Constructs a new {@code ReadOnlyExternalFileHandler} with the specified project file.
 		 * The project directory is assumed to be the enclosing directory of the project file.
 		 * @param projectFile The project file.
-		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @return The new {@code ReadOnlyExternalFileHandler}.
 		 * @throws NullPointerException If {@code projectFile} is {@code null}.
 		 */
-		public static DefaultExternalFileHandler forProjectFile(Path projectFile) {
-			return new DefaultExternalFileHandler(projectFile.getParent(), projectFile);
+		public static ReadOnlyExternalFileHandler forProjectFile(Path projectFile) {
+			return new ReadOnlyExternalFileHandler(projectFile.getParent(), projectFile);
 		}
 
 		/**
-		 * Constructs a new {@code DefaultExternalFileHandler} with the specified project directory.
+		 * Constructs a new {@code ReadOnlyExternalFileHandler} with the specified project directory.
 		 * The project file is assumed to be named after the project directory.
 		 * @param projectDirectory The directory containing the project file and its associated assets.
-		 * @return The new {@code DefaultExternalFileHandler}.
+		 * @return The new {@code ReadOnlyExternalFileHandler}.
 		 * @throws NullPointerException If {@code projectDirectory} is {@code null}.
 		 */
-		public static DefaultExternalFileHandler forProjectDirectory(Path projectDirectory) {
-			return new DefaultExternalFileHandler(projectDirectory, projectDirectory.resolve(projectDirectory.getFileName().toString() + ".fnproj"));
+		public static ReadOnlyExternalFileHandler forProjectDirectory(Path projectDirectory) {
+			return new ReadOnlyExternalFileHandler(projectDirectory, projectDirectory.resolve(projectDirectory.getFileName().toString() + ".fnproj"));
 		}
 
 		@Override
