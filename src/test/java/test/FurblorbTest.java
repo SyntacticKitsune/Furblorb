@@ -41,57 +41,43 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
 final class FurblorbTest {
 
 	@Test
-	void testReadFormat19Furball() { // Furball → Furball
+	void testFormat19Furball() { // Furball → Furball
 		doFurball2FurballTest("/Core.1.0.0.furball", (byte) 19, 0, 173);
 	}
 
-	@Test
-	void testReadFormat20Furball() { // Furball → Furball
-		doFurball2FurballTest("/Core.1.0.1.furball", (byte) 20, 0, 175);
-	}
-
 	@TestFactory
-	List<DynamicTest> testReadFormat19Project() { // Project → Project
+	List<DynamicTest> testFormat19Project() { // Project → Project
 		return doProject2ProjectTest("Core.1.0.0.zip", "Core");
 	}
 
 	@TestFactory
-	List<DynamicTest> testReadFormat20Project() { // Project → Project
-		return doProject2ProjectTest("Core.1.0.1.zip", "Core");
-	}
-
-	@TestFactory
-	List<DynamicTest> testReadFormat19Furball2Project() { // Furball → Project
+	List<DynamicTest> testFormat19Furball2Project() { // Furball → Project
 		return doFurball2ProjectTest("Core.1.0.0.zip", "/Core.1.0.0.furball", "Core");
 	}
 
 	@TestFactory
-	List<DynamicTest> testReadFormat20Furball2Project() { // Furball → Project
+	List<DynamicTest> testFormat19Project2Furball() { // Project → Furball
+		return doProject2FurballTest("Core.1.0.0.zip", "/Core.1.0.0.furball", "Core");
+	}
+
+	@Test
+	void testFormat20Furball() { // Furball → Furball
+		doFurball2FurballTest("/Core.1.0.1.furball", (byte) 20, 0, 175);
+	}
+
+	@TestFactory
+	List<DynamicTest> testFormat20Project() { // Project → Project
+		return doProject2ProjectTest("Core.1.0.1.zip", "Core");
+	}
+
+	@TestFactory
+	List<DynamicTest> testFormat20Furball2Project() { // Furball → Project
 		return doFurball2ProjectTest("Core.1.0.1.zip", "/Core.1.0.1.furball", "Core");
 	}
 
 	@TestFactory
-	List<DynamicTest> testReadFormat20Project2Furball() { // Project → Furball
+	List<DynamicTest> testFormat20Project2Furball() { // Project → Furball
 		return doProject2FurballTest("Core.1.0.1.zip", "/Core.1.0.1.furball", "Core");
-	}
-
-	private static List<DynamicTest> compareProjects(Map<String, byte[]> inContents, Map<String, byte[]> outContents) {
-		return inContents.entrySet()
-				.stream()
-				.map(entry -> {
-					final String name = entry.getKey();
-					final byte[] inData = entry.getValue();
-					final byte[] outData = outContents.get(name);
-					return DynamicTest.dynamicTest(name, () -> {
-						if (name.endsWith(".json") || name.endsWith(".lua") || name.endsWith(".fnproj")) {
-							final String expected = new String(inData, StandardCharsets.UTF_8).replace("\r\n", "\n");
-							final String result = new String(outData, StandardCharsets.UTF_8).replace("\r\n", "\n");
-							assertEquals(expected, result);
-						} else
-							assertArrayEquals(inData, outData);
-					});
-				})
-				.toList();
 	}
 
 	@Test
@@ -237,5 +223,24 @@ final class FurblorbTest {
 		ret.add(DynamicTest.dynamicTest("bytes", () -> assertArrayEquals(inBytes, outBytes)));
 
 		return ret;
+	}
+
+	private static List<DynamicTest> compareProjects(Map<String, byte[]> inContents, Map<String, byte[]> outContents) {
+		return inContents.entrySet()
+				.stream()
+				.map(entry -> {
+					final String name = entry.getKey();
+					final byte[] inData = entry.getValue();
+					final byte[] outData = outContents.get(name);
+					return DynamicTest.dynamicTest(name, () -> {
+						if (name.endsWith(".json") || name.endsWith(".lua") || name.endsWith(".fnproj")) {
+							final String expected = new String(inData, StandardCharsets.UTF_8).replace("\r\n", "\n");
+							final String result = new String(outData, StandardCharsets.UTF_8).replace("\r\n", "\n");
+							assertEquals(expected, result);
+						} else
+							assertArrayEquals(inData, outData);
+					});
+				})
+				.toList();
 	}
 }
