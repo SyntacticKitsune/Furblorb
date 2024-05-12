@@ -26,6 +26,10 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  */
 public final class FurballReader {
 
+	/**
+	 * The furball "magic", i.e. the file data prefix that identifies the file as being a furball.
+	 * See <a href="https://github.com/pileofwolves/finmer/blob/master/Finmer.Core/Serialization/FurballFileDeviceBinary.cs#L24">FurballFileDeviceBinary.cs</a>.
+	 */
 	static final byte[] MAGIC = { 'F', 'U', 'R', 'B', 'A', 'L', 'L' };
 
 	private final BinaryCodec codec;
@@ -59,6 +63,11 @@ public final class FurballReader {
 		codec.buffer().order(ByteOrder.LITTLE_ENDIAN);
 	}
 
+	/**
+	 * Checks to make sure the specified format version is supported by Furblorb's API.
+	 * @param formatVersion The format version to check.
+	 * @throws UnsupportedFormatVersionException If the format version is unsupported.
+	 */
 	static void checkFormatVersion(byte formatVersion) {
 		if (formatVersion < FurballMetadata.MINIMUM_VERSION)
 			throw new UnsupportedFormatVersionException(formatVersion, "Furball too old: it has format version " + formatVersion + " but this parser only understands a minimum of " + FurballMetadata.MINIMUM_VERSION);

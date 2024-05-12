@@ -8,11 +8,19 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+/**
+ * The implementation of {@link ShuffleRandom}.
+ * @author SyntacticKitsune
+ */
 final class ShuffleRandomImpl implements ShuffleRandom {
 
 	private final RandomGenerator random;
 	private final Random fake;
 
+	/**
+	 * Constructs a new {@code ShuffleRandomImpl} with the specified {@code RandomGenerator}.
+	 * @param random The {@code RandomGenerator} to wrap.
+	 */
 	ShuffleRandomImpl(RandomGenerator random) {
 		this.random = random;
 		fake = random instanceof Random r ? r : new FakeRandom(random);

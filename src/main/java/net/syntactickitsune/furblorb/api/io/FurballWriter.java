@@ -40,6 +40,11 @@ public final class FurballWriter {
 		this(new BinaryCodec(false));
 	}
 
+	/**
+	 * Checks to make sure the specified format version is supported by Furblorb's API.
+	 * @param formatVersion The format version to check.
+	 * @throws UnsupportedFormatVersionException If the format version is unsupported.
+	 */
 	static void checkFormatVersion(byte formatVersion) {
 		if (formatVersion < FurballMetadata.MINIMUM_VERSION)
 			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version older than min supported: " + formatVersion + " < " + FurballMetadata.MINIMUM_VERSION);

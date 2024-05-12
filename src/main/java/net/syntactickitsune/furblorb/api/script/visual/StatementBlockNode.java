@@ -18,10 +18,22 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  */
 public abstract class StatementBlockNode extends StatementNode {
 
+	/**
+	 * Reads a list of {@link ScriptNode ScriptNodes} from the specified {@code Decoder} using the specified key.
+	 * @param key The key that the nodes are associated with.
+	 * @param in The {@code Decoder} to read from.
+	 * @return The list of {@code ScriptNodes}.
+	 */
 	protected static List<ScriptNode> read(String key, Decoder in) {
 		return in.readOptionalList(key, FurballSerializables::read);
 	}
 
+	/**
+	 * Writes a list of {@link ScriptNode ScriptNodes} to the specified {@code Encoder} using the specified key.
+	 * @param key The key that the nodes are associated with.
+	 * @param list The list of nodes to write.
+	 * @param out The {@code Encoder} to write to.
+	 */
 	protected static void write(String key, List<ScriptNode> list, Encoder out) {
 		out.writeOptionalList(key, list, ScriptNode::writeWithId);
 	}

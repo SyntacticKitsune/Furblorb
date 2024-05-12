@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.ExternalFileHandler;
+import net.syntactickitsune.furblorb.api.io.FinmerProjectReader.ExtendedExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.util.TriConsumer;
@@ -36,9 +37,20 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
  */
 public class JsonCodec extends Codec {
 
+	/**
+	 * The wrapped {@link JsonObject}.
+	 */
 	protected final JsonObject wrapped;
+
+	/**
+	 * The {@link ExternalFileHandler}. In many cases this will be an {@link ExtendedExternalFileHandler}.
+	 */
 	@Nullable
 	protected final ExternalFileHandler externalFiles;
+
+	/**
+	 * Whether the {@code JsonCodec} is read-only versus write-only.
+	 */
 	protected final boolean read;
 
 	/**
@@ -412,10 +424,18 @@ public class JsonCodec extends Codec {
 			throw new FurblorbParsingException("Assertion \"" + key + " = null\" failed: " + message);
 	}
 
+	/**
+	 * Checks to see make sure read access is supported.
+	 * @throws UnsupportedOperationException If the codec is write-only.
+	 */
 	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
+	/**
+	 * Checks to see make sure write access is supported.
+	 * @throws UnsupportedOperationException If the codec is read-only.
+	 */
 	protected void checkWrite() {
 		if (read) throw new UnsupportedOperationException("Codec is read-only");
 	}

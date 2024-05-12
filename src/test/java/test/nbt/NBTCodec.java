@@ -40,10 +40,17 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
  * @see BinaryCodec
  * @see JsonCodec
  */
-public final class NBTCodec extends Codec {
+public class NBTCodec extends Codec {
 
-	private final CompoundTag wrapped;
-	private final boolean read;
+	/**
+	 * The wrapped {@link CompoundTag}.
+	 */
+	protected final CompoundTag wrapped;
+
+	/**
+	 * Whether the {@code NBTCodec} is read-only versus write-only.
+	 */
+	protected final boolean read;
 
 	/**
 	 * Constructs a new {@code NBTCodec} with the specified parameters.
@@ -395,10 +402,18 @@ public final class NBTCodec extends Codec {
 			throw new FurblorbParsingException("Assertion \"" + key + " = null\" failed: " + message);
 	}
 
+	/**
+	 * Checks to see make sure read access is supported.
+	 * @throws UnsupportedOperationException If the codec is write-only.
+	 */
 	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
+	/**
+	 * Checks to see make sure write access is supported.
+	 * @throws UnsupportedOperationException If the codec is read-only.
+	 */
 	protected void checkWrite() {
 		if (read) throw new UnsupportedOperationException("Codec is read-only");
 	}

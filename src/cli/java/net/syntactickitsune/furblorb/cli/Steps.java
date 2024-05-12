@@ -35,6 +35,10 @@ import net.syntactickitsune.furblorb.cli.shuffling.AssetShufflerRegistry;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
+/**
+ * A container class for all of the {@link Step} implementations.
+ * @author SyntacticKitsune
+ */
 final class Steps {
 
 	static final record Read(Path from) implements Step {

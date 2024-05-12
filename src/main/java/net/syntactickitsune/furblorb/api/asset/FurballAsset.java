@@ -38,8 +38,16 @@ public sealed abstract class FurballAsset implements IFurballSerializable, Compa
 	 */
 	public String filename;
 
+	/**
+	 * Constructs a new {@code FurballAsset} with default values.
+	 */
 	FurballAsset() {}
 
+	/**
+	 * Decodes a {@code FurballAsset} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	FurballAsset(Decoder in) {
 		id = in.readUUID("AssetID");
 		filename = in.readString("AssetName");
@@ -52,6 +60,13 @@ public sealed abstract class FurballAsset implements IFurballSerializable, Compa
 		write0(to);
 	}
 
+	/**
+	 * Writes the type-specific contents of this {@code FurballAsset} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 * @see #write(Encoder)
+	 * @see #writeWithId(Encoder)
+	 */
 	protected abstract void write0(Encoder to);
 
 	@Override

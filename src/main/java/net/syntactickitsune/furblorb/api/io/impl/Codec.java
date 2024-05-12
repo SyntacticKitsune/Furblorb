@@ -21,10 +21,21 @@ public abstract class Codec implements Encoder, Decoder {
 
 	private static final Map<Class<?>, ParsingStrategy.NumberType> ENUM_NUMBER_CACHE = new HashMap<>();
 
-	private static final byte UNSET_FORMAT_VERSION = 0;
+	/**
+	 * A special value indicating an unset format version.
+	 */
+	protected static final byte UNSET_FORMAT_VERSION = 0;
 
+	/**
+	 * The format version of the {@code Codec}.
+	 * @see #formatVersion()
+	 * @see #setFormatVersion(byte)
+	 */
 	protected byte formatVersion = UNSET_FORMAT_VERSION;
 
+	/**
+	 * See {@link #validate()}.
+	 */
 	protected boolean validate = true;
 
 	@Override
@@ -66,6 +77,19 @@ public abstract class Codec implements Encoder, Decoder {
 		validate = value;
 	}
 
+	/**
+	 * <p>
+	 * Determines the {@linkplain net.syntactickitsune.furblorb.api.io.ParsingStrategy.NumberType number type} of the specified enum class.
+	 * The number type specifies the size of the numbers that the enum constants should be written as.
+	 * </p>
+	 * <p>
+	 * If the enum class lacks a {@link ParsingStrategy} annotation, then a best guess based on the number of enum constants is used,
+	 * preferring the smallest number type that can still encode the largest {@linkplain Enum#ordinal() enum constant ordinal}.
+	 * </p>
+	 * @param clazz The class to identify the number type of.
+	 * @return The corresponding number type.
+	 * @see ParsingStrategy
+	 */
 	protected final ParsingStrategy.NumberType numberType(Class<? extends Enum> clazz) {
 		return ENUM_NUMBER_CACHE.computeIfAbsent(clazz, k -> {
 			@Nullable

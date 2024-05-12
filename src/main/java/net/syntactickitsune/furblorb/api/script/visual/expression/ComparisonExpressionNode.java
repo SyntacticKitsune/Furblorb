@@ -22,8 +22,16 @@ public abstract class ComparisonExpressionNode extends ExpressionNode {
 	 */
 	public FloatExpression target; // I'm gonna be honest, floats here seem like a terrible idea.
 
+	/**
+	 * Constructs a new {@code ComparisonExpressionNode} with default values.
+	 */
 	protected ComparisonExpressionNode() {}
 
+	/**
+	 * Decodes a {@code ComparisonExpressionNode} from the specified {@code Decoder}.
+	 * @param in The {@code Decoder}.
+	 * @throws NullPointerException If {@code in} is {@code null}.
+	 */
 	protected ComparisonExpressionNode(Decoder in) {
 		op = in.readEnum("Operator", Operator.class);
 		target = new FloatExpression(in);

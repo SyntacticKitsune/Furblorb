@@ -16,10 +16,21 @@ public sealed abstract class Buff implements IFurballSerializable permits Buff.N
 
 	static sealed abstract class Number extends Buff permits Buffs.AttackDice, Buffs.DefenseDice, Buffs.GrappleDice, Buffs.SwallowDice, Buffs.StruggleDice, Buffs.Health, Buffs.Regeneration {
 
+		/**
+		 * The number associated with the buff.
+		 */
 		public int number;
 
+		/**
+		 * Constructs a new {@code Number} buff with default values.
+		 */
 		protected Number() {}
 
+		/**
+		 * Decodes a {@code Number} buff from the specified {@code Decoder}.
+		 * @param in The {@code Decoder}.
+		 * @throws NullPointerException If {@code in} is {@code null}.
+		 */
 		protected Number(Decoder in) {
 			number = in.readInt("Delta");
 		}

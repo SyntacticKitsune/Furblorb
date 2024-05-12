@@ -42,6 +42,10 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
 public class BinaryCodec extends Codec {
 
 	private ByteBuffer buf;
+
+	/**
+	 * Whether the {@code BinaryCodec} is read-only versus write-only.
+	 */
 	protected final boolean read;
 
 	/**
@@ -642,10 +646,19 @@ public class BinaryCodec extends Codec {
 			writeBoolean(false);
 	}
 
+	/**
+	 * Checks to see make sure read access is supported.
+	 * @throws UnsupportedOperationException If the codec is write-only.
+	 */
 	protected void checkRead() {
 		if (!read) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
+	/**
+	 * Checks to see make sure write access is supported and ensures that the codec has capacity for at least the specified number of bytes.
+	 * @param length The number of bytes to ensure capacity for.
+	 * @throws UnsupportedOperationException If the codec is read-only.
+	 */
 	protected void checkWrite(int length) {
 		if (read) throw new UnsupportedOperationException("Codec is read-only");
 
