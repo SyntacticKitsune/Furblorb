@@ -8,21 +8,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.io.Decoder;
-import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
-import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
-import net.syntactickitsune.furblorb.api.util.TriConsumer;
+import net.syntactickitsune.furblorb.api.io.SequenceDecoder;
+import net.syntactickitsune.furblorb.api.io.SequenceEncoder;
 
 /**
  * <p>
- * {@code BinaryCodec} is an {@link Encoder}/{@link Decoder} hybrid that works with binary data.
+ * {@code BinaryCodec} is a {@link SequenceEncoder}/{@link SequenceDecoder} hybrid that works with binary data.
  * Internally it uses {@link ByteBuffer} instances (since I still have nightmares from the
  * last time I touched {@link java.io.DataInputStream DataInputStream}).
  * It is partially a Java implementation of C#'s
@@ -39,7 +36,7 @@ import net.syntactickitsune.furblorb.api.util.TriConsumer;
  * @author SyntacticKitsune
  * @see JsonCodec
  */
-public class BinaryCodec extends Codec {
+public class BinaryCodec extends SequenceCodec {
 
 	private ByteBuffer buf;
 
@@ -113,77 +110,45 @@ public class BinaryCodec extends Codec {
 		return buf.position();
 	}
 
-	/**
-	 * Reads the next {@code byte} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public byte readByte() {
 		checkRead();
 		return buf.get();
 	}
 
-	/**
-	 * Writes the given {@code byte} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeByte(byte value) {
 		checkWrite(1);
 		buf.put(value);
 	}
 
-	/**
-	 * Reads the next {@code len} {@code byte}s from this {@code BinaryCodec}'s sequence.
-	 * @param len The number of {@code byte}s to read.
-	 * @return The read values, as a {@code len}-sized {@code byte} array.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public byte[] readBytes(int len) {
 		checkRead();
 		return readBytes(new byte[len]);
 	}
 
-	/**
-	 * Reads the next {@code array.length} {@code byte}s from this {@code BinaryCodec}'s sequence -- that is, enough to fill the provided array.
-	 * @param array The array to fill.
-	 * @return The given array.
-	 * @throws NullPointerException If {@code array} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public byte[] readBytes(byte[] array) {
 		checkRead();
 		buf.get(Objects.requireNonNull(array));
 		return array;
 	}
 
-	/**
-	 * Writes all of the {@code byte}s in the given {@code byte} array to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws NullPointerException If {@code value} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeBytes(byte[] value) {
 		checkWrite(value.length);
 		buf.put(value);
 	}
 
-	/**
-	 * Reads the next (optional) {@code byte} array from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public byte @Nullable [] readByteArray() {
 		final int len = readInt();
 		if (len < 0) return null;
 		return readBytes(len);
 	}
 
-	/**
-	 * Writes the given (optional) {@code byte} array to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write. May be {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeByteArray(byte @Nullable [] value) {
 		if (value == null)
 			writeInt(-1);
@@ -193,101 +158,55 @@ public class BinaryCodec extends Codec {
 		}
 	}
 
-	/**
-	 * Reads the next {@code boolean} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public boolean readBoolean() {
 		checkRead();
 		return readByte() != 0;
 	}
 
-	/**
-	 * Writes the given {@code boolean} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeBoolean(boolean value) {
 		checkWrite(1);
 		writeByte(value ? (byte) 1 : (byte) 0);
 	}
 
-	/**
-	 * Reads the next {@code char} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public char readChar() {
 		checkRead();
 		return buf.getChar();
 	}
 
-	/**
-	 * Writes the given {@code char} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeChar(char value) {
 		checkWrite(2);
 		buf.putChar(value);
 	}
 
-	/**
-	 * Reads the next {@code short} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public short readShort() {
 		checkRead();
 		return buf.getShort();
 	}
 
-	/**
-	 * Writes the given {@code short} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeShort(short value) {
 		checkWrite(2);
 		buf.putShort(value);
 	}
 
-	/**
-	 * Reads the next {@code int} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public int readInt() {
 		checkRead();
 		return buf.getInt();
 	}
 
-	/**
-	 * Writes the given {@code int} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeInt(int value) {
 		checkWrite(4);
 		buf.putInt(value);
 	}
 
-	/**
-	 * <p>
-	 * Reads the next <a href="https://learn.microsoft.com/en-us/dotnet/api/system.io.binaryreader.read7bitencodedint">seven-bit {@code int}</a>
-	 * from this {@code BinaryCodec}'s sequence.
-	 * </p>
-	 * <p>
-	 * A seven-bit {@code int} is a special-encoded {@code int} where the most-significant bit determines whether to read more {@code int}.
-	 * The idea is that for small {@code int}s only one {@code byte} needs to be used, which is ideal for lists and strings.
-	 * The downside to this approach is that the worst-case means that <i>five</i> {@code byte}s are used,
-	 * and negative {@code int}s always encounter this because the most-significant bit describes the sign.
-	 * </p>
-	 * @return The read value.
-	 * @throws FurblorbParsingException If the {@code int} described is too long.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public int read7BitInt() {
 		checkRead();
 		int ret = 0;
@@ -307,20 +226,7 @@ public class BinaryCodec extends Codec {
 		return ret;
 	}
 
-	/**
-	 * <p>
-	 * Writes the next <a href="https://learn.microsoft.com/en-us/dotnet/api/system.io.binaryreader.read7bitencodedint">seven-bit {@code int}</a>
-	 * to this {@code BinaryCodec}'s sequence.
-	 * </p>
-	 * <p>
-	 * A seven-bit {@code int} is a special-encoded {@code int} where the most-significant bit determines whether to read more {@code int}.
-	 * The idea is that for small {@code int}s only one {@code byte} needs to be used, which is ideal for lists and strings.
-	 * The downside to this approach is that the worst-case means that <i>five</i> {@code byte}s are used,
-	 * and negative {@code int}s always encounter this because the most-significant bit describes the sign.
-	 * </p>
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void write7BitInt(int value) {
 		checkWrite(5); // Worst case scenario
 		long v = Integer.toUnsignedLong(value);
@@ -333,71 +239,43 @@ public class BinaryCodec extends Codec {
 		buf.put((byte) v);
 	}
 
-	/**
-	 * Reads the next {@code long} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public long readLong() {
 		checkRead();
 		return buf.getLong();
 	}
 
-	/**
-	 * Writes the given {@code long} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeLong(long value) {
 		checkWrite(8);
 		buf.putLong(value);
 	}
 
-	/**
-	 * Reads the next {@code float} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public float readFloat() {
 		checkRead();
 		return buf.getFloat();
 	}
 
-	/**
-	 * Writes the given {@code float} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeFloat(float value) {
 		checkWrite(4);
 		buf.putFloat(value);
 	}
 
-	/**
-	 * Reads the next {@code double} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public double readDouble() {
 		checkRead();
 		return buf.getDouble();
 	}
 
-	/**
-	 * Writes the given {@code double} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeDouble(double value) {
 		checkWrite(8);
 		buf.putDouble(value);
 	}
 
-	/**
-	 * Reads the next C#-style {@link UUID} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public UUID readUUID() {
 		checkRead();
 		final boolean big = buf.order() == ByteOrder.BIG_ENDIAN;
@@ -416,12 +294,7 @@ public class BinaryCodec extends Codec {
 		return new UUID(big ? leastSig : mostSig, big ? mostSig : leastSig);
 	}
 
-	/**
-	 * Writes the given {@link UUID} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws NullPointerException If {@code value} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeUUID(UUID value) {
 		checkWrite(16);
 		Objects.requireNonNull(value, "value");
@@ -442,11 +315,7 @@ public class BinaryCodec extends Codec {
 		writeLong(d);
 	}
 
-	/**
-	 * Reads the next {@link String} from this {@code BinaryCodec}'s sequence.
-	 * @return The read value.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public String readString() {
 		checkRead();
 		final int len = read7BitInt();
@@ -457,12 +326,7 @@ public class BinaryCodec extends Codec {
 		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
-	/**
-	 * Writes the given {@link String} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @throws NullPointerException If {@code value} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public void writeString(String value) {
 		checkWrite(0);
 		Objects.requireNonNull(value, "value");
@@ -475,16 +339,7 @@ public class BinaryCodec extends Codec {
 		buf.put(bytes);
 	}
 
-	/**
-	 * Reads the next {@code enum} constant from this {@code BinaryCodec}'s sequence.
-	 * The constant will be decoded using an ordinal.
-	 * @param <E> The {@code enum} type.
-	 * @param type The type of {@code enum} to read. Required to interpret {@code enum} constants correctly.
-	 * @return The read value.
-	 * @throws NullPointerException If {@code type} is {@code null}.
-	 * @throws FurblorbParsingException If the read ordinal is out-of-bounds.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
+	@Override
 	public <E extends Enum<E>> E readEnum(Class<E> type) {
 		checkRead();
 		final E[] vals = type.getEnumConstants();
@@ -502,14 +357,7 @@ public class BinaryCodec extends Codec {
 		return vals[index];
 	}
 
-	/**
-	 * Writes the given {@code enum} constant to this {@code BinaryCodec}'s sequence.
-	 * The constant will be encoded using its ordinal.
-	 * @param <E> The {@code enum} type.
-	 * @param value The value to write.
-	 * @throws NullPointerException If {@code value} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
+	@Override
 	public <E extends Enum<E>> void writeEnum(E value) {
 		checkWrite(0);
 		Objects.requireNonNull(value, "value");
@@ -522,15 +370,8 @@ public class BinaryCodec extends Codec {
 		}
 	}
 
-	/**
-	 * Reads the next {@link List} from this {@code BinaryCodec}'s sequence.
-	 * @param reader A {@code Function} to read the individual values from this {@code BinaryCodec}'s sequence.
-	 * @return The read list.
-	 * @throws NullPointerException If {@code reader} is {@code null}.
-	 * @throws FurblorbParsingException If an attempt to read more than 1000 entries is made. This frequently indicates a deserialization bug.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
-	public <T> List<T> readList(Function<Decoder, T> reader) {
+	@Override
+	public <T> List<T> readList(Function<? super SequenceDecoder, T> reader) {
 		checkRead();
 
 		final int count = readInt();
@@ -543,42 +384,22 @@ public class BinaryCodec extends Codec {
 		return ret;
 	}
 
-	/**
-	 * Writes the given {@link List} to this {@code BinaryCodec}'s sequence.
-	 * @param value The value to write.
-	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
-	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
-	public <T> void writeList(List<T> value, BiConsumer<T, Encoder> writer) {
+	@Override
+	public <T> void writeList(List<T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		writeInt(value.size());
 		for (T elem : value)
 			writer.accept(elem, this);
 	}
 
-	/**
-	 * Reads the next {@link List} from this {@code BinaryCodec}'s sequence.
-	 * The {@code List} may contain {@code null} values.
-	 * @param reader A {@code Function} to read the individual values from this {@code BinaryCodec}'s sequence.
-	 * @return The read list.
-	 * @throws NullPointerException If {@code reader} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
-	public <T> List<@Nullable T> readOptionalList(Function<Decoder, T> reader) {
+	@Override
+	public <T> List<@Nullable T> readOptionalList(Function<? super SequenceDecoder, T> reader) {
 		checkRead();
 		return readList(dec -> dec.readBoolean(null) ? reader.apply(dec) : null);
 	}
 
-	/**
-	 * Writes the given {@link List} to this {@code BinaryCodec}'s sequence.
-	 * The {@code List} may contain {@code null} values.
-	 * @param value The value to write.
-	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
-	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
-	public <T> void writeOptionalList(List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+	@Override
+	public <T> void writeOptionalList(List<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		writeList(value, (val, enc) -> {
 			if (val == null)
@@ -590,54 +411,26 @@ public class BinaryCodec extends Codec {
 		});
 	}
 
-	/**
-	 * Reads the next {@code Object} from this {@code BinaryCodec}'s sequence using the provided reader.
-	 * @param <T> The kind of {@code Object} to read.
-	 * @param reader A {@code Function} to read the desired value.
-	 * @return The read value.
-	 * @throws NullPointerException If {@code reader} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
-	public <T> T read(Function<Decoder, T> reader) {
+	@Override
+	public <T> T read(Function<? super SequenceDecoder, T> reader) {
 		checkRead();
 		return reader.apply(this);
 	}
 
-	/**
-	 * Writes the given {@code Object} to this {@code BinaryCodec}'s sequence using the provided writer.
-	 * @param value The value to write.
-	 * @param writer A {@link BiConsumer} to handle writing the value.
-	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
-	public <T> void write(T value, BiConsumer<T, Encoder> writer) {
+	@Override
+	public <T> void write(T value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		writer.accept(value, this);
 	}
 
-	/**
-	 * Reads the next {@code Object} from this {@code BinaryCodec}'s sequence using the provided reader, if one exists.
-	 * Otherwise, returns {@code null}.
-	 * @param <T> The kind of {@code Object} to read.
-	 * @param reader A {@code Function} to read the desired value.
-	 * @return The read value. May be {@code null}.
-	 * @throws NullPointerException If {@code reader} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is write-only.
-	 */
-	public <T> @Nullable T readOptional(Function<Decoder, T> reader) {
+	@Override
+	public <T> @Nullable T readOptional(Function<? super SequenceDecoder, T> reader) {
 		checkRead();
 		return readBoolean() ? read(reader) : null;
 	}
 
-	/**
-	 * Writes the given {@code Object} -- which may be {@code null} -- to this {@code BinaryCodec}'s sequence using the provided writer.
-	 * A {@code null} value will <i>not</i> be passed to the writer.
-	 * @param value The value to write. May be {@code null}.
-	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
-	 * @throws NullPointerException If {@code writer} is {@code null}.
-	 * @throws UnsupportedOperationException If this codec is read-only.
-	 */
-	public <T> void writeOptional(@Nullable T value, BiConsumer<T, Encoder> writer) {
+	@Override
+	public <T> void writeOptional(@Nullable T value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		if (value != null) {
 			writeBoolean(true);
@@ -670,118 +463,4 @@ public class BinaryCodec extends Codec {
 			buf.put(old);
 		}
 	}
-
-	// ===== OVERRIDES =====
-
-	@Override
-	public byte readByte(@Nullable String key) { return readByte(); }
-
-	@Override
-	public byte[] readByteArray(@Nullable String key) { return readByteArray(); }
-
-	@Override
-	public boolean readBoolean(@Nullable String key) { return readBoolean(); }
-
-	@Override
-	public short readShort(@Nullable String key) { return readShort(); }
-
-	@Override
-	public int readInt(@Nullable String key) { return readInt(); }
-
-	@Override
-	public long readLong(@Nullable String key) { return readLong(); }
-
-	@Override
-	public float readFloat(@Nullable String key) { return readFloat(); }
-
-	@Override
-	public double readDouble(@Nullable String key) { return readDouble(); }
-
-	@Override
-	public UUID readUUID(@Nullable String key) { return readUUID(); }
-
-	@Override
-	public String readString(@Nullable String key) { return readString(); }
-
-	@Override
-	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) { return readEnum(type); }
-
-	@Override
-	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) { return readList(reader); }
-
-	@Override
-	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) { return readOptionalList(reader); }
-
-	@Override
-	public List<String> readStringList(@Nullable String key) { return readList(dec -> dec.readString(null)); }
-
-	@Override
-	public <T> T read(@Nullable String key, Function<Decoder, T> reader) { return read(reader); }
-
-	@Override
-	public <T> @Nullable T readOptional(@Nullable String key, Function<Decoder, T> reader) { return readOptional(reader); }
-
-	@Override
-	public <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return read(dec -> reader.apply(dec, key)); }
-
-	@Override
-	@Nullable
-	public <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return readOptional(dec -> reader.apply(dec, key)); }
-
-	@Override
-	public void writeByte(@Nullable String key, byte value) { writeByte(value); }
-
-	@Override
-	public void writeByteArray(@Nullable String key, byte @Nullable [] value) { writeByteArray(value); }
-
-	@Override
-	public void writeBoolean(@Nullable String key, boolean value) { writeBoolean(value); }
-
-	@Override
-	public void writeShort(@Nullable String key, short value) { writeShort(value); }
-
-	@Override
-	public void writeInt(@Nullable String key, int value) { writeInt(value); }
-
-	@Override
-	public void writeLong(@Nullable String key, long value) { writeLong(value); }
-
-	@Override
-	public void writeFloat(@Nullable String key, float value) { writeFloat(value); }
-
-	@Override
-	public void writeDouble(@Nullable String key, double value) { writeDouble(value); }
-
-	@Override
-	public void writeUUID(@Nullable String key, UUID value) { writeUUID(value); }
-
-	@Override
-	public void writeString(@Nullable String key, String value) { writeString(value); }
-
-	@Override
-	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) { writeEnum(value); }
-
-	@Override
-	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) { writeList(value, writer); }
-
-	@Override
-	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalList(value, writer); }
-
-	@Override
-	public void writeStringList(@Nullable String key, List<String> value) { writeList(value, (v, enc) -> enc.writeString(null, v)); }
-
-	@Override
-	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) { writer.accept(value, this); }
-
-	@Override
-	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) { writeOptional(value, writer); }
-
-	@Override
-	public <T> void writeExternal(@Nullable String key, T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writer.accept(key, value, this); }
-
-	@Override
-	public <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writeOptional(value, (val, enc) -> writer.accept(key, val, enc)); }
-
-	@Override
-	public void assertDoesNotExist(String key, String message) throws FurblorbParsingException {}
 }
