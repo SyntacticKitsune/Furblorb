@@ -28,9 +28,9 @@ import net.syntactickitsune.furblorb.api.io.Decoder;
  */
 public final class FurballSerializables {
 
-	private static final Map<Integer, Metadata> SERIALIZABLES_BY_ID = new LinkedHashMap<>();
-	private static final Map<String, Metadata> SERIALIZABLES_BY_TYPE = new LinkedHashMap<>();
-	private static final Map<Class, Metadata> SERIALIZABLES_BY_CLASS = new IdentityHashMap<>();
+	private static final Map<Integer, Metadata<?>> SERIALIZABLES_BY_ID = new LinkedHashMap<>();
+	private static final Map<String, Metadata<?>> SERIALIZABLES_BY_TYPE = new LinkedHashMap<>();
+	private static final Map<Class<?>, Metadata<?>> SERIALIZABLES_BY_CLASS = new IdentityHashMap<>();
 
 	static {
 		final List<String> targets = FurblorbUtil.readStringResource("/serializables.txt");
@@ -45,7 +45,7 @@ public final class FurballSerializables {
 				final java.lang.reflect.Constructor<?> reflectCtor = cls.getDeclaredConstructor(Decoder.class);
 				final MethodHandle handle = MethodHandles.publicLookup().unreflectConstructor(reflectCtor);
 
-				final Constructor ctor = dec -> {
+				final Constructor<?> ctor = dec -> {
 					try {
 						return (IFurballSerializable) handle.invoke(dec);
 					} catch (Throwable e) {
@@ -66,7 +66,7 @@ public final class FurballSerializables {
 		if (SERIALIZABLES_BY_ID.containsKey(id))
 			throw new IllegalArgumentException("Cannot register " + clazz.getName() + " under id " + id + ", as it is already owned by " + SERIALIZABLES_BY_ID.get(id).owner.getName());
 
-		final Metadata meta = new Metadata<>(id, name, ctor, clazz, minFormatVersion, maxFormatVersion);
+		final Metadata<T> meta = new Metadata<>(id, name, ctor, clazz, minFormatVersion, maxFormatVersion);
 
 		SERIALIZABLES_BY_ID.put(id, meta);
 		SERIALIZABLES_BY_TYPE.put(name, meta);
@@ -80,7 +80,7 @@ public final class FurballSerializables {
 	 */
 	@Internal
 	@Nullable
-	public static Metadata lookupById(int id) {
+	public static Metadata<?> lookupById(int id) {
 		return SERIALIZABLES_BY_ID.get(id);
 	}
 
@@ -91,7 +91,7 @@ public final class FurballSerializables {
 	 */
 	@Internal
 	@Nullable
-	public static Metadata lookupByType(String type) {
+	public static Metadata<?> lookupByType(String type) {
 		return SERIALIZABLES_BY_TYPE.get(type);
 	}
 
@@ -102,7 +102,7 @@ public final class FurballSerializables {
 	 */
 	@Internal
 	@Nullable
-	public static Metadata lookupByClass(Class<? extends IFurballSerializable> clazz) {
+	public static Metadata<?> lookupByClass(Class<? extends IFurballSerializable> clazz) {
 		return SERIALIZABLES_BY_CLASS.get(clazz);
 	}
 
@@ -110,7 +110,7 @@ public final class FurballSerializables {
 	 * @return An unmodifiable view of all registered {@link IFurballSerializable} metadata.
 	 */
 	@Internal
-	public static Collection<Metadata> lookupAll() {
+	public static Collection<Metadata<?>> lookupAll() {
 		return Collections.unmodifiableCollection(SERIALIZABLES_BY_CLASS.values());
 	}
 
@@ -123,7 +123,7 @@ public final class FurballSerializables {
 	 * @throws NullPointerException If {@code in} is {@code null}.
 	 */
 	public static <T extends IFurballSerializable> T read(Decoder in) {
-		final Metadata md;
+		final Metadata<?> md;
 
 		if (in.readCompressedTypes()) {
 			final int id = in.readInt("!Type");

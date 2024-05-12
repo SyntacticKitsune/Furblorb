@@ -296,7 +296,7 @@ final class Steps {
 		public void run(WorkingData data) throws Exception {
 			final List<String> realKeys = List.of(keys.split(","));
 
-			final Function<RandomGeneratorFactory, RandomGenerator> func;
+			final Function<RandomGeneratorFactory<?>, RandomGenerator> func;
 
 			if (seed != null)
 				func = factory -> {

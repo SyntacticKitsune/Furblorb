@@ -24,7 +24,7 @@ final class SerializableDiscoverer {
 		final List<String> registered = new ArrayList<>();
 		final List<String> unregistered = new ArrayList<>();
 
-		for (Class cls : serializables) {
+		for (Class<?> cls : serializables) {
 			if ((cls.getModifiers() & Modifier.ABSTRACT) != 0) continue;
 			(registeredSerializables.contains(cls) ? registered : unregistered).add(cls.getName().replace('/', '.')); // Most sane one-liner.
 		}
