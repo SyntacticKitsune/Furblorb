@@ -5,12 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +20,6 @@ import net.syntactickitsune.furblorb.api.Furball;
 import net.syntactickitsune.furblorb.api.FurballDependency;
 import net.syntactickitsune.furblorb.api.FurballMetadata;
 import net.syntactickitsune.furblorb.api.FurblorbException;
-import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
@@ -105,23 +100,6 @@ public final class FinmerProjectReader {
 			} catch (Exception e) {
 				throw new FurblorbException("Exception reading asset " + asset, e);
 			}
-
-		final Map<UUID, String> assetsById = new HashMap<>();
-
-		for (FurballAsset asset : furball.assets) {
-			if (assetsById.containsValue(asset.filename))
-				System.out.printf("! Warning: multiple assets with name %s: %s and %s\n", asset.filename,
-						assetsById.entrySet().stream()
-						.filter(entry -> asset.filename.equals(entry.getValue()))
-						.map(Map.Entry::getKey)
-						.map(Object::toString)
-						.collect(Collectors.joining(", ")),
-						asset.id);
-
-			final String name = assetsById.putIfAbsent(asset.id, asset.filename);
-			if (name != null)
-				System.out.printf("! Warning: multiple assets with id %s: %s and %s\n", asset.id, name, asset.filename);
-		}
 
 		return furball;
 	}

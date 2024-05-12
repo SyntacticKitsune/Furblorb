@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,23 @@ final class Steps {
 
 			System.out.printf("! Read %s \"%s\" by %s with %d assets (format version %d).\n", kind,
 					data.furball.meta.title, data.furball.meta.author, data.furball.assets.size(), data.furball.meta.formatVersion);
+
+			final Map<UUID, String> assetsById = new HashMap<>();
+
+			for (FurballAsset asset : data.furball.assets) {
+				if (assetsById.containsValue(asset.filename))
+					System.out.printf("! Warning: multiple assets with name %s: %s and %s\n", asset.filename,
+							assetsById.entrySet().stream()
+							.filter(entry -> asset.filename.equals(entry.getValue()))
+							.map(Map.Entry::getKey)
+							.map(Object::toString)
+							.collect(Collectors.joining(", ")),
+							asset.id);
+
+				final String name = assetsById.putIfAbsent(asset.id, asset.filename);
+				if (name != null)
+					System.out.printf("! Warning: multiple assets with id %s: %s and %s\n", asset.id, name, asset.filename);
+			}
 		}
 	}
 
