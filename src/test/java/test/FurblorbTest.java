@@ -81,6 +81,26 @@ final class FurblorbTest {
 	}
 
 	@Test
+	void testDeepForestFurball() { // Furball → Furball
+		doFurball2FurballTest("/DeepForest.1.0.0.furball", (byte) 20, 1, 11);
+	}
+
+	@TestFactory
+	List<DynamicTest> testDeepForestProject() { // Project → Project
+		return doProject2ProjectTest("DeepForest.1.0.0.zip", "DeepForest");
+	}
+
+	@TestFactory
+	List<DynamicTest> testDeepForestFurball2Project() { // Furball → Project
+		return doFurball2ProjectTest("DeepForest.1.0.0.zip", "/DeepForest.1.0.0.furball", "DeepForest");
+	}
+
+	@TestFactory
+	List<DynamicTest> testDeepForestProject2Furball() { // Project → Furball
+		return doProject2FurballTest("DeepForest.1.0.0.zip", "/DeepForest.1.0.0.furball", "DeepForest");
+	}
+
+	@Test
 	void testConstructEveryAsset() { // This isn't coverage hacking, probably.
 		for (FurballSerializables.Metadata<?> meta : FurballSerializables.lookupAll())
 			assertDoesNotThrow(() -> meta.owner().getDeclaredConstructor().newInstance());
@@ -235,6 +255,9 @@ final class FurblorbTest {
 					return DynamicTest.dynamicTest(name, () -> {
 						if (name.endsWith(".json") || name.endsWith(".lua") || name.endsWith(".fnproj")) {
 							final String expected = new String(inData, StandardCharsets.UTF_8).replace("\r\n", "\n");
+							if (!name.endsWith(".lua"))
+								assertTrue(expected.isEmpty() || expected.charAt(0) == 65279, "Expected data doesn't start with a BOM");
+
 							final String result = new String(outData, StandardCharsets.UTF_8).replace("\r\n", "\n");
 							assertEquals(expected, result);
 						} else

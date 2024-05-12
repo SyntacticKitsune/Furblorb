@@ -29,7 +29,7 @@ The similarities in concept between furballs and blorbs is what lead me to choos
 
 ## Licensing
 
-Furblorb itself is licensed under [GNU LGPLv3](LICENSE.md), however, it also includes a few copies of "Finmer Core" by Nuntis in its testing code (see `src/test/resources`).
+Furblorb itself is licensed under [GNU LGPLv3](LICENSE.md), however, it also includes a few copies of "Finmer Core" by Nuntis and a copy of "Deep Forest" by SyntacticKitsune in its testing code (see `src/test/resources`).
 This data is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International ([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)) license.
 These copies are only used for verifying the correctness of the program, and are not included in the compiled binaries.
 
