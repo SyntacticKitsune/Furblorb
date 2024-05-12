@@ -1,9 +1,6 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -17,13 +14,20 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
+import com.google.gson.JsonObject;
+
 import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.FurballMetadata;
 import net.syntactickitsune.furblorb.api.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.asset.SceneNode;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectReader;
 import net.syntactickitsune.furblorb.api.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.api.io.FurballReader;
 import net.syntactickitsune.furblorb.api.io.FurballWriter;
+import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
+import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
+import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
 import net.syntactickitsune.furblorb.api.script.visual.expression.BooleanExpression;
 import net.syntactickitsune.furblorb.api.script.visual.expression.ComparisonExpressionNode;
 import net.syntactickitsune.furblorb.api.script.visual.expression.FloatExpression;
@@ -204,5 +208,42 @@ final class FurblorbTest {
 					assertTrue(foundHashCode, () -> "Missing hashCode() implementation");
 				}))
 				.toList();
+	}
+
+	@Test
+	void testWriteUnsupportedFurball() {
+		final Furball furball = new Furball(new FurballMetadata());
+
+		furball.meta.formatVersion = 10;
+		assertThrows(UnsupportedFormatVersionException.class, () -> new FurballWriter().write(furball));
+
+		furball.meta.formatVersion = (byte) 100;
+		assertThrows(UnsupportedFormatVersionException.class, () -> new FurballWriter().write(furball));
+	}
+
+	@Test
+	void testReadUnsupportedFurball() {
+		final byte[] bytes = new byte[] { 'F', 'U', 'R', 'B', 'A', 'L', 'L', 10 };
+		assertThrows(UnsupportedFormatVersionException.class, () -> new FurballReader(bytes).readFurball());
+
+		bytes[bytes.length - 1] = 100;
+		assertThrows(UnsupportedFormatVersionException.class, () -> new FurballReader(bytes).readFurball());
+	}
+
+	@Test
+	void testNotFurball() {
+		final byte[] bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0 };
+		assertThrows(FurblorbParsingException.class, () -> new FurballReader(bytes).readFurball());
+	}
+
+	@Test
+	void testReadWriteOnlyCodecs() {
+		// Binary
+		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(false).readBoolean());
+		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(true).writeBoolean(false));
+
+		// Json
+		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, false).readBoolean("e"));
+		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, true).writeBoolean("e", false));
 	}
 }
