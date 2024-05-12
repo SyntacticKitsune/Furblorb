@@ -42,114 +42,37 @@ final class FurblorbTest {
 
 	@Test
 	void testReadFormat19Furball() { // Furball → Furball
-		final byte[] in = assertDoesNotThrow(() -> TestUtil.readAllBytes("/Core.1.0.0.furball"));
-		final Furball furball = assertDoesNotThrow(() -> new FurballReader(in).readFurball());
-
-		assertEquals((byte) 19, furball.meta.formatVersion);
-		assertEquals(0, furball.dependencies.size());
-		assertEquals(173, furball.assets.size());
-
-		final byte[] out = assertDoesNotThrow(() -> new FurballWriter().write(furball).toByteArray());
-		assertArrayEquals(in, out);
+		doFurball2FurballTest("/Core.1.0.0.furball", (byte) 19, 0, 173);
 	}
 
 	@Test
 	void testReadFormat20Furball() { // Furball → Furball
-		final byte[] in = assertDoesNotThrow(() -> TestUtil.readAllBytes("/Core.1.0.1.furball"));
-		final Furball furball = assertDoesNotThrow(() -> new FurballReader(in).readFurball());
-
-		assertEquals((byte) 20, furball.meta.formatVersion);
-		assertEquals(0, furball.dependencies.size());
-		assertEquals(175, furball.assets.size());
-
-		final byte[] out = assertDoesNotThrow(() -> new FurballWriter().write(furball).toByteArray());
-		assertArrayEquals(in, out);
+		doFurball2FurballTest("/Core.1.0.1.furball", (byte) 20, 0, 175);
 	}
 
 	@TestFactory
 	List<DynamicTest> testReadFormat19Project() { // Project → Project
-		final Path core100 = assertDoesNotThrow(() -> TestUtil.extract("Core.1.0.0.zip"));
-		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip("Core", core100));
-		final Furball furball = new FinmerProjectReader(in).readFurball();
-
-		final MemoryExternalFileHandler out = new MemoryExternalFileHandler("Core");
-		new FinmerProjectWriter(out).writeFurball(furball);
-
-		return compareProjects(in.contents(), out.contents());
+		return doProject2ProjectTest("Core.1.0.0.zip", "Core");
 	}
 
 	@TestFactory
 	List<DynamicTest> testReadFormat20Project() { // Project → Project
-		final Path core101 = assertDoesNotThrow(() -> TestUtil.extract("Core.1.0.1.zip"));
-		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip("Core", core101));
-		final Furball furball = new FinmerProjectReader(in).readFurball();
-
-		final MemoryExternalFileHandler out = new MemoryExternalFileHandler("Core");
-		new FinmerProjectWriter(out).writeFurball(furball);
-
-		return compareProjects(in.contents(), out.contents());
+		return doProject2ProjectTest("Core.1.0.1.zip", "Core");
 	}
 
 	@TestFactory
 	List<DynamicTest> testReadFormat19Furball2Project() { // Furball → Project
-		final Path core101 = assertDoesNotThrow(() -> TestUtil.extract("Core.1.0.0.zip"));
-		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip("Core", core101));
-
-		final byte[] inBytes = assertDoesNotThrow(() -> TestUtil.readAllBytes("/Core.1.0.0.furball"));
-		final Furball inFurball = assertDoesNotThrow(() -> new FurballReader(inBytes).readFurball());
-
-		final MemoryExternalFileHandler out = new MemoryExternalFileHandler("Core");
-		new FinmerProjectWriter(out).writeFurball(inFurball);
-
-		return compareProjects(in.contents(), out.contents());
+		return doFurball2ProjectTest("Core.1.0.0.zip", "/Core.1.0.0.furball", "Core");
 	}
 
 	@TestFactory
 	List<DynamicTest> testReadFormat20Furball2Project() { // Furball → Project
-		final Path core101 = assertDoesNotThrow(() -> TestUtil.extract("Core.1.0.1.zip"));
-		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip("Core", core101));
-
-		final byte[] inBytes = assertDoesNotThrow(() -> TestUtil.readAllBytes("/Core.1.0.1.furball"));
-		final Furball inFurball = assertDoesNotThrow(() -> new FurballReader(inBytes).readFurball());
-
-		final MemoryExternalFileHandler out = new MemoryExternalFileHandler("Core");
-		new FinmerProjectWriter(out).writeFurball(inFurball);
-
-		return compareProjects(in.contents(), out.contents());
+		return doFurball2ProjectTest("Core.1.0.1.zip", "/Core.1.0.1.furball", "Core");
 	}
 
 	@TestFactory
 	List<DynamicTest> testReadFormat20Project2Furball() { // Project → Furball
-		final Path core101 = assertDoesNotThrow(() -> TestUtil.extract("Core.1.0.1.zip"));
-		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip("Core", core101));
-		final Furball inFurball = new FinmerProjectReader(in).readFurball();
-
-		final Furball targetFurball = assertDoesNotThrow(() -> new FurballReader(TestUtil.readAllBytes("/Core.1.0.1.furball")).readFurball());
-
-		Collections.sort(inFurball.assets);
-		Collections.sort(targetFurball.assets);
-
-		assertEquals(targetFurball.meta, inFurball.meta);
-		assertEquals(targetFurball.dependencies, inFurball.dependencies);
-		assertEquals(targetFurball.assets.size(), inFurball.assets.size());
-
-		final List<DynamicTest> ret = new ArrayList<>();
-
-		for (int i = 0; i < targetFurball.assets.size(); i++) {
-			final FurballAsset exp = targetFurball.assets.get(i);
-			final FurballAsset got = inFurball.assets.get(i);
-			ret.add(DynamicTest.dynamicTest(exp.filename, () -> {
-				assertEquals(exp, got);
-				assertEquals(exp.hashCode(), got.hashCode());
-			}));
-		}
-
-		final byte[] inBytes = assertDoesNotThrow(() -> new FurballWriter().write(targetFurball).toByteArray());
-		final byte[] outBytes = new FurballWriter().write(inFurball).toByteArray();
-
-		ret.add(DynamicTest.dynamicTest("bytes", () -> assertArrayEquals(inBytes, outBytes)));
-
-		return ret;
+		return doProject2FurballTest("Core.1.0.1.zip", "/Core.1.0.1.furball", "Core");
 	}
 
 	private static List<DynamicTest> compareProjects(Map<String, byte[]> inContents, Map<String, byte[]> outContents) {
@@ -245,5 +168,74 @@ final class FurblorbTest {
 		// Json
 		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, false).readBoolean("e"));
 		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, true).writeBoolean("e", false));
+	}
+
+	private static void doFurball2FurballTest(String furballName, byte formatVersion, int dependencyCount, int assetCount) {
+		final byte[] in = assertDoesNotThrow(() -> TestUtil.readAllBytes(furballName));
+		final Furball furball = assertDoesNotThrow(() -> new FurballReader(in).readFurball());
+
+		assertEquals(formatVersion, furball.meta.formatVersion);
+		assertEquals(dependencyCount, furball.dependencies.size());
+		assertEquals(assetCount, furball.assets.size());
+
+		final byte[] out = assertDoesNotThrow(() -> new FurballWriter().write(furball).toByteArray());
+		assertArrayEquals(in, out);
+	}
+
+	private static List<DynamicTest> doProject2ProjectTest(String zip, String module) {
+		final Path project = assertDoesNotThrow(() -> TestUtil.extract(zip));
+		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip(module, project));
+		final Furball furball = new FinmerProjectReader(in).readFurball();
+
+		final MemoryExternalFileHandler out = new MemoryExternalFileHandler(module);
+		new FinmerProjectWriter(out).writeFurball(furball);
+
+		return compareProjects(in.contents(), out.contents());
+	}
+
+	private static List<DynamicTest> doFurball2ProjectTest(String zip, String furball, String module) {
+		final Path project = assertDoesNotThrow(() -> TestUtil.extract(zip));
+		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip(module, project));
+
+		final byte[] inBytes = assertDoesNotThrow(() -> TestUtil.readAllBytes(furball));
+		final Furball inFurball = assertDoesNotThrow(() -> new FurballReader(inBytes).readFurball());
+
+		final MemoryExternalFileHandler out = new MemoryExternalFileHandler(module);
+		new FinmerProjectWriter(out).writeFurball(inFurball);
+
+		return compareProjects(in.contents(), out.contents());
+	}
+
+	private static List<DynamicTest> doProject2FurballTest(String zip, String furballName, String module) {
+		final Path project = assertDoesNotThrow(() -> TestUtil.extract(zip));
+		final MemoryExternalFileHandler in = assertDoesNotThrow(() -> TestUtil.fromZip(module, project));
+		final Furball inFurball = new FinmerProjectReader(in).readFurball();
+
+		final Furball targetFurball = assertDoesNotThrow(() -> new FurballReader(TestUtil.readAllBytes(furballName)).readFurball());
+
+		Collections.sort(inFurball.assets);
+		Collections.sort(targetFurball.assets);
+
+		assertEquals(targetFurball.meta, inFurball.meta);
+		assertEquals(targetFurball.dependencies, inFurball.dependencies);
+		assertEquals(targetFurball.assets.size(), inFurball.assets.size());
+
+		final List<DynamicTest> ret = new ArrayList<>();
+
+		for (int i = 0; i < targetFurball.assets.size(); i++) {
+			final FurballAsset exp = targetFurball.assets.get(i);
+			final FurballAsset got = inFurball.assets.get(i);
+			ret.add(DynamicTest.dynamicTest(exp.filename, () -> {
+				assertEquals(exp, got);
+				assertEquals(exp.hashCode(), got.hashCode());
+			}));
+		}
+
+		final byte[] inBytes = assertDoesNotThrow(() -> new FurballWriter().write(targetFurball).toByteArray());
+		final byte[] outBytes = new FurballWriter().write(inFurball).toByteArray();
+
+		ret.add(DynamicTest.dynamicTest("bytes", () -> assertArrayEquals(inBytes, outBytes)));
+
+		return ret;
 	}
 }
