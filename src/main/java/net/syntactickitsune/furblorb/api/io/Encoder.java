@@ -20,7 +20,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  * </p>
  * <p>
  * The {@code Encoder} interface is designed to be mostly file-format-agnostic,
- * allowing data to be encoded to {@code JSON}, {@code NBT}, unmaintainable binary blobs, etc.
+ * allowing data to be encoded to {@code JSON}, {@code NBT}, unmaintainable binary files, etc.
  * Methods are provided for writing a variety of different data types, all preferably associated with keys (as generally required by most file formats).
  * </p>
  * @author SyntacticKitsune

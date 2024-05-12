@@ -17,7 +17,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
  * </p>
  * <p>
  * The {@code Decoder} interface is designed to be mostly file-format-agnostic,
- * allowing data to be decoded from {@code JSON}, {@code NBT}, unmaintainable binary blobs, etc.
+ * allowing data to be decoded from {@code JSON}, {@code NBT}, unmaintainable binary files, etc.
  * Methods are provided for reading a variety of different data types, all preferably associated with keys (as generally required by most file formats).
  * </p>
  * @author SyntacticKitsune

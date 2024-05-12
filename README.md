@@ -11,7 +11,9 @@ One could think of it as being simultaneously a compiler and decompiler.
 
 Furballs are Finmer's compiled game data format.
 One assumes that the name stems from "tarball" (another name for `.tar` archives).
-The data format itself is basically your run-of-the-mill bespoke binary blob -- that is, it's a binary format specially-tailored for Finmer's game engine.
+The data format itself is basically your run-of-the-mill bespoke binary data -- that is, it's a binary format hyper-specialized for Finmer's game engine.
+This isn't necessarily a bad thing; it means that the file format doesn't need to store extra information like field names or data types.
+(On the other hand, this necessitates a format version and usually precludes random access.)
 
 ## What is a *furblorb*?
 
@@ -19,7 +21,7 @@ To start with, "blorb" is the name of a handful of very similar file formats for
 The most common of which probably being Z-blorbs (for [Z-Machine](https://en.wikipedia.org/wiki/Z-machine) games) and G-blorbs (for Glulx games).
 There's more history to it than that, but that's the basics.
 
-Furblorb then is a combination of "fur" and "blorb" much like with furballs (assuming that its root is tarball).
+Furblorb then is a combination of "fur" and "blorb".
 The similarities in concept between furballs and blorbs is what lead me to choose the name "Furblorb", since furballs tick all the boxes:
 * It's a binary data format
 * It contains a game, or game data
@@ -36,7 +38,7 @@ These copies are only used for verifying the correctness of the program, and are
 Furblorb can read/write in a handful of format versions.
 Here's some information on them (which is mostly a sort-of changelog).
 
-#### v20 (2023-12-18 ~ ???)
+#### v20 (2023-12-18 ~ present)
 
 This format version came out with Finmer v1.0.1.
 

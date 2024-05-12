@@ -31,7 +31,7 @@ import net.syntactickitsune.furblorb.api.io.SequenceEncoder;
  * </p>
  * <p>
  * While {@code BinaryCodec} is primarily designed with the purpose of reading/writing Finmer furballs in mind, it can still
- * be used for other purposes, such as reading data from other C# applications or creating one's own bespoke binary blobs.
+ * be used for other purposes, such as reading data from other C# applications or creating one's own bespoke binary files.
  * </p>
  * @author SyntacticKitsune
  * @see JsonCodec
