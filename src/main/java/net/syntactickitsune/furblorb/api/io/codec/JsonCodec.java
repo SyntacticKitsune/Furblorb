@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.api.io.impl;
+package net.syntactickitsune.furblorb.api.io.codec;
 
 import java.util.ArrayList;
 import java.util.List;

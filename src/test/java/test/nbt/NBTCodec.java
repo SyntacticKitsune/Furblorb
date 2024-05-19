@@ -21,9 +21,9 @@ import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
 import net.syntactickitsune.furblorb.api.io.TriConsumer;
-import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
-import net.syntactickitsune.furblorb.api.io.impl.Codec;
-import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
+import net.syntactickitsune.furblorb.api.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.api.io.codec.Codec;
+import net.syntactickitsune.furblorb.api.io.codec.JsonCodec;
 
 /**
  * <p>

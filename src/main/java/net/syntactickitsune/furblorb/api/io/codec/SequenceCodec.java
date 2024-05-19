@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.api.io.impl;
+package net.syntactickitsune.furblorb.api.io.codec;
 
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.SequenceDecoder;

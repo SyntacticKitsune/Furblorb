@@ -23,7 +23,7 @@ import net.syntactickitsune.furblorb.api.io.ExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
-import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
+import net.syntactickitsune.furblorb.api.io.codec.JsonCodec;
 
 /**
  * <p>

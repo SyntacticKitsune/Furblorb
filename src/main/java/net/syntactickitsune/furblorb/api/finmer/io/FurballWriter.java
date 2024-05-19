@@ -7,7 +7,7 @@ import net.syntactickitsune.furblorb.api.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.api.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
-import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
+import net.syntactickitsune.furblorb.api.io.codec.BinaryCodec;
 
 /**
  * <p>
