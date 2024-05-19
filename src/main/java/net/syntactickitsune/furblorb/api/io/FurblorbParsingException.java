@@ -2,8 +2,6 @@ package net.syntactickitsune.furblorb.api.io;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.FurblorbException;
-
 /**
  * A {@link FurblorbException} thrown when something goes awry involving Furblorb I/O, such as when parsing malformed furballs.
  * @author SyntacticKitsune

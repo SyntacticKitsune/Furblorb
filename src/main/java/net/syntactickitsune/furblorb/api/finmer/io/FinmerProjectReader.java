@@ -15,12 +15,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.syntactickitsune.furblorb.FurblorbUtil;
-import net.syntactickitsune.furblorb.api.FurblorbException;
 import net.syntactickitsune.furblorb.api.finmer.Furball;
 import net.syntactickitsune.furblorb.api.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.api.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.io.ExternalFileHandler;
+import net.syntactickitsune.furblorb.api.io.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;

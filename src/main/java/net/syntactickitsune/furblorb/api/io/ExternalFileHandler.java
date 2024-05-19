@@ -6,8 +6,6 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.util.TriConsumer;
-
 /**
  * Handles reading from and writing to external files.
  * @author SyntacticKitsune

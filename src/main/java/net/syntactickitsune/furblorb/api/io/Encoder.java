@@ -8,9 +8,6 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.FurblorbException;
-import net.syntactickitsune.furblorb.api.util.TriConsumer;
-
 /**
  * <p>
  * Represents a generalized {@code Map}-style encoder.

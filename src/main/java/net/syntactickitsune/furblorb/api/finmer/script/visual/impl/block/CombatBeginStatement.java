@@ -7,12 +7,12 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.ScriptNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementBlockNode;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.RequiresFormatVersion;
 
 /**
  * Begins combat with a specified configuration.

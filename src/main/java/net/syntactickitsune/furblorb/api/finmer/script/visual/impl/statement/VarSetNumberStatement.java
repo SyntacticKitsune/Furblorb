@@ -3,8 +3,7 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-import net.syntactickitsune.furblorb.FurblorbUtil;
-import net.syntactickitsune.furblorb.api.RequiresFormatVersion;
+import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.FloatExpression;
@@ -13,6 +12,7 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.io.IllegalFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
+import net.syntactickitsune.furblorb.api.io.RequiresFormatVersion;
 
 /**
  * Represents a pretty generic statement that sets a variable to the number produced by your choice of 30 different things.

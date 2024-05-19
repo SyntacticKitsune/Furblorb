@@ -7,13 +7,13 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.FurblorbException;
 import net.syntactickitsune.furblorb.api.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.Script;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 
 /**

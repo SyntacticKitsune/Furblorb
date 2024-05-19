@@ -20,7 +20,7 @@ import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.ExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
-import net.syntactickitsune.furblorb.api.util.TriConsumer;
+import net.syntactickitsune.furblorb.api.io.TriConsumer;
 
 /**
  * <p>

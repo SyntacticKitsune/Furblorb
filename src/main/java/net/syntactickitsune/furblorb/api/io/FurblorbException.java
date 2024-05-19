@@ -1,8 +1,6 @@
-package net.syntactickitsune.furblorb.api;
+package net.syntactickitsune.furblorb.api.io;
 
 import org.jetbrains.annotations.Nullable;
-
-import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 
 /**
  * A general exception thrown by various parts of Furblorb's API.

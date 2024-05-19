@@ -13,7 +13,7 @@ import java.util.Objects;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.FurblorbUtil;
+import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 
 /**

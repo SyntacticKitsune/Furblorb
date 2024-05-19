@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb;
+package net.syntactickitsune.furblorb.api.finmer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

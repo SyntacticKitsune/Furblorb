@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
+import net.syntactickitsune.furblorb.api.io.FurblorbException;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
 
 /**

@@ -17,9 +17,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
-import net.syntactickitsune.furblorb.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.finmer.Furball;
 import net.syntactickitsune.furblorb.api.finmer.FurballDependency;
+import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;

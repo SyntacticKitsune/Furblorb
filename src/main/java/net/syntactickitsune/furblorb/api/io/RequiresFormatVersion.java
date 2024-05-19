@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.api;
+package net.syntactickitsune.furblorb.api.io;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

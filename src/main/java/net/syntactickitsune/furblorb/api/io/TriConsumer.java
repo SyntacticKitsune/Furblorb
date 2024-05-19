@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.api.util;
+package net.syntactickitsune.furblorb.api.io;
 
 import java.util.function.BiConsumer;
 
