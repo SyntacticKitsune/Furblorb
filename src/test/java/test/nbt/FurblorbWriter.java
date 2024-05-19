@@ -4,10 +4,10 @@ import java.util.Objects;
 
 import net.querz.nbt.tag.CompoundTag;
 
-import net.syntactickitsune.furblorb.api.Furball;
-import net.syntactickitsune.furblorb.api.FurballMetadata;
-import net.syntactickitsune.furblorb.api.asset.FurballAsset;
-import net.syntactickitsune.furblorb.api.io.FurballWriter;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
+import net.syntactickitsune.furblorb.api.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 
 /**

@@ -2,7 +2,7 @@ package net.syntactickitsune.furblorb.cli;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
 
 /**
  * Context for a step, allowing certain data to be shared and mutated between steps.

@@ -3,10 +3,10 @@ package net.syntactickitsune.furblorb.cli.shuffling;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.syntactickitsune.furblorb.api.Furball;
-import net.syntactickitsune.furblorb.api.asset.FurballAsset;
-import net.syntactickitsune.furblorb.api.asset.SceneAsset;
-import net.syntactickitsune.furblorb.api.asset.SceneNode;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
+import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
+import net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset;
+import net.syntactickitsune.furblorb.api.finmer.asset.SceneNode;
 
 /**
  * Represents an individual "shuffler" for Furblorb's asset shuffling API.

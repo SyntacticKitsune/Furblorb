@@ -14,7 +14,7 @@ import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.StringTag;
 
-import net.syntactickitsune.furblorb.api.Furball;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;

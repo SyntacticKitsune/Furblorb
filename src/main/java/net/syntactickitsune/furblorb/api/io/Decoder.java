@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.asset.SceneAsset;
+import net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset;
 import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**

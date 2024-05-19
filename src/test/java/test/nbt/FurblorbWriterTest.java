@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import net.querz.nbt.io.NBTUtil;
 import net.querz.nbt.tag.CompoundTag;
 
-import net.syntactickitsune.furblorb.api.Furball;
-import net.syntactickitsune.furblorb.api.io.FurballReader;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballReader;
 
 import test.TestUtil;
 

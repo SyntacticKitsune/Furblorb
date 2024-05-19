@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.syntactickitsune.furblorb.api.Furball;
-import net.syntactickitsune.furblorb.api.asset.StringTableAsset;
+import net.syntactickitsune.furblorb.api.finmer.Furball;
+import net.syntactickitsune.furblorb.api.finmer.asset.StringTableAsset;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 
