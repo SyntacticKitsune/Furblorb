@@ -78,8 +78,9 @@ Manipulation options (these affect the read furball):
           the read furball that they share an ID with.
   --shuffle <shuffler names> <seed>
           Use the specified shufflers to shuffle the assets in the
-          read furball. The shuffler names argument must be a
-          comma-separated list of shuffler ids, which can be
-          found using --list-shufflers. The seed argument may be
-          either a number or a string. Numbers will be used
-          directly; strings will have their Java hash used.
+          read furball. The shuffler names argument must be a comma-
+          separated list of shuffler ids, which can be found using
+          --list-shufflers, or the string "all" to apply all
+          available shufflers. The seed argument may be either a
+          number or a string. Numbers will be used directly;
+          strings will have their Java hash used.

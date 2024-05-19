@@ -319,7 +319,7 @@ final class Steps {
 			for (Map.Entry<String, AssetShuffler<?>> entry : registry.entrySet())
 				System.out.printf("%s: %s\n", entry.getKey(), entry.getValue().description());
 
-			System.out.printf("! To apply all of them: --shuffle %s\n", String.join(",", registry.keySet()));
+			System.out.printf("! To apply all of them: --shuffle %s (or use --shuffle all)\n", String.join(",", registry.keySet()));
 		}
 	}
 
@@ -328,7 +328,11 @@ final class Steps {
 		public void run(WorkingData data) throws Exception {
 			final Furball furball = data.furball("no furball loaded to shuffle");
 
-			final List<String> realKeys = List.of(keys.split(","));
+			final List<String> realKeys;
+			if ("all".equals(keys))
+				realKeys = List.copyOf(AssetShufflerRegistry.getRegistry().keySet());
+			else
+				realKeys = List.of(keys.split(","));
 
 			final Function<RandomGeneratorFactory<?>, RandomGenerator> func;
 
