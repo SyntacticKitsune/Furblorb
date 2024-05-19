@@ -30,4 +30,15 @@ final class WorkingData {
 	byte formatVersion() {
 		return formatVersion != null ? formatVersion : furball.meta.formatVersion;
 	}
+
+	/**
+	 * If the {@linkplain #furball furball} is non-{@code null}, returns it.
+	 * Otherwise, throws a {@link CliException} with the specified message.
+	 * @param nullMessage The message of the thrown {@code CliException}.
+	 * @return The furball.
+	 */
+	Furball furball(String nullMessage) {
+		if (furball == null) throw new CliException(nullMessage);
+		return furball;
+	}
 }

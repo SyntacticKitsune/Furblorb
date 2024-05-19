@@ -42,8 +42,13 @@ public final class Furblorb {
 		for (Step step : cfg.steps)
 			try {
 				step.run(data);
+			} catch (CliException e) {
+				System.err.println(e.logMessage());
+				System.exit(1);
 			} catch (Exception e) {
-				FurblorbUtil.throwAsUnchecked(e);
+				System.err.println("! Error: an exception occurred.");
+				e.printStackTrace();
+				System.exit(1);
 			}
 	}
 

@@ -1,6 +1,8 @@
 package net.syntactickitsune.furblorb.cli;
 
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
@@ -48,18 +50,29 @@ final class Steps {
 			final String kind;
 
 			final String filename = from.getFileName().toString();
-			if (filename.endsWith(".fnproj")) {
-				data.furball = new FinmerProjectReader(ReadOnlyExternalFileHandler.forProjectFile(from)).readFurball();
-				kind = "Finmer project";
-			} else if (filename.endsWith(".furball")) {
-				data.furball = new FurballReader(Files.readAllBytes(from)).readFurball();
-				kind = "furball";
-			} else
-				throw new IllegalArgumentException("Don't know how to read from " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
+
+			try {
+				if (filename.endsWith(".fnproj")) {
+					data.furball = new FinmerProjectReader(ReadOnlyExternalFileHandler.forProjectFile(from)).readFurball();
+					kind = "Finmer project";
+				} else if (filename.endsWith(".furball")) {
+					data.furball = new FurballReader(Files.readAllBytes(from)).readFurball();
+					kind = "furball";
+				} else
+					throw new CliException("don't know how to read from " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
+			} catch (NoSuchFileException e) {
+				throw new CliException("file \"" + e.getFile() + "\" does not exist; cannot read it");
+			} catch (AccessDeniedException e) {
+				throw new CliException("could not read file \"" + e.getFile() + "\": access denied");
+			}
 
 			System.out.printf("! Read %s \"%s\" by %s with %d assets (format version %d).\n", kind,
 					data.furball.meta.title, data.furball.meta.author, data.furball.assets.size(), data.furball.meta.formatVersion);
 
+			check(data);
+		}
+
+		private void check(WorkingData data) {
 			final Map<UUID, String> assetsById = new HashMap<>();
 
 			for (FurballAsset asset : data.furball.assets) {
@@ -82,30 +95,37 @@ final class Steps {
 	static final record Write(Path to) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			if (data.formatVersion != null && data.formatVersion != data.furball.meta.formatVersion) {
-				if (data.formatVersion > data.furball.meta.formatVersion)
-					System.out.println("! Upgrading format version to " + data.formatVersion + " (up from " + data.furball.meta.formatVersion + ").");
-				else
-					System.out.println("! Downgrading format version to " + data.formatVersion + " (down from " + data.furball.meta.formatVersion + ").");
+			final Furball furball = data.furball("no loaded furball to write");
 
-				data.furball.meta.formatVersion = data.formatVersion;
+			if (data.formatVersion != null && data.formatVersion != furball.meta.formatVersion) {
+				if (data.formatVersion > furball.meta.formatVersion)
+					System.out.println("! Upgrading format version to " + data.formatVersion + " (up from " + furball.meta.formatVersion + ").");
+				else
+					System.out.println("! Downgrading format version to " + data.formatVersion + " (down from " + furball.meta.formatVersion + ").");
+
+				furball.meta.formatVersion = data.formatVersion;
 			}
 
 			final String kind;
 
 			final String filename = to.getFileName().toString();
-			if (filename.endsWith(".furball")) {
-				final BinaryCodec codec = new BinaryCodec(false);
-				new FurballWriter(codec).write(data.furball);
 
-				Files.write(to, codec.toByteArray(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+			try {
+				if (filename.endsWith(".furball")) {
+					final BinaryCodec codec = new BinaryCodec(false);
+					new FurballWriter(codec).write(furball);
 
-				kind = "furball";
-			} else if (filename.endsWith(".fnproj")) {
-				new FinmerProjectWriter(WriteOnlyExternalFileHandler.forProjectFile(to)).writeFurball(data.furball);
-				kind = "Finmer project";
-			} else
-				throw new IllegalArgumentException("Don't know how to write to " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
+					Files.write(to, codec.toByteArray(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+					kind = "furball";
+				} else if (filename.endsWith(".fnproj")) {
+					new FinmerProjectWriter(WriteOnlyExternalFileHandler.forProjectFile(to)).writeFurball(furball);
+					kind = "Finmer project";
+				} else
+					throw new CliException("don't know how to write to " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
+			} catch (AccessDeniedException e) {
+				throw new CliException("could not write to file \"" + e.getFile() + "\": access denied");
+			}
 
 			System.out.printf("! Completed: wrote a %s to %s\n", kind, to().toAbsolutePath());
 		}
@@ -121,24 +141,27 @@ final class Steps {
 	static final record ChangeTitle(String value) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! Changed title %s => %s.", data.furball.meta.title, value);
-			data.furball.meta.title = value;
+			final Furball furball = data.furball("no furball loaded to change the title of");
+			System.out.printf("! Changed title %s => %s.", furball.meta.title, value);
+			furball.meta.title = value;
 		}
 	}
 
 	static final record ChangeAuthor(String value) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
+			final Furball furball = data.furball("no furball loaded to change the author of");
 			System.out.printf("! Changed author %s => %s.", data.furball.meta.author, value);
-			data.furball.meta.author = value;
+			furball.meta.author = value;
 		}
 	}
 
 	static final record AddDependency(UUID id, String filename) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			data.furball.dependencies.removeIf(dep -> dep.id().equals(id));
-			data.furball.dependencies.add(new FurballDependency(id, filename));
+			final Furball furball = data.furball("no furball loaded to add dependencies to");
+			furball.dependencies.removeIf(dep -> dep.id().equals(id));
+			furball.dependencies.add(new FurballDependency(id, filename));
 			System.out.printf("! Added dependency %s (%s).", id, filename);
 		}
 	}
@@ -146,7 +169,8 @@ final class Steps {
 	static final record DropDependency(UUID id) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			if (data.furball.dependencies.removeIf(dep -> dep.id().equals(id)))
+			final Furball furball = data.furball("no furball loaded to drop a dependency from");
+			if (furball.dependencies.removeIf(dep -> dep.id().equals(id)))
 				System.out.printf("! Dropped dependency %s.", id);
 		}
 	}
@@ -154,6 +178,7 @@ final class Steps {
 	static final record InsertAsset(Path assetPath) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
+			final Furball furball = data.furball("no furball loaded to insert an asset into");
 			System.out.printf("! Attempting to insert asset %s.\n", assetPath.toAbsolutePath());
 
 			String json = Files.readString(assetPath);
@@ -165,14 +190,15 @@ final class Steps {
 
 			System.out.printf("! Inserted asset %s (%s).\n", asset.filename, asset.id);
 
-			data.furball.assets.add(asset);
+			furball.assets.add(asset);
 		}
 	}
 
 	static final record ExtractAsset(@Nullable String filename, @Nullable UUID id, Path dest) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			for (FurballAsset asset : data.furball.assets)
+			final Furball furball = data.furball("no furball loaded to extract an asset from");
+			for (FurballAsset asset : furball.assets)
 				if ((filename != null && asset.filename.equals(filename)) || (id != null && asset.id.equals(id))) {
 					System.out.printf("! Extracting asset %s (%s) to %s.\n", asset.filename, asset.id, dest.toAbsolutePath());
 					{
@@ -189,7 +215,8 @@ final class Steps {
 	static final record DropAsset(@Nullable String filename, @Nullable UUID id) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			for (Iterator<FurballAsset> it = data.furball.assets.iterator(); it.hasNext(); ) {
+			final Furball furball = data.furball("no furball loaded to drop an asset from");
+			for (Iterator<FurballAsset> it = furball.assets.iterator(); it.hasNext(); ) {
 				final FurballAsset asset = it.next();
 				if ((filename != null && asset.filename.equals(filename)) || (id != null && asset.id.equals(id))) {
 					System.out.printf("! Dropped asset %s (%s).\n", asset.filename, asset.id);
@@ -202,7 +229,8 @@ final class Steps {
 	static final record SortAssets() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			Collections.sort(data.furball.assets);
+			final Furball furball = data.furball("no furball loaded to sort the assets of");
+			Collections.sort(furball.assets);
 			System.out.println("! Sorted all assets.");
 		}
 	}
@@ -210,6 +238,7 @@ final class Steps {
 	static final record Merge(Path other) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
+			final Furball furball = data.furball("no furball loaded to merge another furball with");
 			System.out.printf("! Attempting to merge %s...\n", other);
 
 			final WorkingData newData = new WorkingData();
@@ -219,14 +248,14 @@ final class Steps {
 			// Start with dependencies:
 			int mergedDeps = 0;
 			for (FurballDependency dep : merging.dependencies)
-				if (!dep.id().equals(data.furball.meta.id) && !data.furball.dependencies.contains(dep)) {
-					data.furball.dependencies.add(dep);
+				if (!dep.id().equals(furball.meta.id) && !furball.dependencies.contains(dep)) {
+					furball.dependencies.add(dep);
 					mergedDeps++;
 				}
 
 			parent:
 			for (FurballAsset ours : merging.assets) {
-				for (ListIterator<FurballAsset> it = data.furball.assets.listIterator(); it.hasNext(); ) {
+				for (ListIterator<FurballAsset> it = furball.assets.listIterator(); it.hasNext(); ) {
 					final FurballAsset theirs = it.next();
 					if (ours.id.equals(theirs.id)) {
 						it.set(ours);
@@ -234,32 +263,34 @@ final class Steps {
 					}
 				}
 
-				data.furball.assets.add(ours);
+				furball.assets.add(ours);
 			}
 
 			System.out.printf("! Merged %d dependenc%s and %d asset%s from %s (%s) into %s (%s).\n",
 					mergedDeps, mergedDeps == 1 ? "y" : "ies", merging.assets.size(), merging.assets.size() == 1 ? "" : "s",
-					merging.meta.title, merging.meta.id, data.furball.meta.title, data.furball.meta.id);
+					merging.meta.title, merging.meta.id, furball.meta.title, furball.meta.id);
 		}
 	}
 
 	static final record ShowMetadata() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
+			final Furball furball = data.furball("no furball loaded to show metadata of");
 			System.out.println("! Furball metadata:");
-			System.out.printf("ID: %s\n", data.furball.meta.id);
-			System.out.printf("Title: %s\n", data.furball.meta.title);
-			System.out.printf("Author: %s\n", data.furball.meta.author);
-			System.out.printf("Format Version: %d\n", data.furball.meta.formatVersion);
+			System.out.printf("ID: %s\n", furball.meta.id);
+			System.out.printf("Title: %s\n", furball.meta.title);
+			System.out.printf("Author: %s\n", furball.meta.author);
+			System.out.printf("Format Version: %d\n", furball.meta.formatVersion);
 		}
 	}
 
 	static final record ListDependencies() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! %d dependenc%s:\n", data.furball.dependencies.size(), data.furball.dependencies.size() == 1 ? "y" : "ies");
+			final Furball furball = data.furball("no furball loaded to list dependencies of");
+			System.out.printf("! %d dependenc%s:\n", furball.dependencies.size(), furball.dependencies.size() == 1 ? "y" : "ies");
 
-			for (FurballDependency dep : data.furball.dependencies)
+			for (FurballDependency dep : furball.dependencies)
 				System.out.printf("%s  %s\n", dep.id(), dep.filename());
 		}
 	}
@@ -267,9 +298,10 @@ final class Steps {
 	static final record ListAssets() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
-			System.out.printf("! %d asset%s:\n", data.furball.assets.size(), data.furball.assets.size() == 1 ? "" : "s");
+			final Furball furball = data.furball("no furball loaded to list assets of");
+			System.out.printf("! %d asset%s:\n", furball.assets.size(), furball.assets.size() == 1 ? "" : "s");
 
-			for (FurballAsset asset : data.furball.assets) {
+			for (FurballAsset asset : furball.assets) {
 				String str = asset.getClass().getSimpleName();
 				str = str.substring(0, str.length() - "Asset".length());
 				System.out.printf("%s  %s  %s\n", asset.id, asset.filename, str);
@@ -294,6 +326,8 @@ final class Steps {
 	static final record Shuffle(String keys, @Nullable String seed) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
+			final Furball furball = data.furball("no furball loaded to shuffle");
+
 			final List<String> realKeys = List.of(keys.split(","));
 
 			final Function<RandomGeneratorFactory<?>, RandomGenerator> func;
@@ -325,13 +359,13 @@ final class Steps {
 				}
 
 				final List<?> assets = assetCache.computeIfAbsent(shuffler.assetType(),
-						k -> data.furball.assets.stream()
+						k -> furball.assets.stream()
 								.filter(asset -> k.isAssignableFrom(asset.getClass()))
 								.toList());
 
 				System.out.println("! Shuffling " + assets.size() + " assets using shuffler " + key + ".");
 
-				shuffler.shuffle(assets, random, data.furball);
+				shuffler.shuffle(assets, random, furball);
 			}
 
 			System.out.println("! Shuffling completed.");
