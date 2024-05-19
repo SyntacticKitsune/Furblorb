@@ -8,7 +8,7 @@ import net.syntactickitsune.furblorb.api.finmer.Furball;
 import net.syntactickitsune.furblorb.api.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballWriter;
-import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
+import net.syntactickitsune.furblorb.api.finmer.io.UnsupportedFormatVersionException;
 
 /**
  * A {@link FurballWriter} for {@link NBTCodec}.

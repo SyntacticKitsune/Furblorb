@@ -22,7 +22,6 @@ import net.syntactickitsune.furblorb.api.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
-import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.codec.JsonCodec;
 
 /**

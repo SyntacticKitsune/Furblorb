@@ -1,4 +1,6 @@
-package net.syntactickitsune.furblorb.api.io;
+package net.syntactickitsune.furblorb.api.finmer.io;
+
+import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 
 /**
  * A {@link FurblorbParsingException} thrown when attempting to write a furball that contains things that don't support the current format version.

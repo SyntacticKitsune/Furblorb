@@ -1,6 +1,8 @@
-package net.syntactickitsune.furblorb.api.io;
+package net.syntactickitsune.furblorb.api.finmer.io;
 
 import org.jetbrains.annotations.Nullable;
+
+import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 
 /**
  * A {@link FurblorbParsingException} thrown when a furball is read or written with an unsupported format version.
