@@ -12,13 +12,26 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 java.withSourcesJar()
 
 sourceSets {
+	io {}
 	cli {
+		compileClasspath += sourceSets.io.output
+		runtimeClasspath += sourceSets.io.output
 		compileClasspath += sourceSets.main.output
 		runtimeClasspath += sourceSets.main.output
+	}
+	main {
+		compileClasspath += sourceSets.io.output
+		runtimeClasspath += sourceSets.io.output
+	}
+	test {
+		compileClasspath += sourceSets.io.output
+		runtimeClasspath += sourceSets.io.output
 	}
 }
 
 configurations {
+	ioImplementation.extendsFrom implementation
+	ioCompileOnly.extendsFrom compileOnly
 	cliImplementation.extendsFrom implementation
 	cliCompileOnly.extendsFrom compileOnly
 	testCompileOnly.extendsFrom compileOnly
@@ -57,16 +70,28 @@ tasks.withType(AbstractArchiveTask).configureEach {
 	reproducibleFileOrder = true
 }
 
-tasks.withType(Jar).configureEach {
+jar {
+	from sourceSets.io.output
 	manifest {
 		attributes([
-			'Automatic-Module-Name': 'net.syntactickitsune.furblorb'
+			'Automatic-Module-Name': 'net.syntactickitsune.furblorb.finmer'
+		])
+	}
+}
+
+tasks.register('ioJar', Jar) {
+	archiveClassifier = 'io'
+	from sourceSets.io.output
+	manifest {
+		attributes([
+			'Automatic-Module-Name': 'net.syntactickitsune.furblorb.io'
 		])
 	}
 }
 
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
 	archiveClassifier = 'cli'
+	from sourceSets.io.output
 	from sourceSets.cli.output
 	exclude 'module-info.class'
 	exclude 'META-INF/maven/**'
@@ -75,17 +100,18 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 	manifest {
 		attributes([
 			'Main-Class': 'net.syntactickitsune.furblorb.cli.Furblorb',
-			'Automatic-Module-Name': 'net.syntactickitsune.furblorb'
+			'Automatic-Module-Name': 'net.syntactickitsune.furblorb.cli'
 		])
 	}
 }
 
 sourcesJar {
+	from sourceSets.io.allSource
 	from sourceSets.cli.allSource
 }
 
 artifacts {
-	archives shadowJar
+	archives ioJar, shadowJar
 }
 
 processCliResources {
