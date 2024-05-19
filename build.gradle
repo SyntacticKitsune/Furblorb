@@ -57,7 +57,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly 'org.jetbrains:annotations:24.1.0'
+	api 'org.jetbrains:annotations:24.1.0'
 	api 'com.google.code.gson:gson:2.10.1'
 
 	testImplementation 'com.github.Querz:NBT:6.1'
@@ -72,6 +72,7 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 jar {
+	archiveClassifier = 'finmer'
 	from sourceSets.io.output
 	manifest {
 		attributes([
@@ -90,6 +91,16 @@ tasks.register('ioJar', Jar) {
 	}
 }
 
+tasks.register('ioSourcesJar', Jar) {
+	archiveClassifier = 'io-sources'
+	from sourceSets.io.allSource
+}
+
+sourcesJar {
+	archiveClassifier = 'finmer-sources'
+	exclude 'serializables.txt'
+}
+
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar).configure {
 	archiveClassifier = 'cli'
 	from sourceSets.io.output
@@ -106,13 +117,18 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 	}
 }
 
-sourcesJar {
+tasks.register('cliSourcesJar', Jar) {
+	archiveClassifier = 'cli-sources'
 	from sourceSets.io.allSource
+	from sourceSets.main.allSource
 	from sourceSets.cli.allSource
+	exclude 'serializables.txt'
+	exclude 'usage.txt'
+	exclude 'version.txt'
 }
 
 artifacts {
-	archives ioJar, shadowJar
+	archives ioJar, ioSourcesJar, shadowJar, cliSourcesJar
 }
 
 processCliResources {
@@ -136,6 +152,8 @@ publishing {
 		mavenJava(MavenPublication) {
 			from components.java
 			artifact ioJar
+			artifact ioSourcesJar
+			artifact cliSourcesJar
 			pom {
 				name = 'Furblorb'
 				description = 'A command-line tool for reading/writing furballs and Finmer projects.'

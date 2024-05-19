@@ -123,7 +123,14 @@ Furblorb can be compiled using one of the following commands:
 On Linux/Mac: `./gradlew build`<br>
 On Windows: `gradlew.bat build`
 
-The built binaries can then be found in `build/libs`.
+The built binaries can then be found in `build/libs`:
+
+* `Furblorb-<version>-io.jar` contains only the IO classes -- that is, no Finmer-related stuff.
+* `Furblorb-<version>-io-sources.jar` contains sources for the IO jar.
+* `Furblorb-<version>-finmer.jar` contains only the Finmer-related classes, it requires the IO jar.
+* `Furblorb-<version>-finmer-sources.jar` contains sources for the Finmer jar.
+* `Furblorb-<version>-cli.jar` contains both the IO and Finmer things, along with the CLI.
+* `Furblorb-<version>-cli-sources.jar` contains sources for all of the above.
 
 ## Java API
 
