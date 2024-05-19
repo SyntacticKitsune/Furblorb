@@ -108,6 +108,8 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 	exclude 'module-info.class'
 	exclude 'META-INF/maven/**'
 	exclude 'META-INF/versions/9/**'
+	from 'LICENSE.md'
+	from 'LICENSE.LESSER.md'
 
 	manifest {
 		attributes([
@@ -125,6 +127,8 @@ tasks.register('cliSourcesJar', Jar) {
 	exclude 'serializables.txt'
 	exclude 'usage.txt'
 	exclude 'version.txt'
+	from 'LICENSE.md'
+	from 'LICENSE.LESSER.md'
 }
 
 artifacts {
