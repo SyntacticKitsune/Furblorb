@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.finmer.FurblorbUtil;
+import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 
 /**
  * Various utilities used in Furblorb's tests.

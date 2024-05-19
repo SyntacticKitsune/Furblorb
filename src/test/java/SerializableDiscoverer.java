@@ -7,8 +7,8 @@ import java.util.Set;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import net.syntactickitsune.furblorb.api.finmer.io.IFurballSerializable;
-import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
+import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
+import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 
 final class SerializableDiscoverer {
 

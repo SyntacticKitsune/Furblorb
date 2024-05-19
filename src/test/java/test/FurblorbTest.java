@@ -16,27 +16,27 @@ import org.junit.jupiter.api.TestFactory;
 
 import com.google.gson.JsonObject;
 
-import net.syntactickitsune.furblorb.api.finmer.Furball;
-import net.syntactickitsune.furblorb.api.finmer.FurballMetadata;
-import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
-import net.syntactickitsune.furblorb.api.finmer.asset.SceneNode;
-import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader;
-import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectWriter;
-import net.syntactickitsune.furblorb.api.finmer.io.FurballReader;
-import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
-import net.syntactickitsune.furblorb.api.finmer.io.FurballWriter;
-import net.syntactickitsune.furblorb.api.finmer.io.UnsupportedFormatVersionException;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.BooleanExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.ComparisonExpressionNode;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.FloatExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.IntExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.LogicalExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.StringExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.impl.expression.simple.SimpleExpression;
-import net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement.simple.SimpleStatement;
-import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
-import net.syntactickitsune.furblorb.api.io.codec.BinaryCodec;
-import net.syntactickitsune.furblorb.api.io.codec.JsonCodec;
+import net.syntactickitsune.furblorb.finmer.Furball;
+import net.syntactickitsune.furblorb.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
+import net.syntactickitsune.furblorb.finmer.asset.SceneNode;
+import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader;
+import net.syntactickitsune.furblorb.finmer.io.FinmerProjectWriter;
+import net.syntactickitsune.furblorb.finmer.io.FurballReader;
+import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
+import net.syntactickitsune.furblorb.finmer.io.FurballWriter;
+import net.syntactickitsune.furblorb.finmer.io.UnsupportedFormatVersionException;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.BooleanExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.ComparisonExpressionNode;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.FloatExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.IntExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.LogicalExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.expression.StringExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.impl.expression.simple.SimpleExpression;
+import net.syntactickitsune.furblorb.finmer.script.visual.impl.statement.simple.SimpleStatement;
+import net.syntactickitsune.furblorb.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 final class FurblorbTest {
 

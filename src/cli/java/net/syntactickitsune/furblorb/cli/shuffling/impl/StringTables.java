@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.syntactickitsune.furblorb.api.finmer.Furball;
-import net.syntactickitsune.furblorb.api.finmer.asset.StringTableAsset;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
+import net.syntactickitsune.furblorb.finmer.Furball;
+import net.syntactickitsune.furblorb.finmer.asset.StringTableAsset;
 
 /**
  * An {@link AssetShuffler} that shuffles the contents of all {@linkplain StringTableAsset string tables} (or at least, the ones that won't break).

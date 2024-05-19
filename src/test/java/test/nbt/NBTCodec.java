@@ -14,16 +14,16 @@ import net.querz.nbt.tag.CompoundTag;
 import net.querz.nbt.tag.ListTag;
 import net.querz.nbt.tag.StringTag;
 
-import net.syntactickitsune.furblorb.api.finmer.Furball;
-import net.syntactickitsune.furblorb.api.io.Decoder;
-import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
-import net.syntactickitsune.furblorb.api.io.INamedEnum;
-import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
-import net.syntactickitsune.furblorb.api.io.TriConsumer;
-import net.syntactickitsune.furblorb.api.io.codec.BinaryCodec;
-import net.syntactickitsune.furblorb.api.io.codec.Codec;
-import net.syntactickitsune.furblorb.api.io.codec.JsonCodec;
+import net.syntactickitsune.furblorb.finmer.Furball;
+import net.syntactickitsune.furblorb.io.Decoder;
+import net.syntactickitsune.furblorb.io.Encoder;
+import net.syntactickitsune.furblorb.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.io.INamedEnum;
+import net.syntactickitsune.furblorb.io.ParsingStrategy;
+import net.syntactickitsune.furblorb.io.TriConsumer;
+import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.Codec;
+import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
  * <p>

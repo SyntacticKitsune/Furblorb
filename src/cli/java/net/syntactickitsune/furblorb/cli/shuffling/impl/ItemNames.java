@@ -3,10 +3,10 @@ package net.syntactickitsune.furblorb.cli.shuffling.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.syntactickitsune.furblorb.api.finmer.Furball;
-import net.syntactickitsune.furblorb.api.finmer.asset.ItemAsset;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
+import net.syntactickitsune.furblorb.finmer.Furball;
+import net.syntactickitsune.furblorb.finmer.asset.ItemAsset;
 
 /**
  * An {@link AssetShuffler} that shuffles the names of all {@linkplain ItemAsset items}.

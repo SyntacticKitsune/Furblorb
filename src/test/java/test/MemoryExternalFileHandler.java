@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
+import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
 
 final class MemoryExternalFileHandler implements ExtendedExternalFileHandler {
 

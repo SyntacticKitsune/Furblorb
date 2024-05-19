@@ -3,15 +3,15 @@ package net.syntactickitsune.furblorb.cli.shuffling.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.syntactickitsune.furblorb.api.finmer.Furball;
-import net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset;
-import net.syntactickitsune.furblorb.api.finmer.asset.SceneNode;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
+import net.syntactickitsune.furblorb.finmer.Furball;
+import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
+import net.syntactickitsune.furblorb.finmer.asset.SceneNode;
 
 /**
  * An {@link AssetShuffler} that shuffles the titles and tooltips of all {@link SceneAsset}
- * {@linkplain net.syntactickitsune.furblorb.api.finmer.asset.SceneNode.Type#CHOICE choice nodes}.
+ * {@linkplain net.syntactickitsune.furblorb.finmer.asset.SceneNode.Type#CHOICE choice nodes}.
  * @author SyntacticKitsune
  */
 public final class SceneChoiceText implements AssetShuffler<SceneAsset> {
