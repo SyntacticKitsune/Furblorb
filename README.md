@@ -2,7 +2,7 @@
 
 Furblorb is a command-line tool for reading/writing furballs and [Finmer](https://get.finmer.dev) projects.
 In particular, it lets you turn these projects into furballs *and* turn furballs back into projects.
-One could think of it as being simultaneously a compiler and decompiler.
+One could (but probably shouldn't) think of it as being simultaneously a compiler and decompiler.
 
 > [!WARNING]
 > From [Finmer](https://github.com/pileofwolves/finmer)'s README (edited slightly): Finmer contains adult fiction and fantasy content. Proceed at your own risk. If you stumbled across this project by accident, chances are you're not interested in the subject matter and should move on. :)
@@ -27,11 +27,110 @@ The similarities in concept between furballs and blorbs is what lead me to choos
 * It contains a game, or game data
 * It's used for interactive fiction
 
+## Usage
+
+For full usage information, just run the jar (or pass the `--help` option), like so:
+
+```
+java -jar Furblorb-<version>-cli.jar
+```
+
+This can be used to pack a project into a furball:
+
+```
+java -jar Furblorb-<version>-cli.jar --read <path to project file>.fnproj --sort --write <file>.furball
+```
+
+```
+$ java -jar Furblorb-<version>-cli.jar --read DeepForest/DeepForest.fnproj --sort --write DeepForest.furball
+! The furblorb spell: safely protect a small creature as though in a strong box.
+! Read Finmer project "Deep Forest" by SyntacticKitsune with 11 assets (format version 20).
+! Sorted all assets.
+! Completed: wrote a furball to DeepForest.furball
+```
+
+Although not required, it's encouraged to pass `--sort` like in the above example so that the created furball is reproducible on different filesystems.
+(Since otherwise the order the assets are read in is dependant on the order the filesystem has them in, which could differ between computers.)
+
+To unpack a furball into a project:
+
+```
+java -jar Furblorb-<version>-cli.jar --read <file>.furball --write <path to project file>.fnproj
+```
+
+```
+$ java -jar Furblorb-<version>-cli.jar --read Core.furball --write Core/Core.fnproj
+! The furblorb spell: safely protect a small creature as though in a strong box.
+! Read furball "Finmer Core" by Nuntis the Wolf with 175 assets (format version 20).
+! Completed: wrote a Finmer project to Core/Core.fnproj
+```
+
+Two furballs can be merged to create a single one:
+
+```
+java -jar Furblorb-<version>-cli.jar --read <file>.furball --merge <other file>.furball --write <output file>.furball
+```
+
+```
+$ java -jar Furblorb-<version>-cli.jar --read Core.furball --merge DeepForest.furball --write CoreMerged.furball
+! The furblorb spell: safely protect a small creature as though in a strong box.
+! Read furball "Finmer Core" by Nuntis the Wolf with 175 assets (format version 20).
+! Attempting to merge DeepForest.furball...
+! Read furball "Deep Forest" by SyntacticKitsune with 11 assets (format version 20).
+! Merged 0 dependencies and 11 assets from Deep Forest (e0ba8127-53dd-4c97-8f7f-0b079edeaae5) into Finmer Core (edcf99d2-6ced-40fa-87e9-86cda5e570ee).
+! Completed: wrote a furball to CoreMerged.furball
+```
+
+The last major thing: a furball can be "shuffled", in that all of its text/items/etc. are shuffled so they appear in different places (like in Undertale corruptions).
+This can be done like so:
+
+```
+java -jar Furblorb-<version>-cli.jar --read <file>.furball --shuffle <comma-separated list of shufflers to apply, or "all"> <seed for the randomizer> --write <output file>.furball
+```
+
+```
+$ java -jar Furblorb-<version>-cli.jar --read Core.furball --shuffle all 12345 --write "CoreShuffled.furball"
+! The furblorb spell: safely protect a small creature as though in a strong box.
+! Read furball "Finmer Core" by Nuntis the Wolf with 175 assets (format version 20).
+! Shuffling 63 assets using shuffler itemflavortext.
+! Shuffling 63 assets using shuffler itemnames.
+! Shuffling 32 assets using shuffler scenechoicetext.
+! Shuffling 24 assets using shuffler strings.
+! Shuffling completed.
+! Completed: wrote a furball to CoreShuffled.furball
+```
+
+Internally, Furblorb translates each argument as a separate step to apply (mostly), so multiple read and write operations can be chained like so:
+
+```
+java -jar Furblorb-<version>-cli.jar --read <file 1>.furball --write <file 1 output>.fnproj --read <file 2>.furball --write <file 2 output>.fnproj
+```
+
+This also means that the order the arguments appear in matters -- trying to do something requiring a furball before it's loaded will cause errors.
+
 ## Licensing
 
-Furblorb itself is licensed under [GNU LGPLv3](LICENSE.LESSER.md), however, it also includes a few copies of "Finmer Core" by Nuntis and a copy of "Deep Forest" by SyntacticKitsune in its testing code (see `src/test/resources`).
+Furblorb itself is licensed under the GNU Lesser General Public License version 3 ([GNU LGPLv3](LICENSE.LESSER.md)).
+
+However, it also includes a few copies of "Finmer Core" by Nuntis and a copy of "Deep Forest" by SyntacticKitsune in its testing code (see `src/test/resources`).
 This data is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International ([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)) license.
 These copies are only used for verifying the correctness of the program, and are not included in the compiled binaries.
+
+## Compiling
+
+Furblorb can be compiled using one of the following commands:
+
+On Linux/Mac: `./gradlew build`<br>
+On Windows: `gradlew.bat build`
+
+The built binaries can then be found in `build/libs`.
+
+## Java API
+
+Furblorb also has an almost-fully-documented Java API which can be used to manipulate furballs instead of using the CLI.
+See `FurballReader`, `FurballWriter`, `FinmerProjectReader`, and `FinmerProjectWriter` for reading/writing furballs and projects, respectively.
+
+The `io` package and subpackages has some neat utilities. `BinaryCodec` for instance, which can be used to read and write data compatible with C#'s [`BinaryReader`](https://learn.microsoft.com/en-us/dotnet/api/system.io.binaryreader) and [`BinaryWriter`](https://learn.microsoft.com/en-us/dotnet/api/system.io.binarywriter) classes. In particular it supports [7-bit ints](https://learn.microsoft.com/en-us/dotnet/api/system.io.binaryreader.read7bitencodedint) as well as `GUID`'s bespoke format. In fact, `Codec` allows reading/writing data in a format-agnostic way, whether structured or unstructured -- the builtin implementations support binary and JSON, but new ones could support data formats like XML, YAML, etc.
 
 ## Furball format versions
 
