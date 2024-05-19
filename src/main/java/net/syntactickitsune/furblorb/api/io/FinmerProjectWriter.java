@@ -156,12 +156,21 @@ public final class FinmerProjectWriter {
 		}
 
 		@Override
+		public void writeProjectFile(byte[] contents) {
+			writeExternalFile(projectFile, contents);
+		}
+
+		@Override
 		public void writeExternalFile(String filename, byte[] contents) {
 			Objects.requireNonNull(filename, "filename");
 			Objects.requireNonNull(contents, "contents");
 
+			final Path to = projectDirectory.resolve(filename);
+			writeExternalFile(to, contents);
+		}
+
+		private static void writeExternalFile(Path to, byte[] contents) {
 			try {
-				final Path to = projectDirectory.resolve(filename);
 				Files.createDirectories(to.getParent());
 				Files.write(to, contents, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 			} catch (IOException e) {
