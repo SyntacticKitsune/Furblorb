@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import net.syntactickitsune.furblorb.api.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.api.finmer.component.CreatureFlags;
 import net.syntactickitsune.furblorb.api.finmer.component.StringMapping;
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
-import net.syntactickitsune.furblorb.api.util.FurballUtil;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * A {@code CreatureAsset} represents something that may take part in a battle.

@@ -3,9 +3,9 @@ package net.syntactickitsune.furblorb.api.finmer.asset;
 import java.util.UUID;
 
 import net.syntactickitsune.furblorb.api.finmer.Furball;
+import net.syntactickitsune.furblorb.api.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
 /**
  * <p>

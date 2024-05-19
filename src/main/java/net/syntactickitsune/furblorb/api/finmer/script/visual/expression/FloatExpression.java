@@ -2,9 +2,9 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
 /**
  * Represents a {@code float} expression which may be a literal {@code float}, a variable reference, or a script.

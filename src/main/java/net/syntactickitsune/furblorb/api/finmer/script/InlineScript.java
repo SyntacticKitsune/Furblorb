@@ -2,9 +2,9 @@ package net.syntactickitsune.furblorb.api.finmer.script;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Represents an "inline" script, that is, a script which has been written in the same file.

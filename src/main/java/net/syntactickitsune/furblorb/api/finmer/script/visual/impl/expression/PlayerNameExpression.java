@@ -2,11 +2,11 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.StringExpression;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Compares the player's name to some other value.

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.syntactickitsune.furblorb.FurblorbUtil;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
 
 /**
  * The main entrypoint and CLI of Furblorb.

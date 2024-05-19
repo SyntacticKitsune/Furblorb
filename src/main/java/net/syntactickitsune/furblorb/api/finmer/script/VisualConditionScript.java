@@ -3,10 +3,10 @@ package net.syntactickitsune.furblorb.api.finmer.script;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.LogicalExpression;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Represents a {@code boolean} expression built using Finmer's visual scripting framework.

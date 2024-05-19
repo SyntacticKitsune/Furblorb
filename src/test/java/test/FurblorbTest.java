@@ -23,6 +23,7 @@ import net.syntactickitsune.furblorb.api.finmer.asset.SceneNode;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballReader;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.BooleanExpression;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.ComparisonExpressionNode;
@@ -36,7 +37,6 @@ import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
 import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 final class FurblorbTest {
 

@@ -3,12 +3,12 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.block;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.ScriptNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementBlockNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.LogicalExpression;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Represents a Lua if-statement, optionally with an else branch.

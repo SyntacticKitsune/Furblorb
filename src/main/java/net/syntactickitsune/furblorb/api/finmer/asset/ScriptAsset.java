@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 import net.syntactickitsune.furblorb.api.finmer.component.LoadOrderDependency;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.Script;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * A {@code ScriptAsset} contains the contents of a script, as well as any load order dependencies the script may have on other scripts.

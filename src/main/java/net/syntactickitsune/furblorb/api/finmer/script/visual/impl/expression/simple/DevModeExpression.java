@@ -1,7 +1,7 @@
 package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.expression.simple;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * From <a href="https://docs.finmer.dev/script-reference/flow">the documentation</a>:

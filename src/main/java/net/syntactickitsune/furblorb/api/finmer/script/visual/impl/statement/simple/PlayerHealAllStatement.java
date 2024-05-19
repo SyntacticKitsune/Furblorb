@@ -1,7 +1,7 @@
 package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement.simple;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Restores the player's health back up to their max health.

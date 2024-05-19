@@ -9,11 +9,11 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.api.finmer.component.buff.EquipEffectGroup;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * An {@code ItemAsset} defines the initial attributes of an item.

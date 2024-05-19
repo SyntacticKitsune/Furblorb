@@ -1,8 +1,6 @@
-package net.syntactickitsune.furblorb.api.util;
+package net.syntactickitsune.furblorb.api.finmer;
 
 import java.util.UUID;
-
-import net.syntactickitsune.furblorb.api.finmer.Furball;
 
 /**
  * Various {@link Furball}-related utilities.

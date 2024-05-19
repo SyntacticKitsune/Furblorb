@@ -15,7 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
-import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.ExternalFileHandler;
@@ -43,7 +42,7 @@ public class JsonCodec extends Codec {
 	protected final JsonObject wrapped;
 
 	/**
-	 * The {@link ExternalFileHandler}. In many cases this will be an {@link ExtendedExternalFileHandler}.
+	 * The {@link ExternalFileHandler}. In many cases this will be an {@link net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler ExtendedExternalFileHandler}.
 	 */
 	@Nullable
 	protected final ExternalFileHandler externalFiles;

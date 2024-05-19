@@ -2,13 +2,13 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
 import net.syntactickitsune.furblorb.api.io.ParsingStrategy;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Modifies the player's current health.

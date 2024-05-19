@@ -3,10 +3,10 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement;
 import java.util.Objects;
 import java.util.UUID;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Adds or removes a specified item from the player's inventory.

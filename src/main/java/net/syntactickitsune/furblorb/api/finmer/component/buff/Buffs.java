@@ -4,9 +4,9 @@ import java.util.Objects;
 
 import net.syntactickitsune.furblorb.api.finmer.asset.CreatureAsset;
 import net.syntactickitsune.furblorb.api.finmer.asset.ItemAsset;
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * The class containing all the different {@link Buff} implementations.

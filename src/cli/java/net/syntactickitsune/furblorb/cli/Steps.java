@@ -28,6 +28,7 @@ import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballReader;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.api.finmer.io.FurballWriter;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectReader.ReadOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.api.finmer.io.FinmerProjectWriter.WriteOnlyExternalFileHandler;
@@ -36,7 +37,6 @@ import net.syntactickitsune.furblorb.api.io.impl.JsonCodec;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShuffler;
 import net.syntactickitsune.furblorb.cli.shuffling.AssetShufflerRegistry;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**
  * A container class for all of the {@link Step} implementations.

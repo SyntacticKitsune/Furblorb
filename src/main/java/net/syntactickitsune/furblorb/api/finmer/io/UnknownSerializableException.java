@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.io;
+package net.syntactickitsune.furblorb.api.finmer.io;
 
 import org.jetbrains.annotations.Nullable;
 

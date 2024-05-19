@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 import net.syntactickitsune.furblorb.api.finmer.asset.ItemAsset;
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
+import net.syntactickitsune.furblorb.api.finmer.io.IFurballSerializable;
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.INamedEnum;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
-import net.syntactickitsune.furblorb.io.IFurballSerializable;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * For equippable {@linkplain ItemAsset items}, this represents a single series of effects they might apply.

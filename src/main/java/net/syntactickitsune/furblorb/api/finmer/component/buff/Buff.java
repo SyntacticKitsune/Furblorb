@@ -2,9 +2,9 @@ package net.syntactickitsune.furblorb.api.finmer.component.buff;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.IFurballSerializable;
 
 public sealed abstract class Buff implements IFurballSerializable permits Buff.Number, Buffs.Stun, Buffs.Tooltip {
 

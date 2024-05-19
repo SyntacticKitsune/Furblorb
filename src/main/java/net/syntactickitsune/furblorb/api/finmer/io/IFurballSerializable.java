@@ -1,8 +1,8 @@
-package net.syntactickitsune.furblorb.io;
+package net.syntactickitsune.furblorb.api.finmer.io;
 
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables.Metadata;
 import net.syntactickitsune.furblorb.api.io.Encoder;
 import net.syntactickitsune.furblorb.api.io.IllegalFormatVersionException;
-import net.syntactickitsune.furblorb.io.FurballSerializables.Metadata;
 
 /**
  * Represents something that can be serialized using {@link FurballSerializables}.

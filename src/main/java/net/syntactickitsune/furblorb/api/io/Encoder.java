@@ -9,9 +9,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.api.FurblorbException;
-import net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset;
 import net.syntactickitsune.furblorb.api.util.TriConsumer;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**
  * <p>
@@ -29,7 +27,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
 public interface Encoder {
 
 	/**
-	 * Used by {@link FurballSerializables} to decide whether to write ids versus type names.
+	 * Used by {@link net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables} to decide whether to write ids versus type names.
 	 * @return {@code true} for ids, {@code false} for type names.
 	 */
 	public boolean writeCompressedTypes();
@@ -42,7 +40,7 @@ public interface Encoder {
 
 	/**
 	 * A method called to decide whether serialization code should perform sanity checks on their content.
-	 * For example, {@link SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
+	 * For example, {@link net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
 	 * @return Whether serialization code should perform checks on the current state.
 	 */
 	public boolean validate();

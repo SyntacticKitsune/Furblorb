@@ -2,9 +2,9 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual;
 
 import java.util.List;
 
+import net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**
  * <p>

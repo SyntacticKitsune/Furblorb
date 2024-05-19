@@ -2,10 +2,10 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * Checks whether a specified participant is grappling with anyone, and optionally, if they're grappling with a specific person.

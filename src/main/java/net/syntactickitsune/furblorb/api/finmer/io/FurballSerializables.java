@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.io;
+package net.syntactickitsune.furblorb.api.finmer.io;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

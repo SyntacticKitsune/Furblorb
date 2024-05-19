@@ -7,9 +7,6 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
-
 /**
  * <p>
  * Represents a generalized {@code Map}-style decoder.
@@ -26,7 +23,7 @@ import net.syntactickitsune.furblorb.io.FurballSerializables;
 public interface Decoder {
 
 	/**
-	 * Used by {@link FurballSerializables} to decide whether to read ids versus type names.
+	 * Used by {@link net.syntactickitsune.furblorb.api.finmer.io.FurballSerializables} to decide whether to read ids versus type names.
 	 * @return {@code true} for ids, {@code false} for type names.
 	 */
 	public boolean readCompressedTypes();
@@ -38,7 +35,7 @@ public interface Decoder {
 
 	/**
 	 * A method called to decide whether serialization code should perform sanity checks on their content.
-	 * For example, {@link SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
+	 * For example, {@link net.syntactickitsune.furblorb.api.finmer.asset.SceneAsset SceneAssets} enforcing that certain fields <i>don't</i> exist without their associated flag.
 	 * @return Whether serialization code should perform checks on the current state.
 	 */
 	public boolean validate();

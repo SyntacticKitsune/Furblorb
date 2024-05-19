@@ -2,11 +2,11 @@ package net.syntactickitsune.furblorb.api.finmer.script.visual.impl.statement;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.api.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.api.finmer.script.visual.expression.IntExpression;
 import net.syntactickitsune.furblorb.api.io.Decoder;
 import net.syntactickitsune.furblorb.api.io.Encoder;
-import net.syntactickitsune.furblorb.io.RegisterSerializable;
 
 /**
  * From <a href="https://docs.finmer.dev/script-reference/player">the documentation</a>:

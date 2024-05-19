@@ -11,7 +11,6 @@ import net.syntactickitsune.furblorb.api.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.api.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.api.io.UnsupportedFormatVersionException;
 import net.syntactickitsune.furblorb.api.io.impl.BinaryCodec;
-import net.syntactickitsune.furblorb.io.FurballSerializables;
 
 /**
  * <p>
