@@ -2,6 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'jvm-test-suite'
+	id 'maven-publish'
 	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -127,5 +128,35 @@ processCliResources {
 
 	from(sourceSets.cli.resources.srcDirs) {
 		exclude 'version.txt'
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			artifact ioJar
+			pom {
+				name = 'Furblorb'
+				description = 'A command-line tool for reading/writing furballs and Finmer projects.'
+				url = 'https://github.com/SyntacticKitsune/Furblorb'
+				licenses {
+					license {
+						name = 'LGPL-3-or-later'
+						url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+						distribution = 'repo'
+					}
+				}
+				issueManagement {
+					system = 'GitHub Issues'
+					url = 'https://github.com/SyntacticKitsune/Furblorb/issues'
+				}
+				scm {
+					url = 'https://github.com/SyntacticKitsune/Furblorb'
+					connection = 'scm:git:https://github.com/SyntacticKitsune/Furblorb.git'
+					developerConnection = 'scm:git:https://github.com/SyntacticKitsune/Furblorb.git'
+				}
+			}
+		}
 	}
 }
