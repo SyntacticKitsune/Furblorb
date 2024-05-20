@@ -120,7 +120,7 @@ tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 }
 
 tasks.register('cliSourcesJar', Jar) {
-	archiveClassifier = 'cli-sources'
+	archiveClassifier = 'sources'
 	from sourceSets.io.allSource
 	from sourceSets.main.allSource
 	from sourceSets.cli.allSource

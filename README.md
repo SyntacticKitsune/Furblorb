@@ -130,7 +130,7 @@ The built binaries can then be found in `build/libs`:
 * `Furblorb-<version>-finmer.jar` contains only the Finmer-related classes, it requires the IO jar.
 * `Furblorb-<version>-finmer-sources.jar` contains sources for the Finmer jar.
 * `Furblorb-<version>-cli.jar` contains both the IO and Finmer things, along with the CLI.
-* `Furblorb-<version>-cli-sources.jar` contains sources for all of the above.
+* `Furblorb-<version>-sources.jar` contains sources for all of the above.
 
 ## Java API
 
