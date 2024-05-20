@@ -47,8 +47,8 @@ public class BinaryCodec extends SequenceCodec {
 
 	/**
 	 * <p>Constructs a new {@code BinaryCodec} with the specified backing buffer.</p>
-	 * <p>If the buffer is to be written to, it is recommended not to keep
-	 * a reference to it since the buffer may be resized automatically.
+	 * <p>If the codec is to be written to, it is recommended <i>not</i> to keep
+	 * a reference to the buffer since it may be resized automatically.
 	 * If direct access is required, use {@link #buffer()} to access the {@code BinaryCodec}'s backing buffer.</p>
 	 * @param buf The backing buffer.
 	 * @param read Whether this {@code BinaryCodec} is read-only versus write-only.
@@ -58,6 +58,20 @@ public class BinaryCodec extends SequenceCodec {
 		Objects.requireNonNull(buf, "buf");
 		this.buf = buf;
 		this.read = read;
+	}
+
+	/**
+	 * <p>Constructs a new {@code BinaryCodec} with the specified backing array.
+	 * A {@link ByteBuffer} wrapping the array will be used, with a default byte ordering of {@link ByteOrder#LITTLE_ENDIAN}.</p>
+	 * <p>If the codec is to be written to, it is recommended <i>not</i> to keep
+	 * a reference to the array since it may be resized automatically.
+	 * If direct access is required, use {@link #buffer()} to access the {@code BinaryCodec}'s backing buffer.</p>
+	 * @param bytes The initial backing array.
+	 * @param read Whether this {@code BinaryCodec} is read-only versus write-only.
+	 * @throws NullPointerException If {@code bytes} is {@code null}.
+	 */
+	public BinaryCodec(byte[] bytes, boolean read) {
+		this(ByteBuffer.wrap(Objects.requireNonNull(bytes, "bytes")).order(ByteOrder.LITTLE_ENDIAN), read);
 	}
 
 	/**
