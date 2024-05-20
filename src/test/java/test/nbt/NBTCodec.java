@@ -23,6 +23,7 @@ import net.syntactickitsune.furblorb.io.ParsingStrategy;
 import net.syntactickitsune.furblorb.io.TriConsumer;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
 import net.syntactickitsune.furblorb.io.codec.Codec;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
@@ -48,30 +49,25 @@ public class NBTCodec extends Codec {
 	protected final CompoundTag wrapped;
 
 	/**
-	 * Whether the {@code NBTCodec} is read-only versus write-only.
-	 */
-	protected final boolean read;
-
-	/**
 	 * Constructs a new {@code NBTCodec} with the specified parameters.
 	 * @param root The root object.
-	 * @param read Whether the {@code NBTCodec} should be read-only versus write-only.
+	 * @param mode The mode that the {@code NBTCodec} should be in.
 	 * @throws NullPointerException If {@code root} is {@code null}.
 	 */
-	public NBTCodec(CompoundTag root, boolean read) {
+	public NBTCodec(CompoundTag root, CodecMode mode) {
+		super(mode);
 		wrapped = Objects.requireNonNull(root, "root");
-		this.read = read;
 	}
 
 	/**
 	 * Constructs a new {@code NBTCodec} with the specified parameters.
 	 * @param root The root object.
-	 * @param read Whether the {@code NBTCodec} should be read-only versus write-only.
+	 * @param mode The mode that the {@code NBTCodec} should be in.
 	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
 	 * @throws NullPointerException If {@code root} is {@code null}.
 	 */
-	public NBTCodec(CompoundTag root, boolean read, byte formatVersion) {
-		this(root, read);
+	public NBTCodec(CompoundTag root, CodecMode mode, byte formatVersion) {
+		this(root, mode);
 		this.formatVersion = formatVersion;
 	}
 
@@ -178,7 +174,7 @@ public class NBTCodec extends Codec {
 		final List<T> ret = new ArrayList<>(arr.size());
 
 		for (int i = 0; i < arr.size(); i++)
-			ret.add(reader.apply(new NBTCodec(arr.get(i), read, formatVersion)));
+			ret.add(reader.apply(new NBTCodec(arr.get(i), mode, formatVersion)));
 
 		return ret;
 	}
@@ -191,7 +187,7 @@ public class NBTCodec extends Codec {
 
 		for (CompoundTag tag : listTag)
 			if (!tag.containsKey("__null__"))
-				ret.add(reader.apply(new NBTCodec(tag, read, formatVersion)));
+				ret.add(reader.apply(new NBTCodec(tag, mode, formatVersion)));
 			else
 				ret.add(null);
 
@@ -213,7 +209,7 @@ public class NBTCodec extends Codec {
 	@Override
 	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		return reader.apply(new NBTCodec(wrapped.getCompoundTag(key), read, formatVersion));
+		return reader.apply(new NBTCodec(wrapped.getCompoundTag(key), mode, formatVersion));
 	}
 
 	@Override
@@ -330,7 +326,7 @@ public class NBTCodec extends Codec {
 
 		for (T v : value) {
 			final CompoundTag tag = new CompoundTag();
-			writer.accept(v, new NBTCodec(tag, read, formatVersion));
+			writer.accept(v, new NBTCodec(tag, mode, formatVersion));
 			arr.add(tag);
 		}
 
@@ -345,7 +341,7 @@ public class NBTCodec extends Codec {
 		for (@Nullable T v : value) {
 			final CompoundTag tag = new CompoundTag();
 			if (v != null)
-				writer.accept(v, new NBTCodec(tag, read, formatVersion));
+				writer.accept(v, new NBTCodec(tag, mode, formatVersion));
 			else
 				tag.putBoolean("__null__", true);
 			arr.add(tag);
@@ -368,7 +364,7 @@ public class NBTCodec extends Codec {
 	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final CompoundTag tag = new CompoundTag();
-		writer.accept(value, new NBTCodec(tag, read, formatVersion));
+		writer.accept(value, new NBTCodec(tag, mode, formatVersion));
 		wrapped.put(key, tag);
 	}
 
@@ -407,7 +403,7 @@ public class NBTCodec extends Codec {
 	 * @throws UnsupportedOperationException If the codec is write-only.
 	 */
 	protected void checkRead() {
-		if (!read) throw new UnsupportedOperationException("Codec is write-only");
+		if (!mode.canRead()) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
 	/**
@@ -415,6 +411,6 @@ public class NBTCodec extends Codec {
 	 * @throws UnsupportedOperationException If the codec is read-only.
 	 */
 	protected void checkWrite() {
-		if (read) throw new UnsupportedOperationException("Codec is read-only");
+		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
 	}
 }

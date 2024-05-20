@@ -48,33 +48,28 @@ public class JsonCodec extends Codec {
 	protected final ExternalFileHandler externalFiles;
 
 	/**
-	 * Whether the {@code JsonCodec} is read-only versus write-only.
-	 */
-	protected final boolean read;
-
-	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
 	 * @param root The root object.
 	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to write them inline.
-	 * @param read Whether the {@code JsonCodec} should be read-only versus write-only.
-	 * @throws NullPointerException If {@code root} is {@code null}.
+	 * @param mode The mode that the {@code JsonCodec} should be in.
+	 * @throws NullPointerException If {@code root} or {@code mode} are {@code null}.
 	 */
-	public JsonCodec(JsonObject root, @Nullable ExternalFileHandler externalFiles, boolean read) {
+	public JsonCodec(JsonObject root, @Nullable ExternalFileHandler externalFiles, CodecMode mode) {
+		super(mode);
 		wrapped = Objects.requireNonNull(root, "root");
 		this.externalFiles = externalFiles;
-		this.read = read;
 	}
 
 	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
 	 * @param root The root object.
 	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to write them inline.
-	 * @param read Whether the {@code JsonCodec} should be read-only versus write-only.
+	 * @param mode The mode that the {@code JsonCodec} should be in.
 	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
-	 * @throws NullPointerException If {@code root} is {@code null}.
+	 * @throws NullPointerException If {@code root} or {@code mode} are {@code null}.
 	 */
-	public JsonCodec(JsonObject root, @Nullable ExternalFileHandler externalFiles, boolean read, byte formatVersion) {
-		this(root, externalFiles, read);
+	public JsonCodec(JsonObject root, @Nullable ExternalFileHandler externalFiles, CodecMode mode, byte formatVersion) {
+		this(root, externalFiles, mode);
 		this.formatVersion = formatVersion;
 	}
 
@@ -85,7 +80,7 @@ public class JsonCodec extends Codec {
 	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
 	 */
 	public JsonCodec(@Nullable ExternalFileHandler externalFiles, byte formatVersion) {
-		this(new JsonObject(), externalFiles, false, formatVersion);
+		this(new JsonObject(), externalFiles, CodecMode.WRITE_ONLY, formatVersion);
 	}
 
 	/**
@@ -194,7 +189,7 @@ public class JsonCodec extends Codec {
 
 		for (int i = 0; i < arr.size(); i++) {
 			final JsonObject obj = arr.get(i).getAsJsonObject();
-			ret.add(reader.apply(new JsonCodec(obj, externalFiles, read, formatVersion)));
+			ret.add(reader.apply(new JsonCodec(obj, externalFiles, mode, formatVersion)));
 		}
 
 		return ret;
@@ -208,7 +203,7 @@ public class JsonCodec extends Codec {
 
 		for (int i = 0; i < arr.size(); i++)
 			if (arr.get(i) instanceof JsonObject obj)
-				ret.add(reader.apply(new JsonCodec(obj, externalFiles, read, formatVersion)));
+				ret.add(reader.apply(new JsonCodec(obj, externalFiles, mode, formatVersion)));
 			else
 				ret.add(null);
 
@@ -230,7 +225,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, read, formatVersion));
+		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, mode, formatVersion));
 	}
 
 	@Override
@@ -428,7 +423,7 @@ public class JsonCodec extends Codec {
 	 * @throws UnsupportedOperationException If the codec is write-only.
 	 */
 	protected void checkRead() {
-		if (!read) throw new UnsupportedOperationException("Codec is write-only");
+		if (!mode.canRead()) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
 	/**
@@ -436,6 +431,6 @@ public class JsonCodec extends Codec {
 	 * @throws UnsupportedOperationException If the codec is read-only.
 	 */
 	protected void checkWrite() {
-		if (read) throw new UnsupportedOperationException("Codec is read-only");
+		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
 	}
 }

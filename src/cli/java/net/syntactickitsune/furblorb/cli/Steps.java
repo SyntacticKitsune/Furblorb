@@ -36,6 +36,7 @@ import net.syntactickitsune.furblorb.finmer.io.FurballWriter;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader.ReadOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectWriter.WriteOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
@@ -112,7 +113,7 @@ final class Steps {
 
 			try {
 				if (filename.endsWith(".furball")) {
-					final BinaryCodec codec = new BinaryCodec(false);
+					final BinaryCodec codec = new BinaryCodec(CodecMode.WRITE_ONLY);
 					new FurballWriter(codec).write(furball);
 
 					Files.write(to, codec.toByteArray(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
@@ -185,7 +186,7 @@ final class Steps {
 			if (json.charAt(0) == 65279) json = json.substring(1); // Remove the BOM, if present.
 
 			final JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-			final JsonCodec codec = new JsonCodec(obj, new ReadOnlyExternalFileHandler(assetPath.getParent(), assetPath), true, data.formatVersion());
+			final JsonCodec codec = new JsonCodec(obj, new ReadOnlyExternalFileHandler(assetPath.getParent(), assetPath), CodecMode.READ_ONLY, data.formatVersion());
 			final FurballAsset asset = FurballSerializables.read(codec);
 
 			System.out.printf("! Inserted asset %s (%s).\n", asset.filename, asset.id);
@@ -202,10 +203,9 @@ final class Steps {
 				if ((filename != null && asset.filename.equals(filename)) || (id != null && asset.id.equals(id))) {
 					System.out.printf("! Extracting asset %s (%s) to %s.\n", asset.filename, asset.id, dest.toAbsolutePath());
 					{
-						final JsonObject obj = new JsonObject();
-						final JsonCodec codec = new JsonCodec(obj, new WriteOnlyExternalFileHandler(dest.getParent(), dest), false, data.formatVersion());
+						final JsonCodec codec = new JsonCodec(new WriteOnlyExternalFileHandler(dest.getParent(), dest), data.formatVersion());
 						asset.writeWithId(codec);
-						Files.writeString(dest, FinmerProjectWriter.toJson(obj), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+						Files.writeString(dest, FinmerProjectWriter.toJson(codec.unwrap()), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 					}
 					break;
 				}

@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.io.codec;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -37,6 +38,21 @@ public abstract class Codec implements Encoder, Decoder {
 	 * See {@link #validate()}.
 	 */
 	protected boolean validate = true;
+
+	/**
+	 * The mode of the {@code Codec}.
+	 */
+	protected final CodecMode mode;
+
+	/**
+	 * Constructs a new {@code Codec}.
+	 * @param mode The mode of the {@code Codec}.
+	 * @throws NullPointerException If {@code mode} is {@code null}.
+	 */
+	protected Codec(CodecMode mode) {
+		Objects.requireNonNull(mode, "mode");
+		this.mode = mode;
+	}
 
 	@Override
 	public byte formatVersion() {

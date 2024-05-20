@@ -10,6 +10,7 @@ import net.syntactickitsune.furblorb.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 
 /**
  * <p>
@@ -49,7 +50,7 @@ public final class FurballReader {
 	 * @throws NullPointerException If {@code buf} is {@code null}.
 	 */
 	public FurballReader(ByteBuffer buf) {
-		this(new BinaryCodec(buf, true));
+		this(new BinaryCodec(buf, CodecMode.READ_ONLY));
 	}
 
 	/**

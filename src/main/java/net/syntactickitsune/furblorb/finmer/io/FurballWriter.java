@@ -7,6 +7,7 @@ import net.syntactickitsune.furblorb.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 
 /**
  * <p>
@@ -37,7 +38,7 @@ public final class FurballWriter {
 	 * Constructs a new {@code FurballWriter} with an empty backing codec.
 	 */
 	public FurballWriter() {
-		this(new BinaryCodec(false));
+		this(new BinaryCodec(CodecMode.WRITE_ONLY));
 	}
 
 	/**

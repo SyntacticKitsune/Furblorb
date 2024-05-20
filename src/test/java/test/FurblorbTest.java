@@ -36,6 +36,7 @@ import net.syntactickitsune.furblorb.finmer.script.visual.impl.expression.simple
 import net.syntactickitsune.furblorb.finmer.script.visual.impl.statement.simple.SimpleStatement;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 final class FurblorbTest {
@@ -168,12 +169,12 @@ final class FurblorbTest {
 	@Test
 	void testReadWriteOnlyCodecs() {
 		// Binary
-		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(false).readBoolean());
-		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(true).writeBoolean(false));
+		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(CodecMode.WRITE_ONLY).readBoolean());
+		assertThrows(UnsupportedOperationException.class, () -> new BinaryCodec(CodecMode.READ_ONLY).writeBoolean(false));
 
 		// Json
-		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, false).readBoolean("e"));
-		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, true).writeBoolean("e", false));
+		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, CodecMode.WRITE_ONLY).readBoolean("e"));
+		assertThrows(UnsupportedOperationException.class, () -> new JsonCodec(new JsonObject(), null, CodecMode.READ_ONLY).writeBoolean("e", false));
 	}
 
 	private static void doFurball2FurballTest(String furballName, byte formatVersion, int dependencyCount, int assetCount) {

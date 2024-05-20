@@ -41,23 +41,18 @@ public class BinaryCodec extends SequenceCodec {
 	private ByteBuffer buf;
 
 	/**
-	 * Whether the {@code BinaryCodec} is read-only versus write-only.
-	 */
-	protected final boolean read;
-
-	/**
 	 * <p>Constructs a new {@code BinaryCodec} with the specified backing buffer.</p>
 	 * <p>If the codec is to be written to, it is recommended <i>not</i> to keep
 	 * a reference to the buffer since it may be resized automatically.
 	 * If direct access is required, use {@link #buffer()} to access the {@code BinaryCodec}'s backing buffer.</p>
 	 * @param buf The backing buffer.
-	 * @param read Whether this {@code BinaryCodec} is read-only versus write-only.
-	 * @throws NullPointerException If {@code buf} is {@code null}.
+	 * @param mode The mode that the {@code BinaryCodec} should be in.
+	 * @throws NullPointerException If {@code buf} or {@code mode} are {@code null}.
 	 */
-	public BinaryCodec(ByteBuffer buf, boolean read) {
+	public BinaryCodec(ByteBuffer buf, CodecMode mode) {
+		super(mode);
 		Objects.requireNonNull(buf, "buf");
 		this.buf = buf;
-		this.read = read;
 	}
 
 	/**
@@ -67,20 +62,20 @@ public class BinaryCodec extends SequenceCodec {
 	 * a reference to the array since it may be resized automatically.
 	 * If direct access is required, use {@link #buffer()} to access the {@code BinaryCodec}'s backing buffer.</p>
 	 * @param bytes The initial backing array.
-	 * @param read Whether this {@code BinaryCodec} is read-only versus write-only.
-	 * @throws NullPointerException If {@code bytes} is {@code null}.
+	 * @param mode The mode that the {@code BinaryCodec} should be in.
+	 * @throws NullPointerException If {@code bytes} or {@code mode} are {@code null}.
 	 */
-	public BinaryCodec(byte[] bytes, boolean read) {
-		this(ByteBuffer.wrap(Objects.requireNonNull(bytes, "bytes")).order(ByteOrder.LITTLE_ENDIAN), read);
+	public BinaryCodec(byte[] bytes, CodecMode mode) {
+		this(ByteBuffer.wrap(Objects.requireNonNull(bytes, "bytes")).order(ByteOrder.LITTLE_ENDIAN), mode);
 	}
 
 	/**
 	 * Constructs a new {@code BinaryCodec} with a 16 kiB little-endian backing buffer.
-	 * (Furballs are always written in little-endian.)
-	 * @param read Whether this {@code BinaryCodec} is read-only versus write-only.
+	 * @param mode The mode that the {@code BinaryCodec} should be in.
+	 * @throws NullPointerException If {@code mode} is {@code null}.
 	 */
-	public BinaryCodec(boolean read) {
-		this(ByteBuffer.allocate(16318), read);
+	public BinaryCodec(CodecMode mode) {
+		this(ByteBuffer.allocate(16318), mode);
 		buf.order(ByteOrder.LITTLE_ENDIAN);
 	}
 
@@ -483,7 +478,7 @@ public class BinaryCodec extends SequenceCodec {
 	 * @throws UnsupportedOperationException If the codec is write-only.
 	 */
 	protected void checkRead() {
-		if (!read) throw new UnsupportedOperationException("Codec is write-only");
+		if (!mode.canRead()) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
 	/**
@@ -492,7 +487,7 @@ public class BinaryCodec extends SequenceCodec {
 	 * @throws UnsupportedOperationException If the codec is read-only.
 	 */
 	protected void checkWrite(int length) {
-		if (read) throw new UnsupportedOperationException("Codec is read-only");
+		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
 
 		if (buf.remaining() < length) {
 			final ByteBuffer old = buf;

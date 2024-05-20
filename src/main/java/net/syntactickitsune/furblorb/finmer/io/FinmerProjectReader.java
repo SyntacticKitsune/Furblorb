@@ -22,6 +22,7 @@ import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.io.ExternalFileHandler;
 import net.syntactickitsune.furblorb.io.FurblorbException;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
@@ -80,7 +81,7 @@ public final class FinmerProjectReader {
 		final List<String> files = externalFiles.listFiles();
 
 		final JsonObject proj = readJson(externalFiles.readProjectFile());
-		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, true, proj.get("FormatVersion").getAsByte());
+		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, CodecMode.READ_ONLY, proj.get("FormatVersion").getAsByte());
 		final FurballMetadata meta = readMetadata(projCodec);
 		final Furball furball = new Furball(meta);
 
@@ -96,7 +97,7 @@ public final class FinmerProjectReader {
 		for (String asset : assets)
 			try {
 				final JsonObject obj = readJson(asset);
-				final JsonCodec codec = new JsonCodec(obj, externalFiles, true, meta.formatVersion);
+				final JsonCodec codec = new JsonCodec(obj, externalFiles, CodecMode.READ_ONLY, meta.formatVersion);
 				furball.assets.add(FurballSerializables.read(codec));
 			} catch (Exception e) {
 				throw new FurblorbException("Exception reading asset " + asset, e);

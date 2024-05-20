@@ -9,6 +9,7 @@ import net.syntactickitsune.furblorb.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.finmer.io.FurballWriter;
 import net.syntactickitsune.furblorb.finmer.io.UnsupportedFormatVersionException;
+import net.syntactickitsune.furblorb.io.codec.CodecMode;
 
 /**
  * A {@link FurballWriter} for {@link NBTCodec}.
@@ -30,7 +31,7 @@ public final class FurblorbWriter {
 	 * Constructs a new {@code FurblorbWriter} with an empty backing codec.
 	 */
 	public FurblorbWriter() {
-		this(new NBTCodec(new CompoundTag(), false));
+		this(new NBTCodec(new CompoundTag(), CodecMode.WRITE_ONLY));
 	}
 
 	static void checkFormatVersion(byte formatVersion) {
