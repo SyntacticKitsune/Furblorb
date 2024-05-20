@@ -27,6 +27,13 @@ import org.jetbrains.annotations.Nullable;
 public interface SequenceDecoder extends Decoder {
 
 	/**
+	 * <p>Returns whether or not this {@code SequenceDecoder}'s sequence has any remaining data in it.</p>
+	 * <p>This method can be used to ensure there is no trailing data, which can be useful for debugging purposes.</p>
+	 * @return {@code true} if there is any remaining data.
+	 */
+	public boolean hasRemaining();
+
+	/**
 	 * Reads the next {@code byte} from this {@code SequenceDecoder}'s sequence.
 	 * @return The read value.
 	 */

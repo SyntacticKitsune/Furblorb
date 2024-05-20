@@ -92,6 +92,19 @@ public class BinaryCodec extends SequenceCodec {
 		return bytes;
 	}
 
+	/**
+	 * Returns the current position of the {@code BinaryCodec}'s backing buffer.
+	 * @return The current position of the backing buffer.
+	 */
+	public int position() {
+		return buf.position();
+	}
+
+	@Override
+	public boolean hasRemaining() {
+		return buf.hasRemaining();
+	}
+
 	@Override
 	public boolean readCompressedTypes() {
 		return true;
@@ -100,14 +113,6 @@ public class BinaryCodec extends SequenceCodec {
 	@Override
 	public boolean writeCompressedTypes() {
 		return true;
-	}
-
-	/**
-	 * Returns the current position of the {@code BinaryCodec}'s backing buffer.
-	 * @return The current position of the backing buffer.
-	 */
-	public int position() {
-		return buf.position();
 	}
 
 	@Override
