@@ -340,6 +340,26 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
+	public String readFixedLengthString(int length) {
+		checkRead();
+		if (length < 0) throw new IllegalArgumentException("Length must be positive: " + length);
+
+		final byte[] bytes = new byte[length];
+		buf.get(bytes);
+
+		return new String(bytes, StandardCharsets.UTF_8);
+	}
+
+	@Override
+	public void writeFixedLengthString(String value) {
+		Objects.requireNonNull(value, "value");
+
+		final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+		checkWrite(bytes.length);
+		buf.put(bytes);
+	}
+
+	@Override
 	public <E extends Enum<E>> E readEnum(Class<E> type) {
 		checkRead();
 		final E[] vals = type.getEnumConstants();

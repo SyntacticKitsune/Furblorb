@@ -113,8 +113,18 @@ public interface SequenceEncoder extends Encoder {
 	 * Writes the given {@link String} to this {@code SequenceEncoder}'s sequence.
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null}.
+	 * @see #writeFixedLengthString(String)
 	 */
 	public void writeString(String value);
+
+	/**
+	 * Writes the characters from the given {@link String} to this {@code SequenceEncoder}'s sequence.
+	 * Unlike {@link #writeString(String)}, the length of the string will <i>not</i> be written.
+	 * @param value The value to write.
+	 * @throws NullPointerException If {@code value} is {@code null}.
+	 * @see #writeString(String)
+	 */
+	public void writeFixedLengthString(String value);
 
 	/**
 	 * Writes the given {@code enum} constant to this {@code SequenceEncoder}'s sequence.

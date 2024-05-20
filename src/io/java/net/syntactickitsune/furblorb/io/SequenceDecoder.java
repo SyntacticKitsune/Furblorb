@@ -120,8 +120,19 @@ public interface SequenceDecoder extends Decoder {
 	/**
 	 * Reads the next {@link String} from this {@code SequenceDecoder}'s sequence.
 	 * @return The read value.
+	 * @see #readFixedLengthString(int)
 	 */
 	public String readString();
+
+	/**
+	 * Reads the next {@code length} characters from this {@code SequenceDecoder}'s sequence and returns a {@link String} composed from them.
+	 * This differs from {@link #readString()} in that it does not read the length of the string from the sequence.
+	 * @param length The number of characters to read.
+	 * @return The read value.
+	 * @throws IllegalArgumentException If {@code length} is negative.
+	 * @see #readString()
+	 */
+	public String readFixedLengthString(int length);
 
 	/**
 	 * Reads the next {@code enum} constant from this {@code SequenceDecoder}'s sequence.
