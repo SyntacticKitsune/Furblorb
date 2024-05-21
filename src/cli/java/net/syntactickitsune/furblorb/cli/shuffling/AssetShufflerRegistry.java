@@ -5,8 +5,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.syntactickitsune.furblorb.cli.shuffling.impl.Creatures;
 import net.syntactickitsune.furblorb.cli.shuffling.impl.ItemFlavorText;
 import net.syntactickitsune.furblorb.cli.shuffling.impl.ItemNames;
+import net.syntactickitsune.furblorb.cli.shuffling.impl.Items;
 import net.syntactickitsune.furblorb.cli.shuffling.impl.SceneChoiceText;
 import net.syntactickitsune.furblorb.cli.shuffling.impl.StringTables;
 
@@ -49,5 +51,7 @@ public final class AssetShufflerRegistry {
 		register("item_names", new ItemNames());
 		register("scene_choice_text", new SceneChoiceText());
 		register("strings", new StringTables());
+		register("creatures", new Creatures());
+		register("items", new Items());
 	}
 }
