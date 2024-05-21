@@ -34,23 +34,27 @@ public final class CreatureAsset extends FurballAsset {
 	public String objectAlias = "";
 
 	/**
-	 * The creature's strength stat.
+	 * <p>The creature's strength stat. This determines how many attack and grapple dice the creature has.</p>
+	 * <p>The editor limits this value to between 1 and 100, so it is an error to exceed these limits.</p>
 	 */
 	// Power creep go brrr.
 	public int strength = 1;
 
 	/**
-	 * The creature's agility stat.
+	 * <p>The creature's agility stat. This determines how many defense and struggle dice the creature has.</p>
+	 * <p>The editor limits this value to between 1 and 100, so it is an error to exceed these limits.</p>
 	 */
 	public int agility = 1;
 
 	/**
-	 * The creature's body stat.
+	 * <p>The creature's body stat. This determines both how much HP and how many swallow dice the creature has.</p>
+	 * <p>The editor limits this value to between 1 and 100, so it is an error to exceed these limits.</p>
 	 */
 	public int body = 1;
 
 	/**
-	 * The creature's wits stat.
+	 * <p>The creature's wits stat. This determines the turn order, but is also occasionally used for checks.</p>
+	 * <p>The editor limits this value to between 1 and 100, so it is an error to exceed these limits.</p>
 	 */
 	public int wits = 1;
 
@@ -60,12 +64,15 @@ public final class CreatureAsset extends FurballAsset {
 	public CreatureFlags flags = new CreatureFlags();
 
 	/**
-	 * The creature's level.
+	 * <p>The creature's level.</p>
+	 * <p>The editor limits this value to between 1 and 40, so it is an error to exceed these limits.</p>
 	 */
 	public int level = 1;
 
 	/**
 	 * The creature's size.
+	 * A creature can only grapple creatures of equal or smaller size,
+	 * and do not need as many vore check rounds against smaller creatures.
 	 */
 	public Size size = Size.MEDIUM;
 
@@ -76,7 +83,10 @@ public final class CreatureAsset extends FurballAsset {
 	public Gender gender = Gender.MALE;
 
 	/**
-	 * A list of {@code UUIDs} representing the creature's equipment.
+	 * A list of item asset {@code UUIDs} representing the creature's equipment.
+	 * There may be one weapon, one armor piece, and two accessories.
+	 * The weapon <i>must</i> be the first item in the list, however the order of the others doesn't matter.
+	 * An {@linkplain FurballUtil#EMPTY_UUID empty ID} means there is no item in that slot.
 	 */
 	public final UUID[] equipment = { FurballUtil.EMPTY_UUID, FurballUtil.EMPTY_UUID, FurballUtil.EMPTY_UUID, FurballUtil.EMPTY_UUID };
 

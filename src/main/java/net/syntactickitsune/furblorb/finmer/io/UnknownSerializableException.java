@@ -7,6 +7,7 @@ import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 /**
  * An exception thrown when attempting to read an unknown {@link IFurballSerializable}.
  * That is, when the id or type does not point to any known {@code IFurballSerializable}.
+ * This frequently indicates a malformed furballs/projects, but could mean Furblorb doesn't have full support for a given format version.
  * @author SyntacticKitsune
  */
 public final class UnknownSerializableException extends FurblorbParsingException {

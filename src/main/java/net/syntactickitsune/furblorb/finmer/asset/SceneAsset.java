@@ -40,19 +40,20 @@ public final class SceneAsset extends FurballAsset {
 	public SceneNode root;
 
 	/**
-	 * A script to slap on top of every single other script in this scene.
+	 * Called a "Custom Script" in the docs, this is a script to glue on top of every single other script in this scene.
+	 * This is useful for consolidating duplicate code between scripts in the scene, like checking a condition.
 	 */
 	@Nullable
 	public Script head; // Real @Inject(at = @At("HEAD")) energy here.
 
 	/**
-	 * A script that runs any time the player "enters" the scene.
+	 * Called an "Enter Script" in the docs, this is a script that runs any time the player "enters" the scene.
 	 */
 	@Nullable
 	public Script onEnter;
 
 	/**
-	 * A script that runs any time the player "leaves" the scene.
+	 * Called a "Leave Script" in the docs, this is a script that runs any time the player "leaves" the scene.
 	 */
 	@Nullable
 	public Script onLeave;

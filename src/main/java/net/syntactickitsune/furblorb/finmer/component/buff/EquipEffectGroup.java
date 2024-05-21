@@ -40,7 +40,8 @@ public final class EquipEffectGroup implements IFurballSerializable {
 	public String stringKey;
 
 	/**
-	 * How many turns to apply the effect for.
+	 * <p>How many turns to apply the effect for.</p>
+	 * <p>The editor limits this value to between 1 and 100, so it is an error to exceed these limits.</p>
 	 */
 	public int duration = 1;
 

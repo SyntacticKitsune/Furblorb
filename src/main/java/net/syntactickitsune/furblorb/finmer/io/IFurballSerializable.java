@@ -27,7 +27,7 @@ public interface IFurballSerializable {
 	 * Writes this serializable's data to the given {@code Encoder}, prefixed with the serializable's type or ID.
 	 * </p>
 	 * <p>
-	 * This is almost always the method one should use to serialize {@code IFurballSerializables}.
+	 * This is almost always the method one should use to serialize an {@code IFurballSerializable}.
 	 * </p>
 	 * @param to The {@code Encoder} to write the data to.
 	 * @throws NullPointerException If {@code to} is {@code null}.
