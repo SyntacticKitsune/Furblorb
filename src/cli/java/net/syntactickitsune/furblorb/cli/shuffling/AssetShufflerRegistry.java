@@ -45,9 +45,9 @@ public final class AssetShufflerRegistry {
 	}
 
 	static {
-		register("itemflavortext", new ItemFlavorText());
-		register("itemnames", new ItemNames());
-		register("scenechoicetext", new SceneChoiceText());
+		register("item_flavor_text", new ItemFlavorText());
+		register("item_names", new ItemNames());
+		register("scene_choice_text", new SceneChoiceText());
 		register("strings", new StringTables());
 	}
 }
