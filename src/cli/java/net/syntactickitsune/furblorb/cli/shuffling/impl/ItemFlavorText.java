@@ -21,6 +21,9 @@ public final class ItemFlavorText implements AssetShuffler<ItemAsset> {
 	public String description() { return "Shuffle the flavor text of all items"; }
 
 	@Override
+	public String category() { return "Text"; }
+
+	@Override
 	public void shuffle(List<ItemAsset> assets, ShuffleRandom rand, Furball furball) {
 		final List<String> descriptions = new ArrayList<>(assets.size());
 

@@ -23,6 +23,9 @@ public final class SceneChoiceText implements AssetShuffler<SceneAsset> {
 	public String description() { return "Shuffle the titles and tooltips of all choices"; }
 
 	@Override
+	public String category() { return "Text"; }
+
+	@Override
 	public void shuffle(List<SceneAsset> assets, ShuffleRandom rand, Furball furball) {
 		final List<SceneNode> interestingNodes = AssetShuffler.discoverNodes(assets)
 				.stream()

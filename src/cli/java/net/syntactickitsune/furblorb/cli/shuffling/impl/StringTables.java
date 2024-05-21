@@ -24,6 +24,9 @@ public final class StringTables implements AssetShuffler<StringTableAsset> {
 	public String description() { return "Shuffle all string tables (that can be safely shuffled)"; }
 
 	@Override
+	public String category() { return "Text"; }
+
+	@Override
 	public void shuffle(List<StringTableAsset> assets, ShuffleRandom rand, Furball furball) {
 		final List<List<String>> messable = new ArrayList<>();
 

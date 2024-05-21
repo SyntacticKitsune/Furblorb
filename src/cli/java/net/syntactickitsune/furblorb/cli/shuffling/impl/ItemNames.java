@@ -21,6 +21,9 @@ public final class ItemNames implements AssetShuffler<ItemAsset> {
 	public String description() { return "Shuffle the names of all items"; }
 
 	@Override
+	public String category() { return "Text"; }
+
+	@Override
 	public void shuffle(List<ItemAsset> assets, ShuffleRandom rand, Furball furball) {
 		record Name(String name, String alias) {}
 

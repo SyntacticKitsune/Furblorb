@@ -29,6 +29,14 @@ public interface AssetShuffler<T extends FurballAsset> {
 	public String description();
 
 	/**
+	 * Returns the category of the shuffler. This describes how shufflers should be grouped when printing a list of them.
+	 * @return The category of the shuffler.
+	 */
+	public default String category() {
+		return "Uncategorized";
+	}
+
+	/**
 	 * Performs shuffling of the specified assets.
 	 * @param assets The assets to shuffle.
 	 * @param rand The random to use for shuffling the assets.
