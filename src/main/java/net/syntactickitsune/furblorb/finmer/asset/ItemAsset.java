@@ -13,6 +13,7 @@ import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
+import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.INamedEnum;
 
 /**
@@ -121,6 +122,10 @@ public final class ItemAsset extends FurballAsset {
 		}
 
 		price = in.readInt("PurchaseValue");
+
+		if (in.validate() && price < 0)
+			throw new FurblorbParsingException("Price value out of range [0,∞): " + price);
+
 		questItem = in.readBoolean("IsQuestItem");
 
 		if (type == Type.USABLE) {
@@ -142,6 +147,9 @@ public final class ItemAsset extends FurballAsset {
 
 	@Override
 	protected void write0(Encoder to) {
+		if (to.validate() && price < 0)
+			throw new FurblorbParsingException("Price value out of range [0,∞): " + price);
+
 		to.writeString("ObjectName", objectName);
 		to.writeString("ObjectAlias", objectAlias);
 		to.writeString("FlavorText", flavorText);

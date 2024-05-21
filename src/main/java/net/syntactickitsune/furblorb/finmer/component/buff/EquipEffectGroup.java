@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.asset.ItemAsset;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
@@ -65,6 +66,9 @@ public final class EquipEffectGroup implements IFurballSerializable {
 			chance = in.readFloat("ProcChance");
 			stringKey = in.readString("ProcStringTableKey");
 			duration = in.readInt("Duration");
+
+			if (in.validate())
+				FurballUtil.checkInRange("Duration", duration, 1, 100);
 		}
 
 		buffs.addAll(in.readOptionalList("Buffs", FurballSerializables::read));
@@ -74,6 +78,9 @@ public final class EquipEffectGroup implements IFurballSerializable {
 	public void write(Encoder to) {
 		to.writeEnum("ProcStyle", trigger);
 		if (trigger != Trigger.ALWAYS) {
+			if (to.validate())
+				FurballUtil.checkInRange("Duration", duration, 1, 100);
+
 			to.writeEnum("ProcTarget", target);
 			to.writeFloat("ProcChance", chance);
 			to.writeString("ProcStringTableKey", stringKey);

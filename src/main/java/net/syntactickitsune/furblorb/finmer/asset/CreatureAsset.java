@@ -37,22 +37,22 @@ public final class CreatureAsset extends FurballAsset {
 	 * The creature's strength stat.
 	 */
 	// Power creep go brrr.
-	public int strength = 0;
+	public int strength = 1;
 
 	/**
 	 * The creature's agility stat.
 	 */
-	public int agility = 0;
+	public int agility = 1;
 
 	/**
 	 * The creature's body stat.
 	 */
-	public int body = 0;
+	public int body = 1;
 
 	/**
 	 * The creature's wits stat.
 	 */
-	public int wits = 0;
+	public int wits = 1;
 
 	/**
 	 * Various "flags" on the creature.
@@ -137,6 +137,14 @@ public final class CreatureAsset extends FurballAsset {
 		size = in.readEnum("Size", Size.class);
 		gender = in.readEnum("Gender", Gender.class);
 
+		if (in.validate()) {
+			FurballUtil.checkInRange("Strength", strength, 1, 100);
+			FurballUtil.checkInRange("Agility", agility, 1, 100);
+			FurballUtil.checkInRange("Body", body, 1, 100);
+			FurballUtil.checkInRange("Wits", wits, 1, 100);
+			FurballUtil.checkInRange("Level", level, 1, 40);
+		}
+
 		for (int i = 0; i < equipment.length; i++)
 			equipment[i] = in.readUUID("Equipment" + (i + 1));
 
@@ -154,6 +162,14 @@ public final class CreatureAsset extends FurballAsset {
 	// Cursed thought: what if this was a `com.mojang.serialization.Codec`?
 	@Override
 	protected void write0(Encoder to) {
+		if (to.validate()) {
+			FurballUtil.checkInRange("Strength", strength, 1, 100);
+			FurballUtil.checkInRange("Agility", agility, 1, 100);
+			FurballUtil.checkInRange("Body", body, 1, 100);
+			FurballUtil.checkInRange("Wits", wits, 1, 100);
+			FurballUtil.checkInRange("Level", level, 1, 40);
+		}
+
 		to.writeString("ObjectName", objectName);
 		to.writeString("ObjectAlias", objectAlias);
 		to.writeInt("Strength", strength);
