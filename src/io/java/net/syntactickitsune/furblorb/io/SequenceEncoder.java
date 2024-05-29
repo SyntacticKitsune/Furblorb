@@ -133,7 +133,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null}.
 	 */
-	public <E extends Enum<E>> void writeEnum(E value);
+	public <E extends Enum<E> & INamedEnum> void writeEnum(E value);
 
 	/**
 	 * Writes the given {@link List} to this {@code SequenceEncoder}'s sequence.

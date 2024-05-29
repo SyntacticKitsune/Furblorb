@@ -152,7 +152,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @throws NullPointerException If {@code type} is {@code null}.
 	 * @throws FurblorbParsingException If the read ordinal is out-of-bounds.
 	 */
-	public <E extends Enum<E>> E readEnum(Class<E> type);
+	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type);
 
 	/**
 	 * Reads the next {@link List} from this {@code SequenceDecoder}'s sequence.

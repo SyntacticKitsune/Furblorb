@@ -13,6 +13,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.io.INamedEnum;
 import net.syntactickitsune.furblorb.io.ParsingStrategy;
 import net.syntactickitsune.furblorb.io.SequenceDecoder;
 import net.syntactickitsune.furblorb.io.SequenceEncoder;
@@ -368,7 +369,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <E extends Enum<E>> E readEnum(Class<E> type) {
+	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type) {
 		checkRead();
 		final E[] vals = type.getEnumConstants();
 		final ParsingStrategy.NumberType numberType = numberType(type);
@@ -386,7 +387,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <E extends Enum<E>> void writeEnum(E value) {
+	public <E extends Enum<E> & INamedEnum> void writeEnum(E value) {
 		checkWrite(0);
 		Objects.requireNonNull(value, "value");
 
