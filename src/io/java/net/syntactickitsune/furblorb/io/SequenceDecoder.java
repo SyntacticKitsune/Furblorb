@@ -44,7 +44,9 @@ public interface SequenceDecoder extends Decoder {
 	 * @param len The number of {@code byte}s to read.
 	 * @return The read values, as a {@code len}-sized {@code byte} array.
 	 */
-	public byte[] readBytes(int len);
+	public default byte[] readBytes(int len) {
+		return readBytes(new byte[len]);
+	}
 
 	/**
 	 * Reads the next {@code array.length} {@code byte}s from this {@code SequenceDecoder}'s sequence -- that is, enough to fill the provided array.

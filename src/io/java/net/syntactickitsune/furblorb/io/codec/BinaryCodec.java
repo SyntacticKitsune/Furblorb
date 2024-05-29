@@ -137,12 +137,6 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public byte[] readBytes(int len) {
-		checkRead();
-		return readBytes(new byte[len]);
-	}
-
-	@Override
 	public byte[] readBytes(byte[] array) {
 		checkRead();
 		buf.get(Objects.requireNonNull(array));
