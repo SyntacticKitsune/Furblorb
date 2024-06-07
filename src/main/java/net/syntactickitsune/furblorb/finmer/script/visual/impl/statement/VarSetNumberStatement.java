@@ -62,7 +62,7 @@ public final class VarSetNumberStatement extends StatementNode {
 		to.writeString("VariableName", variable);
 		to.writeEnum("ValueOperation", op);
 
-		if (op.binary) // The original code also writes it if the format is old enough, but that seems like a questionable choice.
+		if (op.binary)
 			expression.write(to);
 	}
 
