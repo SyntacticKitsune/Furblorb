@@ -142,7 +142,7 @@ public final class ItemAsset extends FurballAsset {
 			in.assertDoesNotExist("UseScript", "Only usable items may have use scripts");
 		}
 
-		icon = in.readExternal(filename + ".png", Decoder::readByteArray, Function.identity());
+		icon = in.readExternal(filename + ".png", Decoder::readOptionalByteArray, Function.identity());
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public final class ItemAsset extends FurballAsset {
 			to.assertDoesNotExist("UseScript", useScript, "Only usable items may have use scripts");
 		}
 
-		to.writeExternal(filename + ".png", icon, (key, v, enc) -> enc.writeByteArray(key, v), Function.identity());
+		to.writeExternal(filename + ".png", icon, (key, v, enc) -> enc.writeOptionalByteArray(key, v), Function.identity());
 	}
 
 	@Override

@@ -57,10 +57,16 @@ public interface SequenceDecoder extends Decoder {
 	public byte[] readBytes(byte[] array);
 
 	/**
+	 * Reads the next {@code byte} array from this {@code SequenceDecoder}'s sequence.
+	 * @return The read value.
+	 */
+	public byte[] readByteArray();
+
+	/**
 	 * Reads the next (optional) {@code byte} array from this {@code SequenceDecoder}'s sequence.
 	 * @return The read value.
 	 */
-	public byte @Nullable [] readByteArray();
+	public byte @Nullable [] readOptionalByteArray();
 
 	/**
 	 * Reads the next {@code boolean} from this {@code SequenceDecoder}'s sequence.
@@ -198,6 +204,9 @@ public interface SequenceDecoder extends Decoder {
 
 	@Override
 	public default byte[] readByteArray(@Nullable String key) { return readByteArray(); }
+
+	@Override
+	public default byte[] readOptionalByteArray(@Nullable String key) { return readOptionalByteArray(); }
 
 	@Override
 	public default boolean readBoolean(@Nullable String key) { return readBoolean(); }

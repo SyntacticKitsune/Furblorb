@@ -109,15 +109,22 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public byte @Nullable [] readByteArray(@Nullable String key) {
+	public byte[] readByteArray(@Nullable String key) {
 		checkRead();
-		final JsonArray arr = wrapped.getAsJsonArray(key);
+		final JsonArray arr = wrapped.getAsJsonArray(Objects.requireNonNull(key, "key"));
 		final byte[] ret = new byte[arr.size()];
 
 		for (int i = 0; i < arr.size(); i++)
 			ret[i] = arr.get(i).getAsByte();
 
 		return ret;
+	}
+
+	@Override
+	public byte @Nullable [] readOptionalByteArray(@Nullable String key) {
+		checkRead();
+		if (!wrapped.has(Objects.requireNonNull(key, "key"))) return null;
+		return readByteArray(key);
 	}
 
 	@Override
@@ -268,13 +275,20 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public void writeByteArray(@Nullable String key, byte @Nullable [] value) {
+	public void writeByteArray(@Nullable String key, byte[] value) {
 		checkWrite();
+		Objects.requireNonNull(key, "key");
+
 		final JsonArray arr = new JsonArray(value.length);
-
 		for (byte v : value) arr.add(v);
-
 		wrapped.add(key, arr);
+	}
+
+	@Override
+	public void writeOptionalByteArray(@Nullable String key, byte @Nullable [] value) {
+		checkWrite();
+		if (value != null)
+			writeByteArray(key, value);
 	}
 
 	@Override

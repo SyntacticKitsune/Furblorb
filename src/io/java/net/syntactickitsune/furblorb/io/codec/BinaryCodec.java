@@ -154,20 +154,29 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public byte @Nullable [] readByteArray() {
+	public byte[] readByteArray() {
+		return readBytes(readInt());
+	}
+
+	@Override
+	public void writeByteArray(byte[] value) {
+		writeInt(value.length);
+		writeBytes(value);
+	}
+
+	@Override
+	public byte @Nullable [] readOptionalByteArray() {
 		final int len = readInt();
 		if (len < 0) return null;
 		return readBytes(len);
 	}
 
 	@Override
-	public void writeByteArray(byte @Nullable [] value) {
+	public void writeOptionalByteArray(byte @Nullable [] value) {
 		if (value == null)
 			writeInt(-1);
-		else {
-			writeInt(value.length);
-			writeBytes(value);
-		}
+		else
+			writeByteArray(value);
 	}
 
 	@Override

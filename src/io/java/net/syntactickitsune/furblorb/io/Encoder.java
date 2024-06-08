@@ -52,12 +52,20 @@ public interface Encoder {
 	public void writeByte(@Nullable String key, byte value);
 
 	/**
+	 * Writes the given {@code byte} array.
+	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
+	 * @param value The value to write.
+	 * @throws NullPointerException If {@code value} is {@code null} or {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 */
+	public void writeByteArray(@Nullable String key, byte[] value);
+
+	/**
 	 * Writes the given (optional) {@code byte} array.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write. May be {@code null}.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public void writeByteArray(@Nullable String key, byte @Nullable [] value);
+	public void writeOptionalByteArray(@Nullable String key, byte @Nullable [] value);
 
 	/**
 	 * Writes the given {@code boolean}.

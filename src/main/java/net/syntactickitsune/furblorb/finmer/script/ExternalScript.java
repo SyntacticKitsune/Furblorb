@@ -36,7 +36,7 @@ public final class ExternalScript extends Script {
 	 */
 	public ExternalScript(Decoder in) {
 		name = in.readString("Name");
-		final byte[] bytes = in.readExternal(name + ".lua", Decoder::readByteArray, Function.identity());
+		final byte[] bytes = in.readExternal(name + ".lua", Decoder::readOptionalByteArray, Function.identity());
 		contents = bytes != null ? new String(bytes, StandardCharsets.UTF_8) : "";
 		contents = contents.replace("\r\n", "\n").replace("\n", "\r\n"); // Fix line endings.
 	}
@@ -44,7 +44,7 @@ public final class ExternalScript extends Script {
 	@Override
 	public void write(Encoder to) {
 		to.writeString("Name", name);
-		to.writeExternal(name + ".lua", contents.isBlank() ? null : contents.getBytes(StandardCharsets.UTF_8), (key, v, enc) -> enc.writeByteArray(key, v), Function.identity());
+		to.writeExternal(name + ".lua", contents.isBlank() ? null : contents.getBytes(StandardCharsets.UTF_8), (key, v, enc) -> enc.writeOptionalByteArray(key, v), Function.identity());
 	}
 
 	@Override

@@ -49,12 +49,20 @@ public interface Decoder {
 	public byte readByte(@Nullable String key);
 
 	/**
-	 * Reads the next (optional) {@code byte} array from this {@code Decoder}'s sequence.
+	 * Reads the next {@code byte} array from this {@code Decoder}'s sequence.
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @return The read value.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public byte @Nullable [] readByteArray(@Nullable String key);
+	public byte[] readByteArray(@Nullable String key);
+
+	/**
+	 * Reads the next (optional) {@code byte} array from this {@code Decoder}'s sequence.
+	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
+	 * @return The read value. May be {@code null}.
+	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 */
+	public byte @Nullable [] readOptionalByteArray(@Nullable String key);
 
 	/**
 	 * Reads the next {@code boolean} from this {@code Decoder}'s sequence.

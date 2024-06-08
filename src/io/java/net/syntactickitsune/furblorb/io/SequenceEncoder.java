@@ -41,10 +41,16 @@ public interface SequenceEncoder extends Encoder {
 	public void writeBytes(byte[] value);
 
 	/**
+	 * Writes the given {@code byte} array to this {@code SequenceEncoder}'s sequence.
+	 * @param value The value to write.
+	 */
+	public void writeByteArray(byte[] value);
+
+	/**
 	 * Writes the given (optional) {@code byte} array to this {@code SequenceEncoder}'s sequence.
 	 * @param value The value to write. May be {@code null}.
 	 */
-	public void writeByteArray(byte @Nullable [] value);
+	public void writeOptionalByteArray(byte @Nullable [] value);
 
 	/**
 	 * Writes the given {@code boolean} to this {@code SequenceEncoder}'s sequence.
@@ -176,7 +182,10 @@ public interface SequenceEncoder extends Encoder {
 	public default void writeByte(@Nullable String key, byte value) { writeByte(value); }
 
 	@Override
-	public default void writeByteArray(@Nullable String key, byte @Nullable [] value) { writeByteArray(value); }
+	public default void writeByteArray(@Nullable String key, byte[] value) { writeByteArray(value); }
+
+	@Override
+	public default void writeOptionalByteArray(@Nullable String key, byte @Nullable [] value) { writeOptionalByteArray(value); }
 
 	@Override
 	public default void writeBoolean(@Nullable String key, boolean value) { writeBoolean(value); }
