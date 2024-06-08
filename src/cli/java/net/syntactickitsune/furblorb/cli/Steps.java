@@ -278,15 +278,15 @@ final class Steps {
 		}
 	}
 
-	static final record Show() implements Step {
+	static final record Show(boolean verbose) implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
 			final Furball furball = data.furball("no furball loaded to show metadata of");
 			System.out.println("\n! Furball metadata:");
 			System.out.printf("ID:               %s\n", furball.meta.id);
+			System.out.printf("Format Version:   %d\n", furball.meta.formatVersion);
 			System.out.printf("Title:            %s\n", furball.meta.title);
 			System.out.printf("Author:           %s\n", furball.meta.author);
-			System.out.printf("Format Version:   %d\n", furball.meta.formatVersion);
 
 			if (furball.dependencies.isEmpty())
 				System.out.println("\n! No dependencies.");
@@ -308,19 +308,21 @@ final class Steps {
 				System.out.printf("Journals:         %d\n", furball.assets.stream().filter(JournalAsset.class::isInstance).count());
 				System.out.printf("Scripts:          %d\n", furball.assets.stream().filter(ScriptAsset.class::isInstance).count());
 
-				final int nameWidth = Math.max(furball.assets.stream()
-						.map(fa -> fa.filename.length() + 2)
-						.reduce(0, Math::max), 12);
+				if (verbose) {
+					final int nameWidth = Math.max(furball.assets.stream()
+							.map(fa -> fa.filename.length() + 2)
+							.reduce(0, Math::max), 12);
 
-				System.out.printf("\n! Assets (%d):\n", furball.assets.size());
-				System.out.printf("! Type%sFile Name%sID\n", " ".repeat(16 - 4), " ".repeat(nameWidth - 9));
-				for (FurballAsset asset : furball.assets)
-					// Concatenation? In *MY* format strings? It's more likely than you think.
-					System.out.printf(
-							"- %-16s%-" + nameWidth + "s%s\n",
-							asset.metadata().name().substring("Asset".length()),
-							asset.filename,
-							asset.id);
+					System.out.printf("\n! Assets (%d):\n", furball.assets.size());
+					System.out.printf("! Type%sFile Name%sID\n", " ".repeat(16 - 4), " ".repeat(nameWidth - 9));
+					for (FurballAsset asset : furball.assets)
+						// Concatenation? In *MY* format strings? It's more likely than you think.
+						System.out.printf(
+								"- %-16s%-" + nameWidth + "s%s\n",
+								asset.metadata().name().substring("Asset".length()),
+								asset.filename,
+								asset.id);
+				}
 			}
 		}
 	}

@@ -94,7 +94,11 @@ public final class Furblorb {
 				}
 
 				case "--show" -> {
-					steps.add(new Steps.Show());
+					steps.add(new Steps.Show(false));
+				}
+
+				case "--show-full" -> {
+					steps.add(new Steps.Show(true));
 				}
 
 				case "--change-title" -> {

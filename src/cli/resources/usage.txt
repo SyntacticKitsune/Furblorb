@@ -39,6 +39,8 @@ Analysis options:
   --show
           Display information about the read furball,
           including metadata, dependencies, and assets.
+  --show-full
+          Like show, but also includes a list of assets.
 
 Manipulation options (these affect the read furball):
 
