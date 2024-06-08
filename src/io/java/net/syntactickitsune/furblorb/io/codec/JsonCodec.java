@@ -21,12 +21,15 @@ import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.ExternalFileHandler;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.INamedEnum;
+import net.syntactickitsune.furblorb.io.SequenceDecoder;
+import net.syntactickitsune.furblorb.io.SequenceEncoder;
 import net.syntactickitsune.furblorb.io.TriConsumer;
 
 /**
  * <p>
  * {@code JsonCodec} is an {@link Encoder}/{@link Decoder} hybrid that works with json data.
  * Internally it uses {@link JsonObject} instances.
+ * {@link JsonArrayCodec} is its sequence-based counterpart.
  * </p>
  * <p>
  * While {@code JsonCodec} is primarily designed with the purpose of reading/writing Finmer projects in mind, it can also
@@ -34,6 +37,7 @@ import net.syntactickitsune.furblorb.io.TriConsumer;
  * </p>
  * @author SyntacticKitsune
  * @see BinaryCodec
+ * @see JsonArrayCodec
  */
 public class JsonCodec extends Codec {
 
@@ -51,7 +55,7 @@ public class JsonCodec extends Codec {
 	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
 	 * @param root The root object.
-	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to write them inline.
+	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to read and write them inline.
 	 * @param mode The mode that the {@code JsonCodec} should be in.
 	 * @throws NullPointerException If {@code root} or {@code mode} are {@code null}.
 	 */
@@ -64,7 +68,7 @@ public class JsonCodec extends Codec {
 	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
 	 * @param root The root object.
-	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to write them inline.
+	 * @param externalFiles A handler for external files. Passing in {@code null} will cause the {@code JsonCodec} to read and write them inline.
 	 * @param mode The mode that the {@code JsonCodec} should be in.
 	 * @param formatVersion A specific format version to use. This ensures that it's actually set.
 	 * @throws NullPointerException If {@code root} or {@code mode} are {@code null}.
@@ -194,40 +198,24 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		final JsonArray arr = wrapped.getAsJsonArray(key);
-		final List<T> ret = new ArrayList<>(arr.size());
-
-		for (int i = 0; i < arr.size(); i++) {
-			final JsonObject obj = arr.get(i).getAsJsonObject();
-			ret.add(reader.apply(new JsonCodec(obj, externalFiles, mode, formatVersion)));
-		}
-
-		return ret;
+		return readListOf(key, dec -> dec.readObject(reader));
 	}
 
 	@Override
 	public <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		final JsonArray arr = wrapped.getAsJsonArray(key);
-		final List<@Nullable T> ret = new ArrayList<>(arr.size());
-
-		for (int i = 0; i < arr.size(); i++)
-			if (arr.get(i) instanceof JsonObject obj)
-				ret.add(reader.apply(new JsonCodec(obj, externalFiles, mode, formatVersion)));
-			else
-				ret.add(null);
-
-		return ret;
+		return readListOf(key, dec -> dec.readOptionalObject(reader));
 	}
 
 	@Override
-	public List<String> readStringList(@Nullable String key) {
+	public <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader) {
 		checkRead();
-		final JsonArray arr = wrapped.getAsJsonArray(key);
-		final List<String> ret = new ArrayList<>(arr.size());
+		final JsonArray arr = wrapped.getAsJsonArray(Objects.requireNonNull(key, "key"));
+		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.READ_ONLY, formatVersion);
+		final List<T> ret = new ArrayList<>(arr.size());
 
 		for (int i = 0; i < arr.size(); i++)
-			ret.add(arr.get(i).getAsString());
+			ret.add(reader.apply(codec));
 
 		return ret;
 	}
@@ -351,40 +339,23 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonArray arr = new JsonArray(value.size());
-
-		for (T v : value) {
-			final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
-			writer.accept(v, codec);
-			arr.add(codec.wrapped);
-		}
-
-		wrapped.add(key, arr);
+		writeListOf(key, value, (enc, v) -> enc.writeObject(v, writer));
 	}
 
 	@Override
 	public <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonArray arr = new JsonArray(value.size());
-
-		for (@Nullable T v : value)
-			if (v == null)
-				arr.add(JsonNull.INSTANCE);
-			else {
-				final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
-				writer.accept(v, codec);
-				arr.add(codec.wrapped);
-			}
-
-		wrapped.add(key, arr);
+		writeListOf(key, value, (enc, v) -> enc.writeOptionalObject(v, writer));
 	}
 
 	@Override
-	public void writeStringList(@Nullable String key, List<String> value) {
+	public <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
+		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.WRITE_ONLY, formatVersion);
 
-		for (String v : value) arr.add(Objects.requireNonNull(v));
+		for (T v : value)
+			writer.accept(codec, Objects.requireNonNull(v));
 
 		wrapped.add(key, arr);
 	}

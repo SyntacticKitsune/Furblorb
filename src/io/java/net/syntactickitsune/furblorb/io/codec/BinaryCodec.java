@@ -414,23 +414,13 @@ public class BinaryCodec extends SequenceCodec {
 	@Override
 	public <T> List<T> readObjectList(Function<Decoder, T> reader) {
 		checkRead();
-
-		final int count = readInt();
-		if (count > 1000) throw new FurblorbParsingException("Attempt to read " + count + " list entries");
-
-		final List<T> ret = new ArrayList<>(count);
-		for (int i = 0; i < count; i++)
-			ret.add(reader.apply(this));
-
-		return ret;
+		return readListOf(dec -> dec.readObject(reader));
 	}
 
 	@Override
 	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite(0);
-		writeInt(value.size());
-		for (T elem : value)
-			writer.accept(elem, this);
+		writeListOf(value, (enc, v) -> enc.writeObject(v, writer));
 	}
 
 	@Override
@@ -450,6 +440,28 @@ public class BinaryCodec extends SequenceCodec {
 				writer.accept(val, enc);
 			}
 		});
+	}
+
+	@Override
+	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader) {
+		checkRead();
+
+		final int count = readInt();
+		if (count > 1000) throw new FurblorbParsingException("Attempt to read " + count + " list entries");
+
+		final List<T> ret = new ArrayList<>(count);
+		for (int i = 0; i < count; i++)
+			ret.add(reader.apply(this));
+
+		return ret;
+	}
+
+	@Override
+	public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
+		checkWrite(0);
+		writeInt(value.size());
+		for (T elem : value)
+			writer.accept(this, elem);
 	}
 
 	@Override

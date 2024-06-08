@@ -160,6 +160,14 @@ public interface SequenceEncoder extends Encoder {
 	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
 	/**
+	 * Writes the given {@link List} to this {@code SequenceEncoder}'s sequence.
+	 * @param value The value to write.
+	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
+	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
+	 */
+	public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer);
+
+	/**
 	 * Writes the given {@code Object} to this {@code SequenceEncoder}'s sequence using the provided writer.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the value.
@@ -221,7 +229,7 @@ public interface SequenceEncoder extends Encoder {
 	public default <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalObjectList(value, writer); }
 
 	@Override
-	public default void writeStringList(@Nullable String key, List<String> value) { writeList(value, (v, enc) -> enc.writeString(null, v)); }
+	public default <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer) { writeListOf(value, writer); }
 
 	@Override
 	public default <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer) { writer.accept(value, this); }

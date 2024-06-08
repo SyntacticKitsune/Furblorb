@@ -160,12 +160,23 @@ public interface Encoder {
 	public <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
 	/**
+	 * Writes the given {@link List}.
+	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
+	 * @param value The value to write.
+	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
+	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 */
+	public <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer);
+
+	/**
 	 * Writes the given {@link String} {@link List}.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null} or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public void writeStringList(@Nullable String key, List<String> value);
+	public default void writeStringList(@Nullable String key, List<String> value) {
+		writeListOf(key, value, SequenceEncoder::writeString);
+	}
 
 	/**
 	 * Writes the given {@code Object} using the provided writer.

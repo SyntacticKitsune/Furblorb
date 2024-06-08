@@ -159,12 +159,24 @@ public interface Decoder {
 	public <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
+	 * Reads the contents of the next {@link List} from this {@code Decoder}'s sequence using the provided reader.
+	 * @param <T> The return value of the function.
+	 * @param key The key that the list is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
+	 * @param reader A {@code Function} to read the values of the list.
+	 * @return The read values.
+	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 */
+	public <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader);
+
+	/**
 	 * Reads the next {@link String} {@link List} from this {@code Decoder}'s sequence.
 	 * @param key The key that the list is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public List<String> readStringList(@Nullable String key);
+	public default List<String> readStringList(@Nullable String key) {
+		return readListOf(key, SequenceDecoder::readString);
+	}
 
 	/**
 	 * Reads the next {@code Object} from this {@code Decoder}'s sequence using the provided reader.

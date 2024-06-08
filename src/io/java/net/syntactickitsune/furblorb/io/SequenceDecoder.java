@@ -197,6 +197,15 @@ public interface SequenceDecoder extends Decoder {
 	 */
 	public <T> @Nullable T readOptionalObject(Function<Decoder, T> reader);
 
+	/**
+	 * Reads the contents of the next array from this {@code SequenceDecoder}'s sequence using the provided reader.
+	 * @param <T> The return value of the function.
+	 * @param reader A {@code Function} to read the values of the array.
+	 * @return The read values.
+	 * @throws NullPointerException If {@code reader} is {@code null}.
+	 */
+	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader);
+
 	// ===== OVERRIDES =====
 
 	@Override
@@ -242,7 +251,7 @@ public interface SequenceDecoder extends Decoder {
 	public default <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader) { return readOptionalObjectList(reader); }
 
 	@Override
-	public default List<String> readStringList(@Nullable String key) { return readList(dec -> dec.readString(null)); }
+	public default <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader) { return readListOf(reader); }
 
 	@Override
 	public default <T> T readObject(@Nullable String key, Function<Decoder, T> reader) { return readObject(reader); }
