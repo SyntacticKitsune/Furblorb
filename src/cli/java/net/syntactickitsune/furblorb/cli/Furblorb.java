@@ -72,7 +72,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--read: expected a file argument.");
 					else {
-						steps.add(new FurballSteps.Read(Paths.get(args[i + 1])));
+						steps.add(new GeneralSteps.Read(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -80,7 +80,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--write: expected a file argument.");
 					else {
-						steps.add(new FurballSteps.Write(Paths.get(args[i + 1])));
+						steps.add(new GeneralSteps.Write(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -94,11 +94,11 @@ public final class Furblorb {
 				}
 
 				case "--show" -> {
-					steps.add(new FurballSteps.Show(false));
+					steps.add(new GeneralSteps.Show(false));
 				}
 
 				case "--show-full" -> {
-					steps.add(new FurballSteps.Show(true));
+					steps.add(new GeneralSteps.Show(true));
 				}
 
 				case "--change-title" -> {
