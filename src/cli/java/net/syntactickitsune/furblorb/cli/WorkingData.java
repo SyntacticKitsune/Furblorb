@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.cli;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.finmer.FinmerSaveData;
 import net.syntactickitsune.furblorb.finmer.Furball;
 
 /**
@@ -15,6 +16,12 @@ final class WorkingData {
 	 */
 	@Nullable
 	Furball furball;
+
+	/**
+	 * The current save data. Will be {@code null} if no save data has been read yet.
+	 */
+	@Nullable
+	FinmerSaveData save;
 
 	/**
 	 * The current explicit format version. Will be {@code null} if no specific format version has been set.
@@ -42,7 +49,24 @@ final class WorkingData {
 		return furball;
 	}
 
+	/**
+	 * If the {@linkplain #save save data} is non-{@code null}, returns it.
+	 * Otherwise, throws a {@link CliException} with the specified message.
+	 * @param nullMessage The message of the thrown {@code CliException}.
+	 * @return The save data.
+	 */
+	FinmerSaveData save(String nullMessage) {
+		if (save == null) throw new CliException(nullMessage);
+		return save;
+	}
+
 	void setFurball(Furball value) {
+		save = null;
 		furball = value;
+	}
+
+	void setSave(FinmerSaveData value) {
+		furball = null;
+		save = value;
 	}
 }

@@ -30,7 +30,7 @@ public final class FinmerSaveData {
 	/**
 	 * The {@code UUID} of Finmer's Core module, which <i>must</i> be present at all times.
 	 */
-	private static final UUID CORE_ID = UUID.fromString("edcf99d2-6ced-40fa-87e9-86cda5e570ee");
+	public static final UUID CORE_ID = UUID.fromString("edcf99d2-6ced-40fa-87e9-86cda5e570ee");
 
 	/**
 	 * Represents the latest save file format version -- the only format version Furblorb can read.
@@ -119,17 +119,13 @@ public final class FinmerSaveData {
 	 * @return The generated description.
 	 */
 	public String makeDescription() {
-		return "%s%s  -  Lv %d %s\n%s".formatted(
+		return "%s%s  -  Lv %d %s\r\n%s".formatted(
 				isModded() ? "[M] " : "", // Rated M for Mysterious
 				playerData.getString("name"),
 				playerData.getInt("level"),
-				capitalize(playerData.getString("species")),
+				FurblorbUtil.capitalize(playerData.getString("species")),
 				interfaceData.getString("ui_location")
 				);
-	}
-
-	private static String capitalize(String input) {
-		return input.isEmpty() ? input : input.substring(0, 1).toUpperCase(Locale.ENGLISH) + input.substring(1);
 	}
 
 	/**

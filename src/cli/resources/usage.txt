@@ -21,15 +21,16 @@ I/O options:
 
   --read <file>
           Read from the specified file. The file must
-          either be a furball (".furball") or a Finmer
-          project (".fnproj").
+		  be a furball (".furball"), a Finmer project
+          (".fnproj"), binary save data (".sav"), or
+          json save data (".sav.json").
   --write <file>
           Write to the specified file. Furblorb assumes
-          it should write a furball if the filename ends
-          in ".furball" and that it should write a Finmer
-          project if the filename ends with ".fnproj".
+          it should write in the format corresponding to
+          the file's extension. See --read for details.
   --format-version <version>
-          Write in the specified format version.
+          Write in the specified format version. This
+          only applies to furballs, not save data.
           Warning: changing the format version can
           and probably will cause problems!
           As Minecraft would say, "Here be dragons!"
@@ -37,10 +38,15 @@ I/O options:
 Analysis options:
 
   --show
-          Display information about the read furball,
-          including metadata, dependencies, and assets.
+          Display information about the read file.
+          For furballs this includes metadata,
+          dependencies, and assets. For save data
+          this includes metadata, loaded modules,
+          and player stats.
   --show-full
-          Like show, but also includes a list of assets.
+          Displays the same information as show,
+          but also includes an asset list for furballs,
+          and includes quest progress for save data.
 
 Manipulation options (these affect the read furball):
 

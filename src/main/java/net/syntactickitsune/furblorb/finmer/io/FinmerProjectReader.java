@@ -55,15 +55,7 @@ public final class FinmerProjectReader {
 	private JsonObject readJson(String filename) {
 		final byte[] bytes = externalFiles.readExternalFile(filename);
 		if (bytes == null) throw new FurblorbParsingException("ExternalFileHandler returned null for " + filename);
-		return readJson(bytes);
-	}
-
-	private static JsonObject readJson(byte[] bytes) {
-		String j = new String(bytes, StandardCharsets.UTF_8);
-		if (j.charAt(0) == 65279) j = j.substring(1); // Remove the BOM, if present.
-
-		final JsonElement elem = JsonParser.parseString(j);
-		return elem.getAsJsonObject();
+		return FurblorbUtil.readJson(bytes);
 	}
 
 	private FurballMetadata readMetadata(JsonCodec codec) {
@@ -80,7 +72,7 @@ public final class FinmerProjectReader {
 	public Furball readFurball() {
 		final List<String> files = externalFiles.listFiles();
 
-		final JsonObject proj = readJson(externalFiles.readProjectFile());
+		final JsonObject proj = FurblorbUtil.readJson(externalFiles.readProjectFile());
 		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, CodecMode.READ_ONLY, proj.get("FormatVersion").getAsByte());
 		final FurballMetadata meta = readMetadata(projCodec);
 		final Furball furball = new Furball(meta);

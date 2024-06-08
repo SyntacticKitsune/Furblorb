@@ -4,10 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.jetbrains.annotations.ApiStatus.Internal;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * A collection of various utilities used internally by Furblorb.
@@ -68,5 +74,17 @@ public final class FurblorbUtil {
 	 */
 	public static <E extends Throwable, T> T throwAsUnchecked(Throwable e) throws E {
 		throw (E) e;
+	}
+
+	public static JsonObject readJson(byte[] bytes) {
+		String j = new String(bytes, StandardCharsets.UTF_8);
+		if (j.charAt(0) == 65279) j = j.substring(1); // Remove the BOM, if present.
+
+		final JsonElement elem = JsonParser.parseString(j);
+		return elem.getAsJsonObject();
+	}
+
+	public static String capitalize(String input) {
+		return input.isEmpty() ? input : input.substring(0, 1).toUpperCase(Locale.ENGLISH) + input.substring(1);
 	}
 }
