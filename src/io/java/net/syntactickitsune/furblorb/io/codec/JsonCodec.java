@@ -172,14 +172,16 @@ public class JsonCodec extends Codec {
 	@Override
 	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
 		checkRead();
-		final String str = readString(key);
+		return getConstantById(readString(key), type);
+	}
 
+	static <E extends Enum<E> & INamedEnum> E getConstantById(String id, Class<E> type) {
 		final E[] constants = type.getEnumConstants();
 		for (E e : constants)
-			if (str.equals(e.id()))
+			if (id.equals(e.id()))
 				return e;
 
-		throw new FurblorbParsingException("No " + type.getName() + " with id '" + str + "'");
+		throw new FurblorbParsingException("No " + type.getName() + " with id '" + id + "'");
 	}
 
 	@Override
