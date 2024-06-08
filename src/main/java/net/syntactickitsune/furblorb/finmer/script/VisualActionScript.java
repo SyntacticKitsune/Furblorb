@@ -31,12 +31,12 @@ public final class VisualActionScript extends Script { // Microsoft two seconds 
 	 * @param in The {@code Decoder}.
 	 */
 	public VisualActionScript(Decoder in) {
-		nodes.addAll(in.readOptionalList("Nodes", FurballSerializables::read));
+		nodes.addAll(in.readOptionalObjectList("Nodes", FurballSerializables::read));
 	}
 
 	@Override
 	public void write(Encoder to) {
-		to.writeOptionalList("Nodes", nodes, ScriptNode::writeWithId);
+		to.writeOptionalObjectList("Nodes", nodes, ScriptNode::writeWithId);
 	}
 
 	@Override

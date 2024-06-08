@@ -136,21 +136,21 @@ public interface SequenceEncoder extends Encoder {
 	public <E extends Enum<E> & INamedEnum> void writeEnum(E value);
 
 	/**
-	 * Writes the given {@link List} to this {@code SequenceEncoder}'s sequence.
+	 * Writes the given {@link List} of {@link Object Objects} to this {@code SequenceEncoder}'s sequence.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeList(List<T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeObjectList(List<T> value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	/**
-	 * Writes the given {@link List} to this {@code SequenceEncoder}'s sequence.
+	 * Writes the given {@link List} of {@link Object Objects} to this {@code SequenceEncoder}'s sequence.
 	 * The {@code List} may contain {@code null} values.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeOptionalList(List<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeOptionalObjectList(List<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	/**
 	 * Writes the given {@code Object} to this {@code SequenceEncoder}'s sequence using the provided writer.
@@ -158,7 +158,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the value.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void write(T value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeObject(T value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	/**
 	 * Writes the given {@code Object} -- which may be {@code null} -- to this {@code SequenceEncoder}'s sequence using the provided writer.
@@ -167,7 +167,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
 	 * @throws NullPointerException If {@code writer} is {@code null}.
 	 */
-	public <T> void writeOptional(@Nullable T value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	// ===== OVERRIDES =====
 
@@ -205,23 +205,23 @@ public interface SequenceEncoder extends Encoder {
 	public default <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) { writeEnum(value); }
 
 	@Override
-	public default <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) { writeList(value, writer); }
+	public default <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) { writeObjectList(value, writer); }
 
 	@Override
-	public default <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalList(value, writer); }
+	public default <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalObjectList(value, writer); }
 
 	@Override
 	public default void writeStringList(@Nullable String key, List<String> value) { writeList(value, (v, enc) -> enc.writeString(null, v)); }
 
 	@Override
-	public default <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) { writer.accept(value, this); }
+	public default <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer) { writer.accept(value, this); }
 
 	@Override
-	public default <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) { writeOptional(value, writer); }
+	public default <T> void writeOptionalObject(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) { writeOptionalObject(value, writer); }
 
 	@Override
 	public default <T> void writeExternal(@Nullable String key, T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writer.accept(key, value, this); }
 
 	@Override
-	public default <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writeOptional(value, (val, enc) -> writer.accept(key, val, enc)); }
+	public default <T> void writeExternalOptional(@Nullable String key, @Nullable T value, TriConsumer<String, T, Encoder> writer, Function<T, byte[]> externalWriter) { writeOptionalObject(value, (val, enc) -> writer.accept(key, val, enc)); }
 }

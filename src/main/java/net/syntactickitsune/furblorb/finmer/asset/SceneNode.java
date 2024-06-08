@@ -141,15 +141,15 @@ public final class SceneNode {
 			}
 
 			if (scripts) {
-				onTrigger = in.readOptional("ScriptAction", FurballSerializables::read);
-				displayTest = in.readOptional("ScriptAppear", FurballSerializables::read);
+				onTrigger = in.readOptionalObject("ScriptAction", FurballSerializables::read);
+				displayTest = in.readOptionalObject("ScriptAppear", FurballSerializables::read);
 			} else {
 				in.assertDoesNotExist("ScriptAction", "unsupported for " + type.id + " nodes");
 				in.assertDoesNotExist("ScriptAppear", "unsupported for " + type.id + " nodes");
 			}
 
 			if (children)
-				this.children.addAll(in.readList("Children", SceneNode::new));
+				this.children.addAll(in.readObjectList("Children", SceneNode::new));
 			else
 				in.assertDoesNotExist("Children", type.id + " nodes may not have children");
 		} catch (CascadingException e) {
@@ -193,15 +193,15 @@ public final class SceneNode {
 		}
 
 		if (scripts) {
-			to.writeOptional("ScriptAction", onTrigger, Script::writeWithId);
-			to.writeOptional("ScriptAppear", displayTest, Script::writeWithId);
+			to.writeOptionalObject("ScriptAction", onTrigger, Script::writeWithId);
+			to.writeOptionalObject("ScriptAppear", displayTest, Script::writeWithId);
 		} else {
 			to.assertDoesNotExist("ScriptAction", onTrigger, "unsupported for " + type.id + " nodes");
 			to.assertDoesNotExist("ScriptAppear", displayTest, "unsupported for " + type.id + " nodes");
 		}
 
 		if (children) // Recursion :concern:
-			to.writeList("Children", this.children, SceneNode::write);
+			to.writeObjectList("Children", this.children, SceneNode::write);
 		else
 			to.assertDoesNotExist("Children", this.children.isEmpty() ? null : this.children, type.id + " nodes may not have children");
 	}

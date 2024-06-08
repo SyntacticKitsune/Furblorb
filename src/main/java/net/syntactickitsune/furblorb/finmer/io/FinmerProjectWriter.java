@@ -86,7 +86,7 @@ public final class FinmerProjectWriter {
 
 		furball.meta.write(codec);
 
-		codec.writeList("Dependencies", furball.dependencies, FurballDependency::write);
+		codec.writeObjectList("Dependencies", furball.dependencies, FurballDependency::write);
 
 		externalFiles.writeProjectFile(toBytes(codec.unwrap()));
 	}

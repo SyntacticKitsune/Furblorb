@@ -25,7 +25,7 @@ public abstract class StatementBlockNode extends StatementNode {
 	 * @return The list of {@code ScriptNodes}.
 	 */
 	protected static List<ScriptNode> read(String key, Decoder in) {
-		return in.readOptionalList(key, FurballSerializables::read);
+		return in.readOptionalObjectList(key, FurballSerializables::read);
 	}
 
 	/**
@@ -35,6 +35,6 @@ public abstract class StatementBlockNode extends StatementNode {
 	 * @param out The {@code Encoder} to write to.
 	 */
 	protected static void write(String key, List<ScriptNode> list, Encoder out) {
-		out.writeOptionalList(key, list, ScriptNode::writeWithId);
+		out.writeOptionalObjectList(key, list, ScriptNode::writeWithId);
 	}
 }

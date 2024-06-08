@@ -52,7 +52,7 @@ public final class ShopStatement extends StatementNode {
 		title = in.readString("Title");
 		restockInterval = in.readInt("RestockInterval");
 
-		in.readList("Merchandise", dec -> new EphemeralItem(dec.readUUID("Item"), dec.readInt("Quantity")))
+		in.readObjectList("Merchandise", dec -> new EphemeralItem(dec.readUUID("Item"), dec.readInt("Quantity")))
 		.forEach(i -> merchandise.put(i.itemId, i.quantity));
 	}
 
@@ -63,7 +63,7 @@ public final class ShopStatement extends StatementNode {
 		to.writeInt("RestockInterval", restockInterval);
 
 		// Make your serialization code 2x slower with this one neat trick!
-		to.writeList("Merchandise", merchandise.entrySet()
+		to.writeObjectList("Merchandise", merchandise.entrySet()
 				.stream()
 				.map(e -> new EphemeralItem(e.getKey(), e.getValue()))
 				.toList(), (i, enc) -> {

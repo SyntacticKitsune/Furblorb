@@ -46,7 +46,7 @@ public final class LogicalExpression implements IFurballSerializable {
 		mode = in.readEnum("Mode", Mode.class);
 		target = in.readBoolean("Operand");
 
-		conditions.addAll(in.readOptionalList("Tests", FurballSerializables::read));
+		conditions.addAll(in.readOptionalObjectList("Tests", FurballSerializables::read));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public final class LogicalExpression implements IFurballSerializable {
 		to.writeEnum("Mode", mode);
 		to.writeBoolean("Operand", target);
 
-		to.writeOptionalList("Tests", conditions, ExpressionNode::writeWithId);
+		to.writeOptionalObjectList("Tests", conditions, ExpressionNode::writeWithId);
 	}
 
 	@Override

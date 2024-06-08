@@ -35,7 +35,7 @@ public final class StringTableAsset extends FurballAsset {
 	public StringTableAsset(Decoder in) {
 		super(in);
 
-		final List<Entry> entries = in.readList("Entries", Entry::new);
+		final List<Entry> entries = in.readObjectList("Entries", Entry::new);
 
 		for (Entry entry : entries)
 			table.put(entry.key, entry.values);
@@ -52,7 +52,7 @@ public final class StringTableAsset extends FurballAsset {
 				.map(Entry::new)
 				.toList();
 
-		to.writeList("Entries", entries, Entry::write);
+		to.writeObjectList("Entries", entries, Entry::write);
 	}
 
 	@Override

@@ -166,7 +166,7 @@ public final class CreatureAsset extends FurballAsset {
 			predatorDisposal = in.readBoolean("PredatorDisposal");
 		}
 
-		strings.addAll(in.readList("StringMappings", StringMapping::new));
+		strings.addAll(in.readObjectList("StringMappings", StringMapping::new));
 	}
 
 	// Cursed thought: what if this was a `com.mojang.serialization.Codec`?
@@ -202,7 +202,7 @@ public final class CreatureAsset extends FurballAsset {
 			to.writeBoolean("PredatorDisposal", predatorDisposal);
 		}
 
-		to.writeList("StringMappings", strings, StringMapping::write);
+		to.writeObjectList("StringMappings", strings, StringMapping::write);
 	}
 
 	@Override

@@ -132,23 +132,23 @@ public interface Decoder {
 	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type);
 
 	/**
-	 * Reads the next {@link List} from this {@code Decoder}'s sequence.
+	 * Reads the next {@link List} of {@link Object Objects} from this {@code Decoder}'s sequence.
 	 * @param key The key that the list is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @param reader A {@code Function} to read the individual values from this {@code Decoder}'s sequence.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader);
+	public <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
-	 * Reads the next {@link List} from this {@code Decoder}'s sequence.
+	 * Reads the next {@link List} of {@link Object Objects} from this {@code Decoder}'s sequence.
 	 * The {@code List} may contain {@code null} values.
 	 * @param key The key that the list is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @param reader A {@code Function} to read the individual values from this {@code Decoder}'s sequence.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader);
+	public <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
 	 * Reads the next {@link String} {@link List} from this {@code Decoder}'s sequence.
@@ -166,7 +166,7 @@ public interface Decoder {
 	 * @return The read value.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public <T> T read(@Nullable String key, Function<Decoder, T> reader);
+	public <T> T readObject(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code Decoder}'s sequence using the provided reader, if one exists.
@@ -178,7 +178,7 @@ public interface Decoder {
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
 	@Nullable
-	public <T> T readOptional(@Nullable String key, Function<Decoder, T> reader);
+	public <T> T readOptionalObject(@Nullable String key, Function<Decoder, T> reader);
 
 	/**
 	 * Reads an "external" value from this {@code Decoder}'s sequence -- that is, a value from some other file.

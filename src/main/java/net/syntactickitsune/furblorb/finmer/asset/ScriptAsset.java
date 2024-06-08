@@ -41,14 +41,14 @@ public final class ScriptAsset extends FurballAsset {
 	public ScriptAsset(Decoder in) {
 		super(in);
 
-		contents = in.readOptional("Contents", FurballSerializables::read);
-		dependencies.addAll(in.readList("LoadOrder", LoadOrderDependency::new));
+		contents = in.readOptionalObject("Contents", FurballSerializables::read);
+		dependencies.addAll(in.readObjectList("LoadOrder", LoadOrderDependency::new));
 	}
 
 	@Override
 	protected void write0(Encoder to) {
-		to.writeOptional("Contents", contents, Script::writeWithId);
-		to.writeList("LoadOrder", dependencies, LoadOrderDependency::write);
+		to.writeOptionalObject("Contents", contents, Script::writeWithId);
+		to.writeObjectList("LoadOrder", dependencies, LoadOrderDependency::write);
 	}
 
 	@Override

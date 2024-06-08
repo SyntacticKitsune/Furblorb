@@ -115,7 +115,7 @@ public final class ItemAsset extends FurballAsset {
 		type = in.readEnum("ItemType", Type.class);
 		if (type == Type.EQUIPPABLE) {
 			slot = in.readEnum("EquipSlot", EquipmentSlot.class);
-			equipEffects.addAll(in.readOptionalList("EquipEffects", FurballSerializables::read));
+			equipEffects.addAll(in.readOptionalObjectList("EquipEffects", FurballSerializables::read));
 		} else {
 			in.assertDoesNotExist("EquipSlot", "Only equippable items may have equipment slots");
 			in.assertDoesNotExist("EquipEffects", "Only equippable items may have effects");
@@ -133,7 +133,7 @@ public final class ItemAsset extends FurballAsset {
 			usableInField = in.readBoolean("CanUseInField");
 			usableInBattle = in.readBoolean("CanUseInBattle");
 			useDescription = in.readString("UseDescription");
-			useScript = in.readOptional("UseScript", FurballSerializables::read);
+			useScript = in.readOptionalObject("UseScript", FurballSerializables::read);
 		} else {
 			in.assertDoesNotExist("IsConsumable", "Only usable items may be consumable");
 			in.assertDoesNotExist("CanUseInField", "Only usable items may be used in field");
@@ -157,7 +157,7 @@ public final class ItemAsset extends FurballAsset {
 
 		if (type == Type.EQUIPPABLE) {
 			to.writeEnum("EquipSlot", slot);
-			to.writeOptionalList("EquipEffects", equipEffects, EquipEffectGroup::writeWithId);
+			to.writeOptionalObjectList("EquipEffects", equipEffects, EquipEffectGroup::writeWithId);
 		} else {
 			to.assertDoesNotExist("EquipSlot", slot, "Only equippable items may have equipment slots");
 			to.assertDoesNotExist("EquipEffects", equipEffects.isEmpty() ? null : equipEffects, "Only equippable items may have effects");
@@ -171,7 +171,7 @@ public final class ItemAsset extends FurballAsset {
 			to.writeBoolean("CanUseInField", usableInField);
 			to.writeBoolean("CanUseInBattle", usableInBattle);
 			to.writeString("UseDescription", useDescription);
-			to.writeOptional("UseScript", useScript, ScriptAsset::writeWithId);
+			to.writeOptionalObject("UseScript", useScript, ScriptAsset::writeWithId);
 		} else if (to.validate()) {
 			to.assertDoesNotExist("UseDescription", useDescription.isEmpty() ? null : "", "Only usable items may have use descriptions");
 			to.assertDoesNotExist("UseScript", useScript, "Only usable items may have use scripts");

@@ -78,9 +78,9 @@ public final class FurballWriter {
 
 		writeMetadata(furball.meta);
 
-		codec.writeList(furball.dependencies, FurballDependency::write);
+		codec.writeObjectList(furball.dependencies, FurballDependency::write);
 
-		codec.writeList(furball.assets, FurballAsset::writeWithId);
+		codec.writeObjectList(furball.assets, FurballAsset::writeWithId);
 
 		return this;
 	}

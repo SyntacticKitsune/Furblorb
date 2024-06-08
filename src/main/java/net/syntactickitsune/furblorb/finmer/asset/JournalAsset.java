@@ -39,13 +39,13 @@ public final class JournalAsset extends FurballAsset {
 	public JournalAsset(Decoder in) {
 		super(in);
 		title = in.readString("Title");
-		stages.addAll(in.readList("Stages", Stage::new));
+		stages.addAll(in.readObjectList("Stages", Stage::new));
 	}
 
 	@Override
 	protected void write0(Encoder to) {
 		to.writeString("Title", title);
-		to.writeList("Stages", stages, Stage::write);
+		to.writeObjectList("Stages", stages, Stage::write);
 	}
 
 	@Override

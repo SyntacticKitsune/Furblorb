@@ -161,7 +161,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 * @throws FurblorbParsingException If an attempt to read more than 1000 entries is made. This frequently indicates a deserialization bug.
 	 */
-	public <T> List<T> readList(Function<? super SequenceDecoder, T> reader);
+	public <T> List<T> readObjectList(Function<? super SequenceDecoder, T> reader);
 
 	/**
 	 * Reads the next {@link List} from this {@code SequenceDecoder}'s sequence.
@@ -170,7 +170,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> List<@Nullable T> readOptionalList(Function<? super SequenceDecoder, T> reader);
+	public <T> List<@Nullable T> readOptionalObjectList(Function<? super SequenceDecoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code SequenceDecoder}'s sequence using the provided reader.
@@ -179,7 +179,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read value.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> T read(Function<? super SequenceDecoder, T> reader);
+	public <T> T readObject(Function<? super SequenceDecoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code SequenceDecoder}'s sequence using the provided reader, if one exists.
@@ -189,7 +189,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read value. May be {@code null}.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> @Nullable T readOptional(Function<? super SequenceDecoder, T> reader);
+	public <T> @Nullable T readOptionalObject(Function<? super SequenceDecoder, T> reader);
 
 	// ===== OVERRIDES =====
 
@@ -227,24 +227,24 @@ public interface SequenceDecoder extends Decoder {
 	public default <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) { return readEnum(type); }
 
 	@Override
-	public default <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) { return readList(reader); }
+	public default <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader) { return readObjectList(reader); }
 
 	@Override
-	public default <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) { return readOptionalList(reader); }
+	public default <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader) { return readOptionalObjectList(reader); }
 
 	@Override
 	public default List<String> readStringList(@Nullable String key) { return readList(dec -> dec.readString(null)); }
 
 	@Override
-	public default <T> T read(@Nullable String key, Function<Decoder, T> reader) { return read(reader); }
+	public default <T> T readObject(@Nullable String key, Function<Decoder, T> reader) { return readObject(reader); }
 
 	@Override
-	public default <T> @Nullable T readOptional(@Nullable String key, Function<Decoder, T> reader) { return readOptional(reader); }
+	public default <T> @Nullable T readOptionalObject(@Nullable String key, Function<Decoder, T> reader) { return readOptionalObject(reader); }
 
 	@Override
-	public default <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return read(dec -> reader.apply(dec, key)); }
+	public default <T> T readExternal(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return readObject(dec -> reader.apply(dec, key)); }
 
 	@Override
 	@Nullable
-	public default <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return readOptional(dec -> reader.apply(dec, key)); }
+	public default <T> T readExternalOptional(@Nullable String key, BiFunction<Decoder, String, T> reader, Function<byte[], T> externalReader) { return readOptionalObject(dec -> reader.apply(dec, key)); }
 }

@@ -86,7 +86,7 @@ public final class FinmerProjectReader {
 		final Furball furball = new Furball(meta);
 
 		{
-			furball.dependencies.addAll(projCodec.readList("Dependencies", FurballDependency::new));
+			furball.dependencies.addAll(projCodec.readObjectList("Dependencies", FurballDependency::new));
 		}
 
 		final List<String> assets = files.stream()

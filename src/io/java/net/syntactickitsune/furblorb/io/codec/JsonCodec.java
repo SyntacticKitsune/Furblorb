@@ -182,7 +182,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> List<T> readList(@Nullable String key, Function<Decoder, T> reader) {
+	public <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final List<T> ret = new ArrayList<>(arr.size());
@@ -196,7 +196,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> List<@Nullable T> readOptionalList(@Nullable String key, Function<Decoder, T> reader) {
+	public <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(key);
 		final List<@Nullable T> ret = new ArrayList<>(arr.size());
@@ -223,16 +223,16 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> T read(@Nullable String key, Function<Decoder, T> reader) {
+	public <T> T readObject(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
 		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, mode, formatVersion));
 	}
 
 	@Override
 	@Nullable
-	public <T> T readOptional(@Nullable String key, Function<Decoder, T> reader) {
+	public <T> T readOptionalObject(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		return wrapped.has(key) ? read(key, reader) : null;
+		return wrapped.has(key) ? readObject(key, reader) : null;
 	}
 
 	@Override
@@ -332,7 +332,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
@@ -346,7 +346,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
@@ -373,7 +373,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
 		writer.accept(value, codec);
@@ -381,10 +381,10 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeOptionalObject(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		if (value != null)
-			write(key, value, writer);
+			writeObject(key, value, writer);
 	}
 
 	@Override

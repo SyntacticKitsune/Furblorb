@@ -51,7 +51,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		target = in.readEnum("Target", Target.class);
 		if (target == Target.NPC)
 			participantId = in.readString("ParticipantID");
-		effect = in.readOptional("Effect", FurballSerializables::read);
+		effect = in.readOptionalObject("Effect", FurballSerializables::read);
 		duration = in.readInt("Duration");
 	}
 
@@ -60,7 +60,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		to.writeEnum("Target", target);
 		if (target == Target.NPC)
 			to.writeString("ParticipantID", participantId);
-		to.writeOptional("Effect", effect, Buff::writeWithId);
+		to.writeOptionalObject("Effect", effect, Buff::writeWithId);
 		to.writeInt("Duration", duration);
 	}
 

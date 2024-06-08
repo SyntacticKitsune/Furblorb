@@ -133,22 +133,22 @@ public interface Encoder {
 	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value);
 
 	/**
-	 * Writes the given {@link List}.
+	 * Writes the given {@link List} of {@link Object Objects}.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void writeList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer);
+	public <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer);
 
 	/**
-	 * Writes the given {@link List}, which may contain {@code null} values.
+	 * Writes the given {@link List} of {@link Object Objects}, which may contain {@code null} values.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void writeOptionalList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer);
+	public <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@link String} {@link List}.
@@ -165,7 +165,7 @@ public interface Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the value.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void write(@Nullable String key, T value, BiConsumer<T, Encoder> writer);
+	public <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@code Object} -- which may be {@code null} -- using the provided writer.
@@ -175,7 +175,7 @@ public interface Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
 	 * @throws NullPointerException If {@code writer} is {@code null} or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void writeOptional(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer);
+	public <T> void writeOptionalObject(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given "external" value -- that is, a value from some other file.

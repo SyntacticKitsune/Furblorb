@@ -92,7 +92,7 @@ public final class CombatBeginStatement extends StatementBlockNode {
 		includePlayer = in.readBoolean("IncludePlayer");
 		in.readBoolean("IncludeAllies");
 
-		participants.addAll(in.readList("Participants", dec -> new Participant(dec.readString("Variable"), dec.readUUID("Creature"), dec.readBoolean("IsAlly"))));
+		participants.addAll(in.readObjectList("Participants", dec -> new Participant(dec.readString("Variable"), dec.readUUID("Creature"), dec.readBoolean("IsAlly"))));
 
 		onStart = readOptional("CallbackCombatStart", in);
 		if (in.formatVersion() >= 20)
@@ -109,7 +109,7 @@ public final class CombatBeginStatement extends StatementBlockNode {
 		to.writeBoolean("IncludePlayer", includePlayer);
 		to.writeBoolean("IncludeAllies", includePlayer); // Reserved, apparently. Why not just increment the format version?
 
-		to.writeList("Participants", participants, (p, enc) -> {
+		to.writeObjectList("Participants", participants, (p, enc) -> {
 			enc.writeString("Variable", p.id);
 			enc.writeUUID("Creature", p.creature);
 			enc.writeBoolean("IsAlly", p.ally);

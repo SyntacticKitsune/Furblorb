@@ -105,9 +105,9 @@ public final class SceneAsset extends FurballAsset {
 	public SceneAsset(Decoder in) {
 		super(in);
 
-		head = in.readOptional("ScriptCustom", FurballSerializables::read);
-		onEnter = in.readOptional("ScriptEnter", FurballSerializables::read);
-		onLeave = in.readOptional("ScriptLeave", FurballSerializables::read);
+		head = in.readOptionalObject("ScriptCustom", FurballSerializables::read);
+		onEnter = in.readOptionalObject("ScriptEnter", FurballSerializables::read);
+		onLeave = in.readOptionalObject("ScriptLeave", FurballSerializables::read);
 
 		if (in.formatVersion() >= 20) {
 			gameStart = in.readBoolean("IsGameStart");
@@ -138,7 +138,7 @@ public final class SceneAsset extends FurballAsset {
 		}
 
 		try {
-			root = in.read("Root", SceneNode::new);
+			root = in.readObject("Root", SceneNode::new);
 		} catch (SceneNode.CascadingException e) {
 			e.path.add(0, filename);
 			throw e;
@@ -147,9 +147,9 @@ public final class SceneAsset extends FurballAsset {
 
 	@Override
 	protected void write0(Encoder to) {
-		to.writeOptional("ScriptCustom", head, Script::writeWithId);
-		to.writeOptional("ScriptEnter", onEnter, Script::writeWithId);
-		to.writeOptional("ScriptLeave", onLeave, Script::writeWithId);
+		to.writeOptionalObject("ScriptCustom", head, Script::writeWithId);
+		to.writeOptionalObject("ScriptEnter", onEnter, Script::writeWithId);
+		to.writeOptionalObject("ScriptLeave", onLeave, Script::writeWithId);
 
 		if (to.formatVersion() >= 20) {
 			to.writeBoolean("IsGameStart", gameStart);
@@ -172,7 +172,7 @@ public final class SceneAsset extends FurballAsset {
 			}
 		}
 
-		to.write("Root", root, SceneNode::write);
+		to.writeObject("Root", root, SceneNode::write);
 	}
 
 	@Override
