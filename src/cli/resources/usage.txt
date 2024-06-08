@@ -15,7 +15,7 @@ Informational options:
           the shuffle operation (--shuffle) and exit.
 
 Note: "furball" in the following sections may be either a
-      furball (.furball file) or a Finmer project (directory).
+      furball (.furball file) or a Finmer project (.fnproj file).
 
 I/O options:
 
@@ -36,12 +36,9 @@ I/O options:
 
 Analysis options:
 
-  --show-metadata
-          Display the metadata of the read furball.
-  --list-dependencies
-          List all dependencies of the read furball.
-  --list-assets
-          List all assets of the read furball.
+  --show
+          Display information about the read furball,
+          including metadata, dependencies, and assets.
 
 Manipulation options (these affect the read furball):
 

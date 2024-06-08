@@ -27,7 +27,13 @@ import net.syntactickitsune.furblorb.cli.shuffling.AssetShufflerRegistry;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
+import net.syntactickitsune.furblorb.finmer.asset.CreatureAsset;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
+import net.syntactickitsune.furblorb.finmer.asset.ItemAsset;
+import net.syntactickitsune.furblorb.finmer.asset.JournalAsset;
+import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
+import net.syntactickitsune.furblorb.finmer.asset.ScriptAsset;
+import net.syntactickitsune.furblorb.finmer.asset.StringTableAsset;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.finmer.io.FurballReader;
@@ -272,39 +278,49 @@ final class Steps {
 		}
 	}
 
-	static final record ShowMetadata() implements Step {
+	static final record Show() implements Step {
 		@Override
 		public void run(WorkingData data) throws Exception {
 			final Furball furball = data.furball("no furball loaded to show metadata of");
-			System.out.println("! Furball metadata:");
-			System.out.printf("ID: %s\n", furball.meta.id);
-			System.out.printf("Title: %s\n", furball.meta.title);
-			System.out.printf("Author: %s\n", furball.meta.author);
-			System.out.printf("Format Version: %d\n", furball.meta.formatVersion);
-		}
-	}
+			System.out.println("\n! Furball metadata:");
+			System.out.printf("ID:               %s\n", furball.meta.id);
+			System.out.printf("Title:            %s\n", furball.meta.title);
+			System.out.printf("Author:           %s\n", furball.meta.author);
+			System.out.printf("Format Version:   %d\n", furball.meta.formatVersion);
 
-	static final record ListDependencies() implements Step {
-		@Override
-		public void run(WorkingData data) throws Exception {
-			final Furball furball = data.furball("no furball loaded to list dependencies of");
-			System.out.printf("! %d dependenc%s:\n", furball.dependencies.size(), furball.dependencies.size() == 1 ? "y" : "ies");
+			if (furball.dependencies.isEmpty())
+				System.out.println("\n! No dependencies.");
+			else {
+				System.out.printf("\n! Dependencies (%d):\n", furball.dependencies.size());
+				for (FurballDependency dep : furball.dependencies)
+					System.out.printf("- %s (%s)", dep.filename(), dep.id());
+			}
 
-			for (FurballDependency dep : furball.dependencies)
-				System.out.printf("%s  %s\n", dep.id(), dep.filename());
-		}
-	}
+			if (furball.assets.isEmpty())
+				System.out.println("\n! No assets.");
+			else {
+				System.out.println("\n! Asset summary:");
+				System.out.printf("Total:            %d\n", furball.assets.size());
+				System.out.printf("Scenes:           %d\n", furball.assets.stream().filter(SceneAsset.class::isInstance).count());
+				System.out.printf("Creatures:        %d\n", furball.assets.stream().filter(CreatureAsset.class::isInstance).count());
+				System.out.printf("Items:            %d\n", furball.assets.stream().filter(ItemAsset.class::isInstance).count());
+				System.out.printf("String Tables:    %d\n", furball.assets.stream().filter(StringTableAsset.class::isInstance).count());
+				System.out.printf("Journals:         %d\n", furball.assets.stream().filter(JournalAsset.class::isInstance).count());
+				System.out.printf("Scripts:          %d\n", furball.assets.stream().filter(ScriptAsset.class::isInstance).count());
 
-	static final record ListAssets() implements Step {
-		@Override
-		public void run(WorkingData data) throws Exception {
-			final Furball furball = data.furball("no furball loaded to list assets of");
-			System.out.printf("! %d asset%s:\n", furball.assets.size(), furball.assets.size() == 1 ? "" : "s");
+				final int nameWidth = Math.max(furball.assets.stream()
+						.map(fa -> fa.filename.length() + 2)
+						.reduce(0, Math::max), 12);
 
-			for (FurballAsset asset : furball.assets) {
-				String str = asset.getClass().getSimpleName();
-				str = str.substring(0, str.length() - "Asset".length());
-				System.out.printf("%s  %s  %s\n", asset.id, asset.filename, str);
+				System.out.printf("\n! Assets (%d):\n", furball.assets.size());
+				System.out.printf("! Type%sFile Name%sID\n", " ".repeat(16 - 4), " ".repeat(nameWidth - 9));
+				for (FurballAsset asset : furball.assets)
+					// Concatenation? In *MY* format strings? It's more likely than you think.
+					System.out.printf(
+							"- %-16s%-" + nameWidth + "s%s\n",
+							asset.metadata().name().substring("Asset".length()),
+							asset.filename,
+							asset.id);
 			}
 		}
 	}

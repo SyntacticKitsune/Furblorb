@@ -93,14 +93,8 @@ public final class Furblorb {
 					}
 				}
 
-				case "--show-metadata" -> {
-					steps.add(new Steps.ShowMetadata());
-				}
-				case "--list-dependencies" -> {
-					steps.add(new Steps.ListDependencies());
-				}
-				case "--list-assets" -> {
-					steps.add(new Steps.ListAssets());
+				case "--show" -> {
+					steps.add(new Steps.Show());
 				}
 
 				case "--change-title" -> {
