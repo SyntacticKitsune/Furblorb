@@ -58,7 +58,7 @@ final class FurballSteps {
 		@Override
 		public void run(WorkingData data) throws Exception {
 			final Furball furball = data.furball("no furball loaded to change the author of");
-			System.out.printf("! Changed author %s => %s.", data.furball.meta.author, value);
+			System.out.printf("! Changed author %s => %s.", furball.meta.author, value);
 			furball.meta.author = value;
 		}
 	}

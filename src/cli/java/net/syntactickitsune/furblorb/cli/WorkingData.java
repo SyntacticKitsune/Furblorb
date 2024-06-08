@@ -41,4 +41,8 @@ final class WorkingData {
 		if (furball == null) throw new CliException(nullMessage);
 		return furball;
 	}
+
+	void setFurball(Furball value) {
+		furball = value;
+	}
 }

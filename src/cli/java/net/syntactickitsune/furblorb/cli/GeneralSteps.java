@@ -43,10 +43,10 @@ final class GeneralSteps {
 
 			try {
 				if (filename.endsWith(".fnproj")) {
-					data.furball = new FinmerProjectReader(ReadOnlyExternalFileHandler.forProjectFile(from)).readFurball();
+					data.setFurball(new FinmerProjectReader(ReadOnlyExternalFileHandler.forProjectFile(from)).readFurball());
 					kind = "Finmer project";
 				} else if (filename.endsWith(".furball")) {
-					data.furball = new FurballReader(Files.readAllBytes(from)).readFurball();
+					data.setFurball(new FurballReader(Files.readAllBytes(from)).readFurball());
 					kind = "furball";
 				} else
 					throw new CliException("don't know how to read from " + filename + ", it does not seem to be a furball (.furball) or project (.fnproj)");
@@ -56,16 +56,17 @@ final class GeneralSteps {
 				throw new CliException("could not read file \"" + e.getFile() + "\": access denied");
 			}
 
+			final Furball furball = data.furball;
 			System.out.printf("! Read %s \"%s\" by %s with %d assets (format version %d).\n", kind,
-					data.furball.meta.title, data.furball.meta.author, data.furball.assets.size(), data.furball.meta.formatVersion);
+					furball.meta.title, furball.meta.author, furball.assets.size(), furball.meta.formatVersion);
 
-			check(data);
+			check(furball);
 		}
 
-		private void check(WorkingData data) {
+		private void check(Furball furball) {
 			final Map<UUID, String> assetsById = new HashMap<>();
 
-			for (FurballAsset asset : data.furball.assets) {
+			for (FurballAsset asset : furball.assets) {
 				if (assetsById.containsValue(asset.filename))
 					System.out.printf("! Warning: multiple assets with name %s: %s and %s\n", asset.filename,
 							assetsById.entrySet().stream()
