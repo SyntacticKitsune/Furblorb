@@ -13,6 +13,8 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.io.Decoder;
+import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.INamedEnum;
 import net.syntactickitsune.furblorb.io.ParsingStrategy;
@@ -401,7 +403,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> List<T> readObjectList(Function<? super SequenceDecoder, T> reader) {
+	public <T> List<T> readObjectList(Function<Decoder, T> reader) {
 		checkRead();
 
 		final int count = readInt();
@@ -415,7 +417,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite(0);
 		writeInt(value.size());
 		for (T elem : value)
@@ -423,13 +425,13 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> List<@Nullable T> readOptionalObjectList(Function<? super SequenceDecoder, T> reader) {
+	public <T> List<@Nullable T> readOptionalObjectList(Function<Decoder, T> reader) {
 		checkRead();
 		return readObjectList(dec -> dec.readBoolean(null) ? reader.apply(dec) : null);
 	}
 
 	@Override
-	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite(0);
 		writeObjectList(value, (val, enc) -> {
 			if (val == null)
@@ -442,25 +444,25 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> T readObject(Function<? super SequenceDecoder, T> reader) {
+	public <T> T readObject(Function<Decoder, T> reader) {
 		checkRead();
 		return reader.apply(this);
 	}
 
 	@Override
-	public <T> void writeObject(T value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeObject(T value, BiConsumer<T, Encoder> writer) {
 		checkWrite(0);
 		writer.accept(value, this);
 	}
 
 	@Override
-	public <T> @Nullable T readOptionalObject(Function<? super SequenceDecoder, T> reader) {
+	public <T> @Nullable T readOptionalObject(Function<Decoder, T> reader) {
 		checkRead();
 		return readBoolean() ? readObject(reader) : null;
 	}
 
 	@Override
-	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, Encoder> writer) {
 		checkWrite(0);
 		if (value != null) {
 			writeBoolean(true);

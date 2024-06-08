@@ -161,7 +161,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 * @throws FurblorbParsingException If an attempt to read more than 1000 entries is made. This frequently indicates a deserialization bug.
 	 */
-	public <T> List<T> readObjectList(Function<? super SequenceDecoder, T> reader);
+	public <T> List<T> readObjectList(Function<Decoder, T> reader);
 
 	/**
 	 * Reads the next {@link List} from this {@code SequenceDecoder}'s sequence.
@@ -170,7 +170,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> List<@Nullable T> readOptionalObjectList(Function<? super SequenceDecoder, T> reader);
+	public <T> List<@Nullable T> readOptionalObjectList(Function<Decoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code SequenceDecoder}'s sequence using the provided reader.
@@ -179,7 +179,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read value.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> T readObject(Function<? super SequenceDecoder, T> reader);
+	public <T> T readObject(Function<Decoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code SequenceDecoder}'s sequence using the provided reader, if one exists.
@@ -189,7 +189,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @return The read value. May be {@code null}.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
 	 */
-	public <T> @Nullable T readOptionalObject(Function<? super SequenceDecoder, T> reader);
+	public <T> @Nullable T readOptionalObject(Function<Decoder, T> reader);
 
 	// ===== OVERRIDES =====
 

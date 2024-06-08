@@ -142,7 +142,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@link List} of {@link Object Objects} to this {@code SequenceEncoder}'s sequence.
@@ -151,7 +151,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@code Object} to this {@code SequenceEncoder}'s sequence using the provided writer.
@@ -159,7 +159,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the value.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeObject(T value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeObject(T value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@code Object} -- which may be {@code null} -- to this {@code SequenceEncoder}'s sequence using the provided writer.
@@ -168,7 +168,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
 	 * @throws NullPointerException If {@code writer} is {@code null}.
 	 */
-	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, Encoder> writer);
 
 	// ===== OVERRIDES =====
 
