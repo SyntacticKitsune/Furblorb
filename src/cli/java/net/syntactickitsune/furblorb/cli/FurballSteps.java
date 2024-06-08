@@ -46,10 +46,10 @@ import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
- * A container class for all of the {@link Step} implementations.
+ * A container class for all of the furball-related {@link Step} implementations.
  * @author SyntacticKitsune
  */
-final class Steps {
+final class FurballSteps {
 
 	static final record Read(Path from) implements Step {
 		@Override

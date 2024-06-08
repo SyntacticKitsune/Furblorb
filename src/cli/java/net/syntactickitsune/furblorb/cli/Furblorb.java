@@ -72,7 +72,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--read: expected a file argument.");
 					else {
-						steps.add(new Steps.Read(Paths.get(args[i + 1])));
+						steps.add(new FurballSteps.Read(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -80,7 +80,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--write: expected a file argument.");
 					else {
-						steps.add(new Steps.Write(Paths.get(args[i + 1])));
+						steps.add(new FurballSteps.Write(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -88,24 +88,24 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--format-version: expected a version argument.");
 					else {
-						steps.add(new Steps.AdjustFormatVersion(Byte.parseByte(args[i + 1])));
+						steps.add(new FurballSteps.AdjustFormatVersion(Byte.parseByte(args[i + 1])));
 						skip = 1;
 					}
 				}
 
 				case "--show" -> {
-					steps.add(new Steps.Show(false));
+					steps.add(new FurballSteps.Show(false));
 				}
 
 				case "--show-full" -> {
-					steps.add(new Steps.Show(true));
+					steps.add(new FurballSteps.Show(true));
 				}
 
 				case "--change-title" -> {
 					if (i + 1 == args.length)
 						System.out.println("--change-title: expected a new title argument.");
 					else {
-						steps.add(new Steps.ChangeTitle(args[i + 1]));
+						steps.add(new FurballSteps.ChangeTitle(args[i + 1]));
 						skip = 1;
 					}
 				}
@@ -113,7 +113,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--change-author: expected a new author argument.");
 					else {
-						steps.add(new Steps.ChangeAuthor(args[i + 1]));
+						steps.add(new FurballSteps.ChangeAuthor(args[i + 1]));
 						skip = 1;
 					}
 				}
@@ -121,7 +121,7 @@ public final class Furblorb {
 					if (i + 2 >= args.length)
 						System.out.println("--add-dependency: expected two arguments.");
 					else {
-						steps.add(new Steps.AddDependency(UUID.fromString(args[i + 1]), args[i + 2]));
+						steps.add(new FurballSteps.AddDependency(UUID.fromString(args[i + 1]), args[i + 2]));
 						skip = 2;
 					}
 				}
@@ -129,7 +129,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--drop-dependency: expected an ID argument.");
 					else {
-						steps.add(new Steps.DropDependency(UUID.fromString(args[i + 1])));
+						steps.add(new FurballSteps.DropDependency(UUID.fromString(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -137,7 +137,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--insert-asset: expected a file argument.");
 					else {
-						steps.add(new Steps.InsertAsset(Paths.get(args[i + 1])));
+						steps.add(new FurballSteps.InsertAsset(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -145,7 +145,7 @@ public final class Furblorb {
 					if (i + 2 >= args.length)
 						System.out.println("--extract-asset-id: expected two arguments.");
 					else {
-						steps.add(new Steps.ExtractAsset(null, UUID.fromString(args[i + 1]), Paths.get(args[i + 2])));
+						steps.add(new FurballSteps.ExtractAsset(null, UUID.fromString(args[i + 1]), Paths.get(args[i + 2])));
 						skip = 2;
 					}
 				}
@@ -153,7 +153,7 @@ public final class Furblorb {
 					if (i + 2 >= args.length)
 						System.out.println("--extract-asset-name: expected two arguments.");
 					else {
-						steps.add(new Steps.ExtractAsset(args[i + 1], null, Paths.get(args[i + 2])));
+						steps.add(new FurballSteps.ExtractAsset(args[i + 1], null, Paths.get(args[i + 2])));
 						skip = 2;
 					}
 				}
@@ -161,7 +161,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--drop-asset-id: expected an ID argument.");
 					else {
-						steps.add(new Steps.DropAsset(null, UUID.fromString(args[i + 1])));
+						steps.add(new FurballSteps.DropAsset(null, UUID.fromString(args[i + 1])));
 						skip = 1;
 					}
 				}
@@ -169,7 +169,7 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--drop-asset-name: expected a filename argument.");
 					else {
-						steps.add(new Steps.DropAsset(args[i + 1], null));
+						steps.add(new FurballSteps.DropAsset(args[i + 1], null));
 						skip = 1;
 					}
 				}
@@ -177,18 +177,18 @@ public final class Furblorb {
 					if (i + 1 == args.length)
 						System.out.println("--merge-asset: expected a file argument.");
 					else {
-						steps.add(new Steps.Merge(Paths.get(args[i + 1])));
+						steps.add(new FurballSteps.Merge(Paths.get(args[i + 1])));
 						skip = 1;
 					}
 				}
 				case "--sort-assets" -> {
-					steps.add(new Steps.SortAssets());
+					steps.add(new FurballSteps.SortAssets());
 				}
 				case "--shuffle" -> {
 					if (i + 2 == args.length)
 						System.out.println("--shuffle: expected two arguments.");
 					else {
-						steps.add(new Steps.Shuffle(args[i + 1], args[i + 2]));
+						steps.add(new FurballSteps.Shuffle(args[i + 1], args[i + 2]));
 						skip = 2;
 					}
 				}
@@ -202,7 +202,7 @@ public final class Furblorb {
 					System.exit(0);
 				}
 				case "--list-shufflers" -> {
-					new Steps.ListShufflers().run(null);
+					new FurballSteps.ListShufflers().run(null);
 					System.exit(0);
 				}
 
