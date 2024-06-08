@@ -56,6 +56,7 @@ public interface Encoder {
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null} or {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public void writeByteArray(@Nullable String key, byte[] value);
 
@@ -64,6 +65,7 @@ public interface Encoder {
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write. May be {@code null}.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public void writeOptionalByteArray(@Nullable String key, byte @Nullable [] value);
 
@@ -147,6 +149,7 @@ public interface Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer);
 
@@ -156,6 +159,7 @@ public interface Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
@@ -165,6 +169,7 @@ public interface Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer);
 
@@ -184,6 +189,7 @@ public interface Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the value.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer);
 
@@ -194,6 +200,7 @@ public interface Encoder {
 	 * @param value The value to write. May be {@code null}.
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
 	 * @throws NullPointerException If {@code writer} is {@code null} or if {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> void writeOptionalObject(@Nullable String key, @Nullable T value, BiConsumer<T, Encoder> writer);
 

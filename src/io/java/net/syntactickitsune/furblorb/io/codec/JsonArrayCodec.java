@@ -29,6 +29,7 @@ import net.syntactickitsune.furblorb.io.SequenceEncoder;
  * {@code JsonArrayCodec} is intended to be used alongside {@link JsonCodec}, as the means to write the contents of {@link JsonArray JsonArrays}.
  * </p>
  * @author SyntacticKitsune
+ * @since 2.0.0
  * @see JsonCodec
  */
 public class JsonArrayCodec extends SequenceCodec {

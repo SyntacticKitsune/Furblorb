@@ -53,6 +53,7 @@ public interface Decoder {
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @return The read value.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public byte[] readByteArray(@Nullable String key);
 
@@ -61,6 +62,7 @@ public interface Decoder {
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @return The read value. May be {@code null}.
 	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public byte @Nullable [] readOptionalByteArray(@Nullable String key);
 
@@ -145,6 +147,7 @@ public interface Decoder {
 	 * @param reader A {@code Function} to read the individual values from this {@code Decoder}'s sequence.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader);
 
@@ -155,6 +158,7 @@ public interface Decoder {
 	 * @param reader A {@code Function} to read the individual values from this {@code Decoder}'s sequence.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> List<@Nullable T> readOptionalObjectList(@Nullable String key, Function<Decoder, T> reader);
 
@@ -165,6 +169,7 @@ public interface Decoder {
 	 * @param reader A {@code Function} to read the values of the list.
 	 * @return The read values.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader);
 
@@ -185,6 +190,7 @@ public interface Decoder {
 	 * @param reader A {@code Function} to read the desired value.
 	 * @return The read value.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	public <T> T readObject(@Nullable String key, Function<Decoder, T> reader);
 
@@ -196,6 +202,7 @@ public interface Decoder {
 	 * @param reader A {@code Function} to read the desired value.
 	 * @return The read value. May be {@code null}.
 	 * @throws NullPointerException If {@code reader} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 * @since 2.0.0
 	 */
 	@Nullable
 	public <T> T readOptionalObject(@Nullable String key, Function<Decoder, T> reader);

@@ -147,6 +147,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, Encoder> writer);
 
@@ -156,6 +157,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
@@ -164,6 +166,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer);
 
@@ -172,6 +175,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @param writer A {@link BiConsumer} to handle writing the value.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> void writeObject(T value, BiConsumer<T, Encoder> writer);
 
@@ -181,6 +185,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write. May be {@code null}.
 	 * @param writer A {@link BiConsumer} to handle writing the (non-{@code null}) value.
 	 * @throws NullPointerException If {@code writer} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> void writeOptionalObject(@Nullable T value, BiConsumer<T, Encoder> writer);
 

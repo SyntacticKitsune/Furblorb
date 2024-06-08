@@ -59,12 +59,14 @@ public interface SequenceDecoder extends Decoder {
 	/**
 	 * Reads the next {@code byte} array from this {@code SequenceDecoder}'s sequence.
 	 * @return The read value.
+	 * @since 2.0.0
 	 */
 	public byte[] readByteArray();
 
 	/**
 	 * Reads the next (optional) {@code byte} array from this {@code SequenceDecoder}'s sequence.
 	 * @return The read value.
+	 * @since 2.0.0
 	 */
 	public byte @Nullable [] readOptionalByteArray();
 
@@ -175,8 +177,19 @@ public interface SequenceDecoder extends Decoder {
 	 * @param reader A {@code Function} to read the individual values from this {@code SequenceDecoder}'s sequence.
 	 * @return The read list.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> List<@Nullable T> readOptionalObjectList(Function<Decoder, T> reader);
+
+	/**
+	 * Reads the contents of the next array from this {@code SequenceDecoder}'s sequence using the provided reader.
+	 * @param <T> The return value of the function.
+	 * @param reader A {@code Function} to read the values of the array.
+	 * @return The read values.
+	 * @throws NullPointerException If {@code reader} is {@code null}.
+	 * @since 2.0.0
+	 */
+	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader);
 
 	/**
 	 * Reads the next {@code Object} from this {@code SequenceDecoder}'s sequence using the provided reader.
@@ -184,6 +197,7 @@ public interface SequenceDecoder extends Decoder {
 	 * @param reader A {@code Function} to read the desired value.
 	 * @return The read value.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> T readObject(Function<Decoder, T> reader);
 
@@ -194,17 +208,9 @@ public interface SequenceDecoder extends Decoder {
 	 * @param reader A {@code Function} to read the desired value.
 	 * @return The read value. May be {@code null}.
 	 * @throws NullPointerException If {@code reader} is {@code null}.
+	 * @since 2.0.0
 	 */
 	public <T> @Nullable T readOptionalObject(Function<Decoder, T> reader);
-
-	/**
-	 * Reads the contents of the next array from this {@code SequenceDecoder}'s sequence using the provided reader.
-	 * @param <T> The return value of the function.
-	 * @param reader A {@code Function} to read the values of the array.
-	 * @return The read values.
-	 * @throws NullPointerException If {@code reader} is {@code null}.
-	 */
-	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader);
 
 	// ===== OVERRIDES =====
 
