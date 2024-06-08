@@ -301,12 +301,12 @@ final class Steps {
 			else {
 				System.out.println("\n! Asset summary:");
 				System.out.printf("Total:            %d\n", furball.assets.size());
-				System.out.printf("Scenes:           %d\n", furball.assets.stream().filter(SceneAsset.class::isInstance).count());
-				System.out.printf("Creatures:        %d\n", furball.assets.stream().filter(CreatureAsset.class::isInstance).count());
-				System.out.printf("Items:            %d\n", furball.assets.stream().filter(ItemAsset.class::isInstance).count());
-				System.out.printf("String Tables:    %d\n", furball.assets.stream().filter(StringTableAsset.class::isInstance).count());
-				System.out.printf("Journals:         %d\n", furball.assets.stream().filter(JournalAsset.class::isInstance).count());
-				System.out.printf("Scripts:          %d\n", furball.assets.stream().filter(ScriptAsset.class::isInstance).count());
+				System.out.printf("Scenes:           %s\n", count(furball, SceneAsset.class));
+				System.out.printf("Creatures:        %s\n", count(furball, CreatureAsset.class));
+				System.out.printf("Items:            %s\n", count(furball, ItemAsset.class));
+				System.out.printf("String Tables:    %s\n", count(furball, StringTableAsset.class));
+				System.out.printf("Journals:         %s\n", count(furball, JournalAsset.class));
+				System.out.printf("Scripts:          %s\n", count(furball, ScriptAsset.class));
 
 				if (verbose) {
 					final int nameWidth = Math.max(furball.assets.stream()
@@ -324,6 +324,12 @@ final class Steps {
 								asset.id);
 				}
 			}
+		}
+
+		private static String count(Furball furball, Class<? extends FurballAsset> clazz) {
+			final long count = furball.assets.stream().filter(clazz::isInstance).count();
+			final int fullCount = furball.assets.size();
+			return "%d (%.1f%%)".formatted(count, ((double) count / fullCount * 100));
 		}
 	}
 
