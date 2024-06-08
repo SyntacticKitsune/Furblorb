@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.io.codec;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -332,7 +333,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 
@@ -346,7 +347,7 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) {
+	public <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
 

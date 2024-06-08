@@ -1,5 +1,6 @@
 package net.syntactickitsune.furblorb.io;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -141,7 +142,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeObjectList(List<T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	/**
 	 * Writes the given {@link List} of {@link Object Objects} to this {@code SequenceEncoder}'s sequence.
@@ -150,7 +151,7 @@ public interface SequenceEncoder extends Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}.
 	 */
-	public <T> void writeOptionalObjectList(List<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer);
+	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer);
 
 	/**
 	 * Writes the given {@code Object} to this {@code SequenceEncoder}'s sequence using the provided writer.
@@ -205,10 +206,10 @@ public interface SequenceEncoder extends Encoder {
 	public default <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) { writeEnum(value); }
 
 	@Override
-	public default <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer) { writeObjectList(value, writer); }
+	public default <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer) { writeObjectList(value, writer); }
 
 	@Override
-	public default <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalObjectList(value, writer); }
+	public default <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) { writeOptionalObjectList(value, writer); }
 
 	@Override
 	public default void writeStringList(@Nullable String key, List<String> value) { writeList(value, (v, enc) -> enc.writeString(null, v)); }

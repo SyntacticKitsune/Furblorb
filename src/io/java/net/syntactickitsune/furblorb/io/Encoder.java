@@ -1,5 +1,6 @@
 package net.syntactickitsune.furblorb.io;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -139,7 +140,7 @@ public interface Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void writeObjectList(@Nullable String key, List<T> value, BiConsumer<T, Encoder> writer);
+	public <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@link List} of {@link Object Objects}, which may contain {@code null} values.
@@ -148,7 +149,7 @@ public interface Encoder {
 	 * @param writer A {@link BiConsumer} to handle writing the values within the list.
 	 * @throws NullPointerException If {@code value} or {@code writer} is {@code null}, or if {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <T> void writeOptionalObjectList(@Nullable String key, List<@Nullable T> value, BiConsumer<T, Encoder> writer);
+	public <T> void writeOptionalObjectList(@Nullable String key, Collection<@Nullable T> value, BiConsumer<T, Encoder> writer);
 
 	/**
 	 * Writes the given {@link String} {@link List}.

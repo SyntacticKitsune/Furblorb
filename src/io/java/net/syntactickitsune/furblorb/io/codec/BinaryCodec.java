@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -414,7 +415,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> void writeObjectList(List<T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeObjectList(Collection<T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		writeInt(value.size());
 		for (T elem : value)
@@ -428,7 +429,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <T> void writeOptionalObjectList(List<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
+	public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, ? super SequenceEncoder> writer) {
 		checkWrite(0);
 		writeObjectList(value, (val, enc) -> {
 			if (val == null)
