@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -173,6 +174,19 @@ public final class SceneAsset extends FurballAsset {
 		}
 
 		to.writeObject("Root", root, SceneNode::write);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this)) {
+			visitor.visitText(gameStartDescription);
+			if (head != null) head.visit(visitor);
+			if (onEnter != null) onEnter.visit(visitor);
+			if (onLeave != null) onLeave.visit(visitor);
+			root.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

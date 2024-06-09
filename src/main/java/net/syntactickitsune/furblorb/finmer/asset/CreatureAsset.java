@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.component.CreatureFlags;
 import net.syntactickitsune.furblorb.finmer.component.StringMapping;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -203,6 +204,12 @@ public final class CreatureAsset extends FurballAsset {
 		}
 
 		to.writeObjectList("StringMappings", strings, StringMapping::write);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this))
+			visitor.visitEnd();
 	}
 
 	@Override

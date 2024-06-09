@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -40,6 +41,18 @@ public final class StringExpression implements IFurballSerializable {
 	public void write(Encoder to) {
 		to.writeEnum("OperandMode", mode);
 		to.writeString("OperandText", value);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			switch (mode) {
+				case LITERAL -> visitor.visitText(value);
+				case SCRIPT -> visitor.visitCode(value);
+				default -> {}
+			}
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

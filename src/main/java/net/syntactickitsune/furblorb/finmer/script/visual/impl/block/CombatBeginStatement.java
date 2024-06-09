@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.ScriptNode;
@@ -123,6 +124,35 @@ public final class CombatBeginStatement extends StatementBlockNode {
 		writeOptional("CallbackCreatureKilled", onCreatureKilled, to);
 		writeOptional("CallbackCreatureVored", onCreatureVored, to);
 		writeOptional("CallbackCreatureReleased", onCreatureReleased, to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			if (onStart != null)
+				for (ScriptNode sn : onStart)
+					sn.visit(visitor);
+			if (onRoundStart != null)
+				for (ScriptNode sn : onRoundStart)
+					sn.visit(visitor);
+			if (onRoundEnd != null)
+				for (ScriptNode sn : onRoundEnd)
+					sn.visit(visitor);
+			if (onPlayerKilled != null)
+				for (ScriptNode sn : onPlayerKilled)
+					sn.visit(visitor);
+			if (onCreatureKilled != null)
+				for (ScriptNode sn : onCreatureKilled)
+					sn.visit(visitor);
+			if (onCreatureVored != null)
+				for (ScriptNode sn : onCreatureVored)
+					sn.visit(visitor);
+			if (onCreatureReleased != null)
+				for (ScriptNode sn : onCreatureReleased)
+					sn.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

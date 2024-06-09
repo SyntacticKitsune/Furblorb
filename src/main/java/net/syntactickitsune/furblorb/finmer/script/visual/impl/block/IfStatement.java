@@ -3,6 +3,9 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.block;
 import java.util.List;
 import java.util.Objects;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.ScriptNode;
 import net.syntactickitsune.furblorb.finmer.script.visual.StatementBlockNode;
@@ -34,6 +37,7 @@ public final class IfStatement extends StatementBlockNode {
 	/**
 	 * The contents of the if-statement's else branch.
 	 */
+	@Nullable
 	public List<ScriptNode> elseBody;
 
 	/**
@@ -61,6 +65,20 @@ public final class IfStatement extends StatementBlockNode {
 		write("MainSubgroup", body, to);
 		if (hasElseBranch)
 			write("ElseSubgroup", elseBody, to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			for (ScriptNode sn : body)
+				sn.visit(visitor);
+
+			if (elseBody != null)
+				for (ScriptNode sn : elseBody)
+					sn.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

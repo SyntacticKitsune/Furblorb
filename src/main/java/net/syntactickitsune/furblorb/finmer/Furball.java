@@ -56,6 +56,11 @@ public final class Furball {
 		this.meta = Objects.requireNonNull(meta, "meta");
 	}
 
+	public void visit(ISerializableVisitor visitor) {
+		for (FurballAsset asset : assets)
+			asset.visit(visitor);
+	}
+
 	@Override
 	// Extremely ambitious task: comparing furballs.
 	public boolean equals(Object obj) {

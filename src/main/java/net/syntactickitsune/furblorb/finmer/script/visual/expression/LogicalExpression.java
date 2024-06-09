@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
@@ -55,6 +56,15 @@ public final class LogicalExpression implements IFurballSerializable {
 		to.writeBoolean("Operand", target);
 
 		to.writeOptionalObjectList("Tests", conditions, ExpressionNode::writeWithId);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			for (ExpressionNode en : conditions)
+				en.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

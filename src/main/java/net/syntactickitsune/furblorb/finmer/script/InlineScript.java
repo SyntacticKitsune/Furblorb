@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -35,6 +36,14 @@ public final class InlineScript extends Script {
 	@Override
 	public void write(Encoder to) {
 		to.writeString("Script", contents);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			visitor.visitCode(contents);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

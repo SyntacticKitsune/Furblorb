@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.expression.ExpressionNode;
 import net.syntactickitsune.furblorb.finmer.script.visual.expression.StringExpression;
@@ -43,6 +44,14 @@ public final class PlayerNameExpression extends ExpressionNode {
 	public void write(Encoder to) {
 		target.write(to);
 		to.writeBoolean("IsCaseSensitive", caseSensitive);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			target.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

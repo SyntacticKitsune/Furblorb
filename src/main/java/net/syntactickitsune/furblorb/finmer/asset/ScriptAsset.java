@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.component.LoadOrderDependency;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -49,6 +50,14 @@ public final class ScriptAsset extends FurballAsset {
 	protected void write0(Encoder to) {
 		to.writeOptionalObject("Contents", contents, Script::writeWithId);
 		to.writeObjectList("LoadOrder", dependencies, LoadOrderDependency::write);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this)) {
+			contents.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

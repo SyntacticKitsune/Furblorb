@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.function.Function;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -45,6 +46,14 @@ public final class ExternalScript extends Script {
 	public void write(Encoder to) {
 		to.writeString("Name", name);
 		to.writeExternal(name + ".lua", contents.isBlank() ? null : contents.getBytes(StandardCharsets.UTF_8), (key, v, enc) -> enc.writeOptionalByteArray(key, v), Function.identity());
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			visitor.visitCode(contents);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

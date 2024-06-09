@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.component.buff.EquipEffectGroup;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -95,6 +96,7 @@ public final class ItemAsset extends FurballAsset {
 	/**
 	 * For usable items, a script to run when the item is used.
 	 */
+	@Nullable
 	public ScriptAsset useScript;
 
 	/**
@@ -178,6 +180,20 @@ public final class ItemAsset extends FurballAsset {
 		}
 
 		to.writeExternal(filename + ".png", icon, (key, v, enc) -> enc.writeOptionalByteArray(key, v), Function.identity());
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this)) {
+			visitor.visitText(flavorText);
+			visitor.visitText(useDescription);
+			for (EquipEffectGroup eeg : equipEffects)
+				eeg.visit(visitor);
+			if (useScript != null)
+				useScript.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

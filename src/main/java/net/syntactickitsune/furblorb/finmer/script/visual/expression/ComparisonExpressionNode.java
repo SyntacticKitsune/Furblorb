@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.INamedEnum;
@@ -41,6 +42,14 @@ public abstract class ComparisonExpressionNode extends ExpressionNode {
 	public void write(Encoder to) {
 		to.writeEnum("Operator", op);
 		target.write(to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			target.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

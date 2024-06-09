@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -46,6 +47,17 @@ public final class JournalAsset extends FurballAsset {
 	protected void write0(Encoder to) {
 		to.writeString("Title", title);
 		to.writeObjectList("Stages", stages, Stage::write);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this)) {
+			visitor.visitText(title);
+			for (Stage stage : stages)
+				visitor.visitText(stage.text);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

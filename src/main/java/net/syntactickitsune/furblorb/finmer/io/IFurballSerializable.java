@@ -1,5 +1,6 @@
 package net.syntactickitsune.furblorb.finmer.io;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables.Metadata;
 import net.syntactickitsune.furblorb.io.Encoder;
 
@@ -21,6 +22,11 @@ public interface IFurballSerializable {
 	 * @throws NullPointerException If {@code to} is {@code null}.
 	 */
 	public void write(Encoder to);
+
+	public default void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this))
+			visitor.visitEnd();
+	}
 
 	/**
 	 * <p>

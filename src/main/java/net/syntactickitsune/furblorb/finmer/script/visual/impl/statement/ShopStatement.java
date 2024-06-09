@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.Decoder;
@@ -70,6 +71,14 @@ public final class ShopStatement extends StatementNode {
 					enc.writeUUID("Item", i.itemId);
 					enc.writeInt("Quantity", i.quantity);
 				});
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			visitor.visitText(title);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

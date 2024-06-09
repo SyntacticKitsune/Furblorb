@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.expression;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.expression.ComparisonExpressionNode;
 import net.syntactickitsune.furblorb.finmer.script.visual.expression.ExpressionNode;
@@ -45,6 +46,14 @@ public final class VarNumberExpression extends ExpressionNode {
 	public void write(Encoder to) {
 		to.writeString("VariableName", variable);
 		comparison.write(to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			comparison.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

@@ -8,7 +8,9 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
+import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
 import net.syntactickitsune.furblorb.io.Decoder;
@@ -20,7 +22,7 @@ import net.syntactickitsune.furblorb.io.INamedEnum;
  * Represents an individual node in a {@code SceneAsset}'s node tree.
  */
 @RegisterSerializable(value = "SceneNode", since = 20) // TODO: May not be the right class name, since Finmer's SceneNode is contained within AssetScene.
-public final class SceneNode {
+public final class SceneNode implements IFurballSerializable {
 
 	/**
 	 * Identifies the kind of node, and in particular what fields it has available to it.
@@ -165,6 +167,7 @@ public final class SceneNode {
 	 * @param to The {@code Encoder}.
 	 * @throws NullPointerException If {@code to} is {@code null}.
 	 */
+	@Override
 	public void write(Encoder to) {
 		to.writeEnum("NodeType", type);
 		to.writeString("Key", key);
@@ -204,6 +207,22 @@ public final class SceneNode {
 			to.writeObjectList("Children", this.children, SceneNode::write);
 		else
 			to.assertDoesNotExist("Children", this.children.isEmpty() ? null : this.children, type.id + " nodes may not have children");
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			if (type == Type.CHOICE) {
+				visitor.visitText(title);
+				visitor.visitText(tooltip);
+			}
+			if (onTrigger != null) onTrigger.visit(visitor);
+			if (displayTest != null) displayTest.visit(visitor);
+			for (SceneNode child : children)
+				child.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

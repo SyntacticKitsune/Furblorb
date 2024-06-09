@@ -3,6 +3,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.block;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.ScriptNode;
 import net.syntactickitsune.furblorb.finmer.script.visual.StatementBlockNode;
@@ -46,6 +47,16 @@ public final class LoopStatement extends StatementBlockNode {
 	@Override
 	public void write(Encoder to) {
 		write("LoopBody", body, to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			for (ScriptNode sn : body)
+				sn.visit(visitor);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -53,6 +54,17 @@ public final class StringTableAsset extends FurballAsset {
 				.toList();
 
 		to.writeObjectList("Entries", entries, Entry::write);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitAsset(this)) {
+			for (var entry : table.entrySet())
+				for (String text : entry.getValue())
+					visitor.visitText(text);
+
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

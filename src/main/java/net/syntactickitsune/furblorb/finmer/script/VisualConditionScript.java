@@ -3,6 +3,7 @@ package net.syntactickitsune.furblorb.finmer.script;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.expression.LogicalExpression;
 import net.syntactickitsune.furblorb.io.Decoder;
@@ -36,6 +37,14 @@ public final class VisualConditionScript extends Script {
 	@Override
 	public void write(Encoder to) {
 		expression.write(to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitSerializable(this)) {
+			expression.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override

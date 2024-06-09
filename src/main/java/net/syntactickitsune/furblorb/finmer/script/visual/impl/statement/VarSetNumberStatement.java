@@ -3,7 +3,10 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.statement;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.io.IllegalFormatVersionException;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -34,6 +37,7 @@ public final class VarSetNumberStatement extends StatementNode {
 	/**
 	 * For "binary" operations, the corresponding expression.
 	 */
+	@Nullable
 	public FloatExpression expression; // Yo dawg, I heard ya like rounding errors, so I put some rounding errors in yer text-based game engine.
 
 	/**
@@ -64,6 +68,14 @@ public final class VarSetNumberStatement extends StatementNode {
 
 		if (op.binary)
 			expression.write(to);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			if (expression != null) expression.visit(visitor);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override
