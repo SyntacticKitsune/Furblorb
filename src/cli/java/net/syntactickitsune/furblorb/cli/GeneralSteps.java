@@ -16,6 +16,7 @@ import net.syntactickitsune.furblorb.finmer.FinmerSaveData;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.asset.CreatureAsset;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.finmer.asset.ItemAsset;
@@ -212,6 +213,10 @@ final class GeneralSteps {
 			System.out.printf("Title:            %s\n", furball.meta.title);
 			System.out.printf("Author:           %s\n", furball.meta.author);
 
+			final WordCountingVisitor visitor = new WordCountingVisitor();
+			furball.visit(visitor);
+			System.out.printf("Word Count:       %,d word%s\n", visitor.count, visitor.count == 1 ? "" : "s");
+
 			if (furball.dependencies.isEmpty())
 				System.out.println("\n! No dependencies.");
 			else {
@@ -389,6 +394,17 @@ final class GeneralSteps {
 			final long count = furball.assets.stream().filter(clazz::isInstance).count();
 			final int fullCount = furball.assets.size();
 			return "%d (%.1f%%)".formatted(count, ((double) count / fullCount * 100));
+		}
+
+		private static final class WordCountingVisitor implements ISerializableVisitor {
+
+			int count = 0;
+
+			@Override
+			public void visitText(String text) {
+				if (text.isBlank()) return;
+				count += text.replace("\r\n", " ").split(" ").length;
+			}
 		}
 	}
 }
