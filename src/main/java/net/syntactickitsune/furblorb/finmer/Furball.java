@@ -56,6 +56,11 @@ public final class Furball {
 		this.meta = Objects.requireNonNull(meta, "meta");
 	}
 
+	/**
+	 * Begins traversal of this {@code Furball}'s component hierarchy using the provided visitor.
+	 * @param visitor The visitor to receive callback events for each visited object.
+	 * @since 2.0.0
+	 */
 	public void visit(ISerializableVisitor visitor) {
 		for (FurballAsset asset : assets)
 			asset.visit(visitor);

@@ -37,6 +37,7 @@ import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
  * A container class for some of the {@link Step} implementations.
+ * @since 2.0.0
  * @author SyntacticKitsune
  */
 final class GeneralSteps {

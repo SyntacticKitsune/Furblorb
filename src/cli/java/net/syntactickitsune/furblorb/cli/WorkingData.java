@@ -19,6 +19,7 @@ final class WorkingData {
 
 	/**
 	 * The current save data. Will be {@code null} if no save data has been read yet.
+	 * @since 2.0.0
 	 */
 	@Nullable
 	FinmerSaveData save;
@@ -54,6 +55,7 @@ final class WorkingData {
 	 * Otherwise, throws a {@link CliException} with the specified message.
 	 * @param nullMessage The message of the thrown {@code CliException}.
 	 * @return The save data.
+	 * @since 2.0.0
 	 */
 	FinmerSaveData save(String nullMessage) {
 		if (save == null) throw new CliException(nullMessage);

@@ -6,6 +6,7 @@ import net.syntactickitsune.furblorb.finmer.script.visual.ScriptNode;
 
 /**
  * Represents a visitor for traversing assets and their contents.
+ * @since 2.0.0
  * @author SyntacticKitsune
  */
 public interface ISerializableVisitor {

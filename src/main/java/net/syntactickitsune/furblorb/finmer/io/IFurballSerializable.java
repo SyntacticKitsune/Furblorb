@@ -23,6 +23,18 @@ public interface IFurballSerializable {
 	 */
 	public void write(Encoder to);
 
+	/**
+	 * <p>
+	 * Begins traversal of this {@code IFurballSerializable}'s component hierarchy using the provided visitor.
+	 * </p>
+	 * <p>
+	 * By default this method only invokes {@link ISerializableVisitor#visitSerializable(IFurballSerializable) visitSerializable(IFurballSerializable)}
+	 * (followed by {@link ISerializableVisitor#visitEnd() visitEnd()}).
+	 * It is expected that subclasses will override this method to traverse each component, if applicable.
+	 * </p>
+	 * @param visitor The visitor to receive callback events for each visited object.
+	 * @since 2.0.0
+	 */
 	public default void visit(ISerializableVisitor visitor) {
 		if (visitor.visitSerializable(this))
 			visitor.visitEnd();
