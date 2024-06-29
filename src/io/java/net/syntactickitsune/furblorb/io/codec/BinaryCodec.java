@@ -42,7 +42,7 @@ import net.syntactickitsune.furblorb.io.SequenceEncoder;
  */
 public class BinaryCodec extends SequenceCodec {
 
-	private ByteBuffer buf;
+	protected ByteBuffer buf;
 
 	/**
 	 * <p>Constructs a new {@code BinaryCodec} with the specified backing buffer.</p>
@@ -113,6 +113,14 @@ public class BinaryCodec extends SequenceCodec {
 		return buf.position();
 	}
 
+	protected int readLength() {
+		return readInt();
+	}
+
+	protected void writeLength(int length) {
+		writeInt(length);
+	}
+
 	@Override
 	public boolean hasRemaining() {
 		return buf.hasRemaining();
@@ -155,18 +163,18 @@ public class BinaryCodec extends SequenceCodec {
 
 	@Override
 	public byte[] readByteArray() {
-		return readBytes(readInt());
+		return readBytes(readLength());
 	}
 
 	@Override
 	public void writeByteArray(byte[] value) {
-		writeInt(value.length);
+		writeLength(value.length);
 		writeBytes(value);
 	}
 
 	@Override
 	public byte @Nullable [] readOptionalByteArray() {
-		final int len = readInt();
+		final int len = readLength();
 		if (len < 0) return null;
 		return readBytes(len);
 	}
@@ -174,7 +182,7 @@ public class BinaryCodec extends SequenceCodec {
 	@Override
 	public void writeOptionalByteArray(byte @Nullable [] value) {
 		if (value == null)
-			writeInt(-1);
+			writeLength(-1);
 		else
 			writeByteArray(value);
 	}
@@ -446,7 +454,7 @@ public class BinaryCodec extends SequenceCodec {
 	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader) {
 		checkRead();
 
-		final int count = readInt();
+		final int count = readLength();
 		if (count > 1000) throw new FurblorbParsingException("Attempt to read " + count + " list entries");
 
 		final List<T> ret = new ArrayList<>(count);
@@ -459,7 +467,7 @@ public class BinaryCodec extends SequenceCodec {
 	@Override
 	public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
 		checkWrite(0);
-		writeInt(value.size());
+		writeLength(value.size());
 		for (T elem : value)
 			writer.accept(this, elem);
 	}
@@ -496,7 +504,7 @@ public class BinaryCodec extends SequenceCodec {
 	 * Checks to see make sure read access is supported.
 	 * @throws UnsupportedOperationException If the codec is write-only.
 	 */
-	protected void checkRead() {
+	public void checkRead() {
 		if (!mode.canRead()) throw new UnsupportedOperationException("Codec is write-only");
 	}
 
@@ -505,7 +513,7 @@ public class BinaryCodec extends SequenceCodec {
 	 * @param length The number of bytes to ensure capacity for.
 	 * @throws UnsupportedOperationException If the codec is read-only.
 	 */
-	protected void checkWrite(int length) {
+	public void checkWrite(int length) {
 		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
 
 		if (buf.remaining() < length) {

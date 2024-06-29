@@ -52,7 +52,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		if (target == Target.NPC)
 			participantId = in.readString("ParticipantID");
 		effect = in.readOptionalObject("Effect", FurballSerializables::read);
-		duration = in.readInt("Duration");
+		duration = in.readCompressedInt("Duration");
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		if (target == Target.NPC)
 			to.writeString("ParticipantID", participantId);
 		to.writeOptionalObject("Effect", effect, Buff::writeWithId);
-		to.writeInt("Duration", duration);
+		to.writeCompressedInt("Duration", duration);
 	}
 
 	@Override

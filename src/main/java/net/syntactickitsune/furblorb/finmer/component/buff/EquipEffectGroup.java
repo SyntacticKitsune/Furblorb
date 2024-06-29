@@ -66,7 +66,7 @@ public final class EquipEffectGroup implements IFurballSerializable {
 			target = in.readEnum("ProcTarget", Target.class);
 			chance = in.readFloat("ProcChance");
 			stringKey = in.readString("ProcStringTableKey");
-			duration = in.readInt("Duration");
+			duration = in.readCompressedInt("Duration");
 
 			if (in.validate())
 				FurballUtil.checkInRange("Duration", duration, 1, 100);
@@ -85,7 +85,7 @@ public final class EquipEffectGroup implements IFurballSerializable {
 			to.writeEnum("ProcTarget", target);
 			to.writeFloat("ProcChance", chance);
 			to.writeString("ProcStringTableKey", stringKey);
-			to.writeInt("Duration", duration);
+			to.writeCompressedInt("Duration", duration);
 		}
 
 		to.writeOptionalObjectList("Buffs", buffs, Buff::writeWithId);

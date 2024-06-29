@@ -139,12 +139,12 @@ public final class CreatureAsset extends FurballAsset {
 		// I'm already getting flashbacks to Nomad's serialization code.
 		objectName = in.readString("ObjectName");
 		objectAlias = in.readString("ObjectAlias");
-		strength = in.readInt("Strength");
-		agility = in.readInt("Agility");
-		body = in.readInt("Body");
-		wits = in.readInt("Wits");
-		flags = new CreatureFlags(in.readInt("Flags"));
-		level = in.readInt("Level");
+		strength = in.readCompressedInt("Strength");
+		agility = in.readCompressedInt("Agility");
+		body = in.readCompressedInt("Body");
+		wits = in.readCompressedInt("Wits");
+		flags = new CreatureFlags(in.readCompressedInt("Flags"));
+		level = in.readCompressedInt("Level");
 		size = in.readEnum("Size", Size.class);
 		gender = in.readEnum("Gender", Gender.class);
 
@@ -183,12 +183,12 @@ public final class CreatureAsset extends FurballAsset {
 
 		to.writeString("ObjectName", objectName);
 		to.writeString("ObjectAlias", objectAlias);
-		to.writeInt("Strength", strength);
-		to.writeInt("Agility", agility);
-		to.writeInt("Body", body);
-		to.writeInt("Wits", wits);
-		to.writeInt("Flags", flags.pack());
-		to.writeInt("Level", level);
+		to.writeCompressedInt("Strength", strength);
+		to.writeCompressedInt("Agility", agility);
+		to.writeCompressedInt("Body", body);
+		to.writeCompressedInt("Wits", wits);
+		to.writeCompressedInt("Flags", flags.pack());
+		to.writeCompressedInt("Level", level);
 		to.writeEnum("Size", size);
 		to.writeEnum("Gender", gender);
 

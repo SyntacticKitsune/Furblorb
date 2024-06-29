@@ -93,7 +93,7 @@ public final class JournalAsset extends FurballAsset {
 		 * @throws NullPointerException If {@code in} is {@code null}.
 		 */
 		public Stage(Decoder in) {
-			this(in.readInt("Key"), in.readString("Text"));
+			this(in.readCompressedInt("Key"), in.readString("Text"));
 		}
 
 		/**
@@ -102,7 +102,7 @@ public final class JournalAsset extends FurballAsset {
 		 * @throws NullPointerException If {@code to} is {@code null}.
 		 */
 		public void write(Encoder to) {
-			to.writeInt("Key", key);
+			to.writeCompressedInt("Key", key);
 			to.writeString("Text", text);
 		}
 	}

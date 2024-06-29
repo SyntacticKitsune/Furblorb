@@ -74,13 +74,14 @@ public final class FurballWriter {
 
 		// In format version 21, furballs are GZIP-compressed.
 		// But we try to avoid allocating another codec if we can avoid it.
-		final BinaryCodec compressedCodec;
+		final FurballCodec compressedCodec;
 		if (furball.meta.formatVersion >= 21) {
-			compressedCodec = new BinaryCodec(CodecMode.WRITE_ONLY);
-			compressedCodec.setFormatVersion(codec.formatVersion());
-			compressedCodec.setValidate(codec.validate());
+			final BinaryCodec compressedBinCodec = new BinaryCodec(CodecMode.WRITE_ONLY);
+			compressedBinCodec.setFormatVersion(codec.formatVersion());
+			compressedBinCodec.setValidate(codec.validate());
+			compressedCodec = new FurballCodec(compressedBinCodec);
 		} else
-			compressedCodec = codec;
+			compressedCodec = new FurballCodec(codec);
 
 		furball.meta.write(compressedCodec, false);
 		compressedCodec.writeObjectList(furball.dependencies, FurballDependency::write);

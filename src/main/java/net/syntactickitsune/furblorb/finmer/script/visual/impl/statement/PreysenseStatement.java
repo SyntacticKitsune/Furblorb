@@ -36,13 +36,13 @@ public final class PreysenseStatement extends StatementNode {
 	 * @throws NullPointerException If {@code in} is {@code null}.
 	 */
 	public PreysenseStatement(Decoder in) {
-		mode = in.readInt("Mode");
+		mode = in.readCompressedInt("Mode");
 		creatureId = in.readUUID("CreatureGuid");
 	}
 
 	@Override
 	public void write(Encoder to) {
-		to.writeInt("Mode", mode);
+		to.writeCompressedInt("Mode", mode);
 		to.writeUUID("CreatureGuid", creatureId);
 	}
 

@@ -35,7 +35,7 @@ public final class FurballReader {
 	static final byte[] MAGIC = { 'F', 'U', 'R', 'B', 'A', 'L', 'L' };
 
 	private final BinaryCodec codec;
-	private BinaryCodec decompressedCodec;
+	private FurballCodec decompressedCodec;
 
 	/**
 	 * Constructs a new {@code FurballReader} with the specified backing codec.
@@ -103,11 +103,12 @@ public final class FurballReader {
 
 		// In format version 21, furballs are GZIP-compressed, so we may need to swap the codec.
 		// (This code is also used in readFurball().)
-		decompressedCodec = codec;
+		decompressedCodec = new FurballCodec(codec);
 		if (formatVersion >= 21) {
-			decompressedCodec = new BinaryCodec(FurblorbUtil.decompress(codec.toByteArray()), CodecMode.READ_ONLY);
-			decompressedCodec.setFormatVersion(formatVersion);
-			decompressedCodec.setValidate(codec.validate());
+			final BinaryCodec decompressedBinCodec = new BinaryCodec(FurblorbUtil.decompress(codec.toByteArray()), CodecMode.READ_ONLY);
+			decompressedBinCodec.setFormatVersion(formatVersion);
+			decompressedBinCodec.setValidate(codec.validate());
+			decompressedCodec = new FurballCodec(decompressedBinCodec);
 		}
 
 		return new FurballMetadata(decompressedCodec, formatVersion);

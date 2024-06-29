@@ -37,13 +37,13 @@ public final class JournalUpdateStatement extends StatementNode {
 	 */
 	public JournalUpdateStatement(Decoder in) {
 		journalId = in.readUUID("JournalGuid");
-		stage = in.readInt("Stage");
+		stage = in.readCompressedInt("Stage");
 	}
 
 	@Override
 	public void write(Encoder to) {
 		to.writeUUID("JournalGuid", journalId);
-		to.writeInt("Stage", stage);
+		to.writeCompressedInt("Stage", stage);
 	}
 
 	@Override

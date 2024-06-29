@@ -123,7 +123,7 @@ public final class ItemAsset extends FurballAsset {
 			in.assertDoesNotExist("EquipEffects", "Only equippable items may have effects");
 		}
 
-		price = in.readInt("PurchaseValue");
+		price = in.readCompressedInt("PurchaseValue");
 
 		if (in.validate() && price < 0)
 			throw new FurblorbParsingException("Price value out of range [0,∞): " + price);
@@ -165,7 +165,7 @@ public final class ItemAsset extends FurballAsset {
 			to.assertDoesNotExist("EquipEffects", equipEffects.isEmpty() ? null : equipEffects, "Only equippable items may have effects");
 		}
 
-		to.writeInt("PurchaseValue", price);
+		to.writeCompressedInt("PurchaseValue", price);
 		to.writeBoolean("IsQuestItem", questItem);
 
 		if (type == Type.USABLE) {
