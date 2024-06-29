@@ -5,6 +5,7 @@ import java.util.Objects;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
 import net.syntactickitsune.furblorb.io.codec.CodecMode;
@@ -53,16 +54,6 @@ public final class FurballWriter {
 			throw new UnsupportedFormatVersionException(formatVersion, "Attempt to write a furball with a version newer than max supported: " + formatVersion + " > " + FurballMetadata.LATEST_VERSION);
 	}
 
-	// There is absolutely no reason I can see for people wanting to write *only* the metadata.
-	private void writeMetadata(FurballMetadata meta) {
-		Objects.requireNonNull(meta);
-
-		// Write magic.
-		codec.writeBytes(FurballReader.MAGIC);
-
-		meta.write(codec);
-	}
-
 	/**
 	 * Writes the specified {@code Furball} to the {@code FurballWriter}'s backing buffer.
 	 * @param furball The furball to write.
@@ -72,15 +63,31 @@ public final class FurballWriter {
 	 */
 	public FurballWriter write(Furball furball) throws UnsupportedFormatVersionException {
 		Objects.requireNonNull(furball);
+		Objects.requireNonNull(furball.meta);
 
 		checkFormatVersion(furball.meta.formatVersion);
 		codec.setFormatVersion(furball.meta.formatVersion);
 
-		writeMetadata(furball.meta);
+		codec.writeBytes(FurballReader.MAGIC);
 
-		codec.writeObjectList(furball.dependencies, FurballDependency::write);
+		codec.writeByte(furball.meta.formatVersion);
 
-		codec.writeObjectList(furball.assets, FurballAsset::writeWithId);
+		// In format version 21, furballs are GZIP-compressed.
+		// But we try to avoid allocating another codec if we can avoid it.
+		final BinaryCodec compressedCodec;
+		if (furball.meta.formatVersion >= 21) {
+			compressedCodec = new BinaryCodec(CodecMode.WRITE_ONLY);
+			compressedCodec.setFormatVersion(codec.formatVersion());
+			compressedCodec.setValidate(codec.validate());
+		} else
+			compressedCodec = codec;
+
+		furball.meta.write(compressedCodec, false);
+		compressedCodec.writeObjectList(furball.dependencies, FurballDependency::write);
+		compressedCodec.writeObjectList(furball.assets, FurballAsset::writeWithId);
+
+		if (furball.meta.formatVersion >= 21)
+			codec.writeBytes(FurblorbUtil.compress(compressedCodec.toByteArray()));
 
 		return this;
 	}

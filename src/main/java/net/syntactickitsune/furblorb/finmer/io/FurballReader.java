@@ -7,6 +7,7 @@ import java.util.Objects;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.codec.BinaryCodec;
@@ -34,6 +35,7 @@ public final class FurballReader {
 	static final byte[] MAGIC = { 'F', 'U', 'R', 'B', 'A', 'L', 'L' };
 
 	private final BinaryCodec codec;
+	private BinaryCodec decompressedCodec;
 
 	/**
 	 * Constructs a new {@code FurballReader} with the specified backing codec.
@@ -99,7 +101,16 @@ public final class FurballReader {
 		checkFormatVersion(formatVersion);
 		codec.setFormatVersion(formatVersion);
 
-		return new FurballMetadata(codec, formatVersion);
+		// In format version 21, furballs are GZIP-compressed, so we may need to swap the codec.
+		// (This code is also used in readFurball().)
+		decompressedCodec = codec;
+		if (formatVersion >= 21) {
+			decompressedCodec = new BinaryCodec(FurblorbUtil.decompress(codec.toByteArray()), CodecMode.READ_ONLY);
+			decompressedCodec.setFormatVersion(formatVersion);
+			decompressedCodec.setValidate(codec.validate());
+		}
+
+		return new FurballMetadata(decompressedCodec, formatVersion);
 	}
 
 	/**
@@ -113,13 +124,13 @@ public final class FurballReader {
 		final FurballMetadata meta = readMetadata();
 		final Furball ret = new Furball(meta);
 
-		ret.dependencies.addAll(codec.readObjectList(FurballDependency::new));
+		ret.dependencies.addAll(decompressedCodec.readObjectList(FurballDependency::new));
 
-		final int assetCount = codec.readInt();
+		final int assetCount = decompressedCodec.readInt();
 		for (int i = 0; i < assetCount; i++) {
 			FurballAsset asset;
 			try {
-				asset = FurballSerializables.read(codec);
+				asset = FurballSerializables.read(decompressedCodec);
 			} catch (Exception e) {
 				asset = null;
 				System.err.println("At position " + codec.position() + ":");

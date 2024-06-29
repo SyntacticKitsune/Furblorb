@@ -1,6 +1,8 @@
 package net.syntactickitsune.furblorb.finmer;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -86,5 +90,29 @@ public final class FurblorbUtil {
 
 	public static String capitalize(String input) {
 		return input.isEmpty() ? input : input.substring(0, 1).toUpperCase(Locale.ENGLISH) + input.substring(1);
+	}
+
+	public static byte[] compress(byte[] input) {
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(input);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				GZIPOutputStream gos = new GZIPOutputStream(baos)) {
+			bais.transferTo(gos);
+			return baos.toByteArray();
+		} catch (IOException e) {
+			throwAsUnchecked(e);
+			return null;
+		}
+	}
+
+	public static byte[] decompress(byte[] input) {
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(input);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				GZIPInputStream gis = new GZIPInputStream(bais)) {
+			gis.transferTo(baos);
+			return baos.toByteArray();
+		} catch (IOException e) {
+			throwAsUnchecked(e);
+			return null;
+		}
 	}
 }

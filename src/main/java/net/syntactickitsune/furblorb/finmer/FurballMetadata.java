@@ -67,13 +67,24 @@ public final class FurballMetadata {
 	/**
 	 * Writes this {@code FurballMetadata} to the specified {@code Encoder}.
 	 * @param to The {@code Encoder}.
+	 * @param writeFormatVersion Whether to write the format version. This flag is occasionally useful for splitting the metadata across two encoders.
 	 * @throws NullPointerException If {@code to} is {@code null}.
 	 */
-	public void write(Encoder to) {
-		to.writeByte("FormatVersion", formatVersion);
+	public void write(Encoder to, boolean writeFormatVersion) {
+		if (writeFormatVersion)
+			to.writeByte("FormatVersion", formatVersion);
 		to.writeUUID("ID", id);
 		to.writeString("Title", title);
 		to.writeString("Author", author);
+	}
+
+	/**
+	 * Writes this {@code FurballMetadata} to the specified {@code Encoder}.
+	 * @param to The {@code Encoder}.
+	 * @throws NullPointerException If {@code to} is {@code null}.
+	 */
+	public void write(Encoder to) {
+		write(to, true);
 	}
 
 	@Override
