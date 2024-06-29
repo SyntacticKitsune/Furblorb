@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.statement;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.visual.StatementNode;
 import net.syntactickitsune.furblorb.io.Decoder;
@@ -36,6 +37,14 @@ public final class CommentStatement extends StatementNode {
 	@Override
 	public void write(Encoder to) {
 		to.writeString("Comment", comment);
+	}
+
+	@Override
+	public void visit(ISerializableVisitor visitor) {
+		if (visitor.visitVisualCode(this)) {
+			visitor.visitText(comment);
+			visitor.visitEnd();
+		}
 	}
 
 	@Override
