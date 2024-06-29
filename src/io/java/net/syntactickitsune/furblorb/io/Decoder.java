@@ -91,6 +91,22 @@ public interface Decoder {
 	public int readInt(@Nullable String key);
 
 	/**
+	 * <p>
+	 * Reads the next compressed {@code int} from this {@code Decoder}'s sequence.
+	 * </p>
+	 * <p>
+	 * This method is the counterpart to {@link Encoder#writeCompressedInt(String, int)},
+	 * and intended for reading {@code int}s that were written using that method.
+	 * </p>
+	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
+	 * @return The read value.
+	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 */
+	public default int readCompressedInt(@Nullable String key) {
+		return readInt(key);
+	}
+
+	/**
 	 * Reads the next {@code long} from this {@code Decoder}'s sequence.
 	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
 	 * @return The read value.

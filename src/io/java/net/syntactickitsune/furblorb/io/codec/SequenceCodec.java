@@ -8,6 +8,7 @@ import net.syntactickitsune.furblorb.io.SequenceEncoder;
  * The {@code SequenceCodec} class serves as the base class for unifying {@link SequenceDecoder} and {@link SequenceEncoder}.
  * This is the sequence-based specialization of {@link Codec}.
  * @author SyntacticKitsune
+ * @see DelegatingSequenceCodec
  */
 public abstract class SequenceCodec extends Codec implements SequenceDecoder, SequenceEncoder {
 

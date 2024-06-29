@@ -210,6 +210,9 @@ public interface SequenceEncoder extends Encoder {
 	public default void writeInt(@Nullable String key, int value) { writeInt(value); }
 
 	@Override
+	public default void writeCompressedInt(@Nullable String key, int value) { write7BitInt(value); }
+
+	@Override
 	public default void writeLong(@Nullable String key, long value) { writeLong(value); }
 
 	@Override

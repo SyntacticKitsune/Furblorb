@@ -94,6 +94,25 @@ public interface Encoder {
 	public void writeInt(@Nullable String key, int value);
 
 	/**
+	 * <p>
+	 * Writes the given {@code int} in a compressed format.
+	 * It is recommended -- though not required -- that the {@code int} be positive.
+	 * </p>
+	 * <p>
+	 * This method makes no guarantees as to the format the {@code int} is written in,
+	 * just that it's consistent with the corresponding {@link Decoder#readCompressedInt(String)} method.
+	 * In essence, this method gives the implementor the opportunity to apply compression, should they desire.
+	 * (Some file formats are unsuitable for compression, like Json.)
+	 * </p>
+	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
+	 * @param value The value to write.
+	 * @throws NullPointerException If {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 */
+	public default void writeCompressedInt(@Nullable String key, int value) {
+		writeInt(key, value);
+	}
+
+	/**
 	 * Writes the given {@code long}.
 	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
 	 * @param value The value to write.

@@ -233,6 +233,9 @@ public interface SequenceDecoder extends Decoder {
 	public default int readInt(@Nullable String key) { return readInt(); }
 
 	@Override
+	public default int readCompressedInt(@Nullable String key) { return read7BitInt(); }
+
+	@Override
 	public default long readLong(@Nullable String key) { return readLong(); }
 
 	@Override
