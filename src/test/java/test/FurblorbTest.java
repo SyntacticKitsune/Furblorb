@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -40,6 +42,14 @@ import net.syntactickitsune.furblorb.io.codec.CodecMode;
 import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 final class FurblorbTest {
+
+	private static final boolean FORMAT_21_TEST = false;
+
+	@BeforeAll
+	static void setup() {
+		if (FORMAT_21_TEST)
+			System.setProperty("preview21", "true");
+	}
 
 	@Test
 	void testFormat19Furball() { // Furball → Furball
@@ -79,6 +89,12 @@ final class FurblorbTest {
 	@TestFactory
 	List<DynamicTest> testFormat20Project2Furball() { // Project → Furball
 		return doProject2FurballTest("Core.1.0.1.zip", "/Core.1.0.1.furball", "Core");
+	}
+
+	@Test
+	void testFormat21Furball() { // Furball → Furball
+		Assumptions.assumeTrue(FORMAT_21_TEST, "format version 21 is not enabled");
+		doFurball2FurballTest("/Core.Format21.3bd8bc4.furball", (byte) 21, 0, 175);
 	}
 
 	@Test
