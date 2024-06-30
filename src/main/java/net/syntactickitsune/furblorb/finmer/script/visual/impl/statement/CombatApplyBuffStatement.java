@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual.impl.statement;
 
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.component.buff.Buff;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -51,7 +52,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		target = in.readEnum("Target", Target.class);
 		if (target == Target.NPC)
 			participantId = in.readString("ParticipantID");
-		effect = in.readOptionalObject("Effect", FurballSerializables::read);
+		effect = FurballUtil.readObject21(in, "Effect", FurballSerializables::read);
 		duration = in.readCompressedInt("Duration");
 	}
 
@@ -60,7 +61,7 @@ public final class CombatApplyBuffStatement extends StatementNode {
 		to.writeEnum("Target", target);
 		if (target == Target.NPC)
 			to.writeString("ParticipantID", participantId);
-		to.writeOptionalObject("Effect", effect, Buff::writeWithId);
+		FurballUtil.writeObject21(to, "Effect", effect, Buff::writeWithId);
 		to.writeCompressedInt("Duration", duration);
 	}
 

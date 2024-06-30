@@ -3,6 +3,7 @@ package net.syntactickitsune.furblorb.finmer.script;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -32,12 +33,12 @@ public final class VisualActionScript extends Script { // Microsoft two seconds 
 	 * @param in The {@code Decoder}.
 	 */
 	public VisualActionScript(Decoder in) {
-		nodes.addAll(in.readOptionalObjectList("Nodes", FurballSerializables::read));
+		nodes.addAll(FurballUtil.readObjectList21(in, "Nodes", FurballSerializables::read));
 	}
 
 	@Override
 	public void write(Encoder to) {
-		to.writeOptionalObjectList("Nodes", nodes, ScriptNode::writeWithId);
+		FurballUtil.writeObjectList21(to, "Nodes", nodes, ScriptNode::writeWithId);
 	}
 
 	@Override

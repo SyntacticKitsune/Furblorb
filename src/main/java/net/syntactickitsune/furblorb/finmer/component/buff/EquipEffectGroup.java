@@ -72,7 +72,7 @@ public final class EquipEffectGroup implements IFurballSerializable {
 				FurballUtil.checkInRange("Duration", duration, 1, 100);
 		}
 
-		buffs.addAll(in.readOptionalObjectList("Buffs", FurballSerializables::read));
+		buffs.addAll(FurballUtil.readObjectList21(in, "Buffs", FurballSerializables::read));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public final class EquipEffectGroup implements IFurballSerializable {
 			to.writeCompressedInt("Duration", duration);
 		}
 
-		to.writeOptionalObjectList("Buffs", buffs, Buff::writeWithId);
+		FurballUtil.writeObjectList21(to, "Buffs", buffs, Buff::writeWithId);
 	}
 
 	@Override

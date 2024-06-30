@@ -9,6 +9,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.component.buff.EquipEffectGroup;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -117,7 +118,7 @@ public final class ItemAsset extends FurballAsset {
 		type = in.readEnum("ItemType", Type.class);
 		if (type == Type.EQUIPPABLE) {
 			slot = in.readEnum("EquipSlot", EquipmentSlot.class);
-			equipEffects.addAll(in.readOptionalObjectList("EquipEffects", FurballSerializables::read));
+			equipEffects.addAll(FurballUtil.readObjectList21(in, "EquipEffects", FurballSerializables::read));
 		} else {
 			in.assertDoesNotExist("EquipSlot", "Only equippable items may have equipment slots");
 			in.assertDoesNotExist("EquipEffects", "Only equippable items may have effects");
@@ -159,7 +160,7 @@ public final class ItemAsset extends FurballAsset {
 
 		if (type == Type.EQUIPPABLE) {
 			to.writeEnum("EquipSlot", slot);
-			to.writeOptionalObjectList("EquipEffects", equipEffects, EquipEffectGroup::writeWithId);
+			FurballUtil.writeObjectList21(to, "EquipEffects", equipEffects, EquipEffectGroup::writeWithId);
 		} else {
 			to.assertDoesNotExist("EquipSlot", slot, "Only equippable items may have equipment slots");
 			to.assertDoesNotExist("EquipEffects", equipEffects.isEmpty() ? null : equipEffects, "Only equippable items may have effects");

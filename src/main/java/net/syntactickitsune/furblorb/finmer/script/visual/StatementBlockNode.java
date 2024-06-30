@@ -2,6 +2,7 @@ package net.syntactickitsune.furblorb.finmer.script.visual;
 
 import java.util.List;
 
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
@@ -25,7 +26,7 @@ public abstract class StatementBlockNode extends StatementNode {
 	 * @return The list of {@code ScriptNodes}.
 	 */
 	protected static List<ScriptNode> read(String key, Decoder in) {
-		return in.readOptionalObjectList(key, FurballSerializables::read);
+		return FurballUtil.readObjectList21(in, key, FurballSerializables::read);
 	}
 
 	/**
@@ -35,6 +36,6 @@ public abstract class StatementBlockNode extends StatementNode {
 	 * @param out The {@code Encoder} to write to.
 	 */
 	protected static void write(String key, List<ScriptNode> list, Encoder out) {
-		out.writeOptionalObjectList(key, list, ScriptNode::writeWithId);
+		FurballUtil.writeObjectList21(out, key, list, ScriptNode::writeWithId);
 	}
 }

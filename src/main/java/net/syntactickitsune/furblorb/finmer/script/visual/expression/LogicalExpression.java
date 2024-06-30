@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
@@ -47,7 +48,7 @@ public final class LogicalExpression implements IFurballSerializable {
 		mode = in.readEnum("Mode", Mode.class);
 		target = in.readBoolean("Operand");
 
-		conditions.addAll(in.readOptionalObjectList("Tests", FurballSerializables::read));
+		conditions.addAll(FurballUtil.readObjectList21(in, "Tests", FurballSerializables::read));
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public final class LogicalExpression implements IFurballSerializable {
 		to.writeEnum("Mode", mode);
 		to.writeBoolean("Operand", target);
 
-		to.writeOptionalObjectList("Tests", conditions, ExpressionNode::writeWithId);
+		FurballUtil.writeObjectList21(to, "Tests", conditions, ExpressionNode::writeWithId);
 	}
 
 	@Override
