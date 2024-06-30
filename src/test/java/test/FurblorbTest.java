@@ -181,9 +181,9 @@ final class FurblorbTest {
 		final byte[] in = assertDoesNotThrow(() -> TestUtil.readAllBytes(furballName));
 		final Furball furball = assertDoesNotThrow(() -> new FurballReader(in).readFurball());
 
-		assertEquals(formatVersion, furball.meta.formatVersion);
-		assertEquals(dependencyCount, furball.dependencies.size());
-		assertEquals(assetCount, furball.assets.size());
+		assertEquals(formatVersion, furball.meta.formatVersion, "format version");
+		assertEquals(dependencyCount, furball.dependencies.size(), "dependency count");
+		assertEquals(assetCount, furball.assets.size(), "asset count");
 
 		final byte[] out = assertDoesNotThrow(() -> new FurballWriter().write(furball).toByteArray());
 		assertArrayEquals(in, out);
