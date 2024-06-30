@@ -146,13 +146,17 @@ Here's some information on them (which is mostly a sort-of changelog).
 
 #### v21 (in progress)
 
-This format version is not in any released build of Finmer yet.
+<u>This format version is not in any released build of Finmer yet.</u>
 
-Currently, the main changes in this format version are decreasing the file size of furballs by doing the following:
+Most notably, this format version decreases the file size of furballs by doing the following:
 * using 7-bit integers (or "var ints") instead of normal integers for lists, byte arrays, and various asset properties
 * GZIP-compressing everything after the format version
+* eliding the presence flag for required serializables in e.g. lists
 
-Furblorb does not yet support this format version.
+It also introduces an API for checking the presence of modules and assets, and backports the Lua 5.2 `bit32` library.
+These are not (yet?) exposed to visual scripting, however.
+
+Furblorb currently has partial support for this format version, although not in any released version of the program, and not enabled by default.
 
 #### v20 (2023-12-18 ~ present)
 
