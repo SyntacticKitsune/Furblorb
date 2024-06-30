@@ -97,7 +97,11 @@ public final class FurblorbUtil {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				GZIPOutputStream gos = new GZIPOutputStream(baos)) {
 			bais.transferTo(gos);
-			return baos.toByteArray();
+			gos.close();
+			final byte[] bytes = baos.toByteArray();
+			bytes[8] = 4; // Set compression level to "light compression" -- what .NET sets it as.
+			bytes[9] = 0; // Set OS to "FAT filesystem" -- what .NET sets it as.
+			return bytes;
 		} catch (IOException e) {
 			throwAsUnchecked(e);
 			return null;
@@ -109,6 +113,7 @@ public final class FurblorbUtil {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				GZIPInputStream gis = new GZIPInputStream(bais)) {
 			gis.transferTo(baos);
+			gis.close();
 			return baos.toByteArray();
 		} catch (IOException e) {
 			throwAsUnchecked(e);

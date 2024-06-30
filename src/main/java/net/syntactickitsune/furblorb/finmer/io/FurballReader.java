@@ -105,7 +105,8 @@ public final class FurballReader {
 		// (This code is also used in readFurball().)
 		decompressedCodec = new FurballCodec(codec);
 		if (formatVersion >= 21) {
-			final BinaryCodec decompressedBinCodec = new BinaryCodec(FurblorbUtil.decompress(codec.toByteArray()), CodecMode.READ_ONLY);
+			final byte[] bytes = codec.readBytes(codec.buffer().remaining());
+			final BinaryCodec decompressedBinCodec = new BinaryCodec(FurblorbUtil.decompress(bytes), CodecMode.READ_ONLY);
 			decompressedBinCodec.setFormatVersion(formatVersion);
 			decompressedBinCodec.setValidate(codec.validate());
 			decompressedCodec = new FurballCodec(decompressedBinCodec);
@@ -125,7 +126,9 @@ public final class FurballReader {
 		final FurballMetadata meta = readMetadata();
 		final Furball ret = new Furball(meta);
 
-		ret.dependencies.addAll(decompressedCodec.readObjectList(FurballDependency::new));
+		final int depCount = decompressedCodec.readInt(); // Note: not a 7-bit int!
+		for (int i = 0; i < depCount; i++)
+			ret.dependencies.add(decompressedCodec.readObject(FurballDependency::new));
 
 		final int assetCount = decompressedCodec.readInt();
 		for (int i = 0; i < assetCount; i++) {

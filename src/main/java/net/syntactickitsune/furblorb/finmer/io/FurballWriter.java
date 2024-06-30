@@ -84,8 +84,14 @@ public final class FurballWriter {
 			compressedCodec = new FurballCodec(codec);
 
 		furball.meta.write(compressedCodec, false);
-		compressedCodec.writeObjectList(furball.dependencies, FurballDependency::write);
-		compressedCodec.writeObjectList(furball.assets, FurballAsset::writeWithId);
+
+		compressedCodec.writeInt(furball.dependencies.size());
+		for (FurballDependency dep : furball.dependencies)
+			compressedCodec.writeObject(dep, FurballDependency::write);
+
+		compressedCodec.writeInt(furball.assets.size());
+		for (FurballAsset asset : furball.assets)
+			compressedCodec.writeObject(asset, FurballAsset::writeWithId);
 
 		if (furball.meta.formatVersion >= 21)
 			codec.writeBytes(FurblorbUtil.compress(compressedCodec.toByteArray()));
