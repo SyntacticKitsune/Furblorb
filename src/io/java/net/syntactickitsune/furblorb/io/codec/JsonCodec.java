@@ -183,7 +183,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type, Function<E, String> idFunction) {
 		checkRead();
-		return getConstantById(readString(key), type, idFunction, formatVersion);
+		return getConstantById(readString(key), type, idFunction, formatVersion());
 	}
 
 	static <E extends Enum<E> & INamedEnum> E getConstantById(String id, Class<E> type, Function<E, String> idFunction, byte formatVersion) {
@@ -211,7 +211,7 @@ public class JsonCodec extends Codec {
 	public <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(Objects.requireNonNull(key, "key"));
-		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.READ_ONLY, formatVersion);
+		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.READ_ONLY, formatVersion());
 		final List<T> ret = new ArrayList<>(arr.size());
 
 		for (int i = 0; i < arr.size(); i++)
@@ -223,7 +223,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> T readObject(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, mode, formatVersion));
+		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, mode, formatVersion()));
 	}
 
 	@Override
@@ -334,7 +334,7 @@ public class JsonCodec extends Codec {
 	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value, Function<E, String> idFunction) {
 		checkWrite();
 		Objects.requireNonNull(key, "key");
-		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
+		if (value.formatVersion() > formatVersion()) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion() + " as it is only available in " + value.formatVersion() + " and higher");
 		writeString(key, Objects.requireNonNull(idFunction.apply(value), value.getClass().getSimpleName() + " violated INamedEnum contract"));
 	}
 
@@ -354,7 +354,7 @@ public class JsonCodec extends Codec {
 	public <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
-		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.WRITE_ONLY, formatVersion);
+		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.WRITE_ONLY, formatVersion());
 
 		for (T v : value)
 			writer.accept(codec, Objects.requireNonNull(v));
@@ -365,7 +365,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
+		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion());
 		writer.accept(value, codec);
 		wrapped.add(key, codec.wrapped);
 	}

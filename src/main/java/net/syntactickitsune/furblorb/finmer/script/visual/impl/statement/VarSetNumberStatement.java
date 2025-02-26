@@ -269,6 +269,11 @@ public final class VarSetNumberStatement extends StatementNode {
 			return id;
 		}
 
+		@Override
+		public byte formatVersion() {
+			return formatVersion;
+		}
+
 		static {
 			for (Field field : Operation.class.getDeclaredFields())
 				if (field.isAnnotationPresent(RequiresFormatVersion.class))

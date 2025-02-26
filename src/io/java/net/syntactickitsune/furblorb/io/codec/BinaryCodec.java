@@ -400,8 +400,11 @@ public class BinaryCodec extends SequenceCodec {
 			case INT -> readInt();
 		};
 
-		if (index < 0 || index >= vals.length || vals[index].formatVersion() > formatVersion)
+		if (index < 0 || index >= vals.length)
 			throw new FurblorbParsingException("Attempt to access enum constant " + index + " which does not exist (enum: " + type.getName() + ", using " + numberType + " number type)");
+
+		if (vals[index].formatVersion() > formatVersion())
+			throw new FurblorbParsingException("Attempt to access enum constant " + vals[index] + " which does not exist in this format version (enum: " + type.getName() + ", using " + numberType + " number type, format version: " + formatVersion() + ", required format version: " + vals[index].formatVersion() + ")");
 
 		return vals[index];
 	}
@@ -411,7 +414,8 @@ public class BinaryCodec extends SequenceCodec {
 		checkWrite(0);
 		Objects.requireNonNull(value, "value");
 
-		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
+		if (value.formatVersion() > formatVersion())
+			throw new FurblorbParsingException("Cannot encode " + value + " for format version " + formatVersion() + " as it is only available in " + value.formatVersion() + " and higher");
 
 		final ParsingStrategy.NumberType numberType = numberType(value.getClass());
 		switch (numberType) {

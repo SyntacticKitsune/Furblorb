@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.ExternalFileHandler;
+import net.syntactickitsune.furblorb.io.FurblorbParsingException;
 import net.syntactickitsune.furblorb.io.INamedEnum;
 import net.syntactickitsune.furblorb.io.SequenceDecoder;
 import net.syntactickitsune.furblorb.io.SequenceEncoder;
@@ -206,7 +207,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type, Function<E, String> idFunction) {
 		checkRead();
-		return JsonCodec.getConstantById(readString(), type, idFunction, formatVersion);
+		return JsonCodec.getConstantById(readString(), type, idFunction, formatVersion());
 	}
 
 	@Override
@@ -225,7 +226,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader) {
 		checkRead();
 		final JsonArray array = next().getAsJsonArray();
-		final JsonArrayCodec codec = new JsonArrayCodec(array, externalFiles, mode, formatVersion);
+		final JsonArrayCodec codec = new JsonArrayCodec(array, externalFiles, mode, formatVersion());
 
 		final List<T> ret = new ArrayList<>(array.size());
 		for (int i = 0; i < array.size(); i++)
@@ -238,7 +239,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	public <T> T readObject(Function<Decoder, T> reader) {
 		checkRead();
 		final JsonObject obj = next().getAsJsonObject();
-		final JsonCodec codec = new JsonCodec(obj, externalFiles, CodecMode.READ_ONLY, formatVersion);
+		final JsonCodec codec = new JsonCodec(obj, externalFiles, CodecMode.READ_ONLY, formatVersion());
 
 		return reader.apply(codec);
 	}
@@ -249,7 +250,7 @@ public class JsonArrayCodec extends SequenceCodec {
 		final JsonElement elem = next();
 		if (elem.isJsonNull()) return null;
 
-		final JsonCodec codec = new JsonCodec(elem.getAsJsonObject(), externalFiles, CodecMode.READ_ONLY, formatVersion);
+		final JsonCodec codec = new JsonCodec(elem.getAsJsonObject(), externalFiles, CodecMode.READ_ONLY, formatVersion());
 
 		return reader.apply(codec);
 	}
@@ -364,7 +365,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public <E extends Enum<E> & INamedEnum> void writeEnum(E value, Function<E, String> idFunction) {
 		checkWrite();
-		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
+		if (value.formatVersion() > formatVersion()) throw new FurblorbParsingException("Cannot encode " + value + " for format version " + formatVersion() + " as it is only available in " + value.formatVersion() + " and higher");
 		writeString(idFunction.apply(value));
 	}
 
@@ -396,7 +397,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public <T> void writeObject(T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion);
+		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion());
 		writer.accept(value, codec);
 		wrapped.add(codec.wrapped);
 		index++;

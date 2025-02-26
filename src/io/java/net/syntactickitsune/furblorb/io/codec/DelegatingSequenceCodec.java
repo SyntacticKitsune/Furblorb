@@ -37,7 +37,7 @@ public class DelegatingSequenceCodec extends SequenceCodec {
 	public DelegatingSequenceCodec(SequenceCodec delegate) {
 		super(delegate.mode);
 		this.delegate = delegate;
-		formatVersion = delegate.formatVersion;
+		formatVersion = delegate.formatVersion();
 		validate = delegate.validate;
 	}
 
