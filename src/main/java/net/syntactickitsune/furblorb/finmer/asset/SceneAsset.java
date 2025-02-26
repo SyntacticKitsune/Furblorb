@@ -10,6 +10,8 @@ import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.asset.scene.CascadingSceneLoadingException;
 import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode;
+import net.syntactickitsune.furblorb.finmer.asset.scene.patch.AddNodePatch;
+import net.syntactickitsune.furblorb.finmer.asset.scene.patch.AddNodePatch.InjectMode;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
@@ -74,20 +76,13 @@ public final class SceneAsset extends FurballAsset {
 	public boolean patch = false;
 
 	/**
-	 * For patches, determines how the scene is to be injected.
-	 */
-	public InjectMode injectMode = InjectMode.AFTER_TARGET;
-
-	/**
 	 * For patches, determines the scene being patched.
 	 */
 	public UUID injectionTargetScene = FurballUtil.EMPTY_UUID;
 
-	/**
-	 * For patches, determines the node of the scene being patched.
-	 * In other words: where to apply the patch.
-	 */
-	public String injectionTargetNode = "";
+	@Nullable
+	@RequiresFormatVersion(value = 0, max = 20)
+	public AddNodePatch legacyPatch;
 
 	/**
 	 * For {@linkplain #gameStart game entrypoints}, the description to show in the selection.
@@ -123,11 +118,16 @@ public final class SceneAsset extends FurballAsset {
 			in.assertDoesNotExist("GameStartDescription", "unsupported in format version <20");
 		}
 
-		patch = in.readBoolean("IsPatch");
+		patch = in.readBoolean(in.formatVersion() < 21 ? "IsPatch" : "IsPatchGroup");
 		if (patch) {
-			injectMode = in.readEnum("InjectMode", InjectMode.class);
-			injectionTargetScene = in.readUUID("InjectTargetScene");
-			injectionTargetNode = in.readString("InjectTargetNode");
+			if (in.formatVersion() < 21) {
+				final AddNodePatch.LegacyAddPatch patch = AddNodePatch.readLegacyPatch(in);
+				legacyPatch = patch.patch();
+				injectionTargetScene = patch.targetScene();
+			} else if (in.validate()) {
+				in.assertDoesNotExist("InjectMode", "top-level patch not supported in ≥21");
+				in.assertDoesNotExist("InjectTargetNode", "top-level patch not supported in ≥21");
+			}
 
 			if (in.validate()) {
 				if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
@@ -162,11 +162,10 @@ public final class SceneAsset extends FurballAsset {
 				to.assertDoesNotExist("GameStartDescription", gameStartDescription.isEmpty() ? null : "", "IsGameStart must be enabled first");
 		}
 
-		to.writeBoolean("IsPatch", patch);
+		to.writeBoolean(to.formatVersion() < 21 ? "IsPatch" : "IsPatchGroup", patch);
 		if (patch) {
-			to.writeEnum("InjectMode", injectMode);
-			to.writeUUID("InjectTargetScene", injectionTargetScene);
-			to.writeString("InjectTargetNode", injectionTargetNode);
+			if (to.formatVersion() < 21)
+				AddNodePatch.writeLegacyPatch(to, Objects.requireNonNull(legacyPatch, "legacyPatch"), injectionTargetScene);
 
 			if (to.validate()) {
 				if (head != null) throw new FurblorbParsingException("ScriptCustom not allowed in patches");
@@ -195,9 +194,9 @@ public final class SceneAsset extends FurballAsset {
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (!(obj instanceof SceneAsset a)) return false;
-		return id.equals(a.id) && Objects.equals(filename, a.filename) && injectMode == a.injectMode && patch == a.patch
+		return id.equals(a.id) && Objects.equals(filename, a.filename) && patch == a.patch
 				&& gameStart == a.gameStart && Objects.equals(gameStartDescription, a.gameStartDescription)
-				&& Objects.equals(injectionTargetScene, a.injectionTargetScene) && Objects.equals(injectionTargetNode, a.injectionTargetNode)
+				&& Objects.equals(injectionTargetScene, a.injectionTargetScene)
 				&& Objects.equals(onLeave, a.onLeave) && Objects.equals(onEnter, a.onEnter) && Objects.equals(head, a.head)
 				&& Objects.equals(root, a.root);
 	}
@@ -205,45 +204,6 @@ public final class SceneAsset extends FurballAsset {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, filename, root, head, onEnter, onLeave,
-				gameStart, patch, injectMode, injectionTargetScene,
-				injectionTargetNode, gameStartDescription);
-	}
-
-	/**
-	 * Represents the different ways a patch may be performed.
-	 * Specifically, this outlines different injection points a patch may make use of.
-	 */
-	public static enum InjectMode implements INamedEnum {
-
-		/**
-		 * Insert immediately before the target.
-		 */
-		BEFORE_TARGET("BeforeTarget"), // @Inject(at = @At("HEAD"))
-
-		/**
-		 * Insert immediately after the target.
-		 */
-		AFTER_TARGET("AfterTarget"), // @Inject(at = @At("TAIL"))
-
-		/**
-		 * Insert inside the target, at the top.
-		 */
-		INSIDE_AT_START("InsideAtStart"), // @Inject(at = @At(value = "INVOKE", ...))
-
-		/**
-		 * Insert inside the target, at the end.
-		 */
-		INSIDE_AT_END("InsideAtEnd"); // @Inject(at = @At(value = "INVOKE", shift = Shift.AFTER, ...))
-
-		private final String id;
-
-		private InjectMode(String id) {
-			this.id = id;
-		}
-
-		@Override
-		public String id() {
-			return id;
-		}
+				gameStart, patch, injectionTargetScene, gameStartDescription);
 	}
 }

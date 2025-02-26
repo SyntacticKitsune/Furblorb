@@ -1,15 +1,21 @@
 package net.syntactickitsune.furblorb.finmer.asset.scene;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
+import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
+import net.syntactickitsune.furblorb.finmer.asset.scene.patch.ScenePatch;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
@@ -99,6 +105,13 @@ public final class SceneNode implements IFurballSerializable {
 	public Script displayTest; // Don't forget to register your stuff using ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DisplayTest.class, () -> new DisplayTest(...));
 
 	/**
+	 * The patch of a {@linkplain Type#PATCH patch node}.
+	 */
+	@Nullable
+	@RequiresFormatVersion(21)
+	public ScenePatch patch;
+
+	/**
 	 * A list of child nodes.
 	 * Only {@linkplain Type#ROOT root}, {@linkplain Type#STATE state}, and {@linkplain Type#CHOICE choice} may have children.
 	 */
@@ -116,41 +129,42 @@ public final class SceneNode implements IFurballSerializable {
 	 */
 	public SceneNode(Decoder in) {
 		type = in.readEnum("NodeType", Type.class);
-		key = in.readString("Key");
+		key = type.properties.contains(Properties.KEY) || in.formatVersion() < 21 ? in.readString("Key") : "";
+
+		Set<Properties> props = type.properties;
 
 		try {
-			boolean scripts = false;
-			boolean children = false;
-
 			switch (type) {
 				case CHOICE -> {
 					title = in.readString("Title");
 					tooltip = in.readString("Tooltip");
 					highlight = in.readBoolean("Highlight");
 					buttonWidth = in.readFloat("ButtonWidth");
-					scripts = children = true;
 				}
-				case STATE -> scripts = children = true;
-				case ROOT -> children = true;
 				case LINK -> {
 					linkTarget = in.readString("LinkTarget");
 				}
 				case COMPASS -> {
 					compassLink = in.readEnum("CompassLinkDirection", Direction.class);
 					compassTarget = in.readUUID("CompassLinkScene");
-					scripts = true;
 				}
+				case PATCH -> {
+					patch = in.readObject("PatchData", FurballSerializables::read);
+					props = EnumSet.copyOf(props);
+					props.addAll(patch.getAdditionalProperties());
+				}
+				default -> {}
 			}
 
-			if (scripts) {
+			if (props.contains(Properties.SCRIPTS)) {
 				onTrigger = in.readOptionalObject("ScriptAction", FurballSerializables::read);
 				displayTest = in.readOptionalObject("ScriptAppear", FurballSerializables::read);
-			} else {
+			} else { // TODO: These will probably be misleading for patches
 				in.assertDoesNotExist("ScriptAction", "unsupported for " + type.id + " nodes");
 				in.assertDoesNotExist("ScriptAppear", "unsupported for " + type.id + " nodes");
 			}
 
-			if (children)
+			if (props.contains(Properties.CHILDREN))
 				this.children.addAll(in.readObjectList("Children", SceneNode::new));
 			else
 				in.assertDoesNotExist("Children", type.id + " nodes may not have children");
@@ -170,10 +184,11 @@ public final class SceneNode implements IFurballSerializable {
 	@Override
 	public void write(Encoder to) {
 		to.writeEnum("NodeType", type);
-		to.writeString("Key", key);
 
-		boolean scripts = false;
-		boolean children = false;
+		if (type.properties.contains(Properties.KEY) || to.formatVersion() < 21)
+			to.writeString("Key", key);
+
+		Set<Properties> props = type.properties;
 
 		switch (type) {
 			case CHOICE -> {
@@ -181,21 +196,23 @@ public final class SceneNode implements IFurballSerializable {
 				to.writeString("Tooltip", tooltip);
 				to.writeBoolean("Highlight", highlight);
 				to.writeFloat("ButtonWidth", buttonWidth);
-				scripts = children = true;
 			}
-			case STATE -> scripts = children = true;
-			case ROOT -> children = true;
 			case LINK -> {
 				to.writeString("LinkTarget", linkTarget);
 			}
 			case COMPASS -> {
 				to.writeEnum("CompassLinkDirection", compassLink);
 				to.writeUUID("CompassLinkScene", compassTarget);
-				scripts = true;
 			}
+			case PATCH -> {
+				to.writeObject("PatchData", patch, ScenePatch::writeWithId);
+				props = EnumSet.copyOf(props);
+				props.addAll(patch.getAdditionalProperties());
+			}
+			default -> {}
 		}
 
-		if (scripts) {
+		if (props.contains(Properties.SCRIPTS)) {
 			to.writeOptionalObject("ScriptAction", onTrigger, Script::writeWithId);
 			to.writeOptionalObject("ScriptAppear", displayTest, Script::writeWithId);
 		} else {
@@ -203,7 +220,7 @@ public final class SceneNode implements IFurballSerializable {
 			to.assertDoesNotExist("ScriptAppear", displayTest, "unsupported for " + type.id + " nodes");
 		}
 
-		if (children) // Recursion :concern:
+		if (props.contains(Properties.CHILDREN)) // Recursion :concern:
 			to.writeObjectList("Children", this.children, SceneNode::write);
 		else
 			to.assertDoesNotExist("Children", this.children.isEmpty() ? null : this.children, type.id + " nodes may not have children");
@@ -255,7 +272,7 @@ public final class SceneNode implements IFurballSerializable {
 		 * Root nodes may contain children, but may not contain scripts.
 		 * </p>
 		 */
-		ROOT("Root"),
+		ROOT("Root", Properties.CHILDREN),
 
 		/**
 		 * <p>
@@ -269,7 +286,7 @@ public final class SceneNode implements IFurballSerializable {
 		 * State nodes may contain both children and scripts.
 		 * </p>
 		 */
-		STATE("State"),
+		STATE("State", Properties.KEY, Properties.CHILDREN, Properties.SCRIPTS),
 
 		/**
 		 * <p>
@@ -284,7 +301,7 @@ public final class SceneNode implements IFurballSerializable {
 		 * Choice nodes may contain both children ({@linkplain #STATE state nodes} or {@linkplain #LINK link nodes}) and scripts.
 		 * </p>
 		 */
-		CHOICE("Choice"),
+		CHOICE("Choice", Properties.KEY, Properties.CHILDREN, Properties.SCRIPTS),
 
 		/**
 		 * <p>
@@ -313,18 +330,35 @@ public final class SceneNode implements IFurballSerializable {
 		 * Compass nodes may contain scripts, but not children.
 		 * </p>
 		 */
-		COMPASS("Compass");
+		COMPASS("Compass", Properties.KEY, Properties.SCRIPTS),
+
+		@RequiresFormatVersion(21)
+		PATCH("Patch", Properties.KEY);
 
 		private final String id;
+		public final Set<Properties> properties;
 
-		private Type(String id) {
+		private Type(String id, Properties... props) {
 			this.id = id;
+			this.properties = props.length == 0 ? Set.of() : Collections.unmodifiableSet(EnumSet.copyOf(Arrays.asList(props)));
 		}
 
 		@Override
 		public String id() {
 			return id;
 		}
+
+		@Override
+		public byte formatVersion() {
+			return this == PATCH ? (byte) 21 : 0;
+		}
+	}
+
+	public static enum Properties {
+
+		KEY,
+		CHILDREN,
+		SCRIPTS;
 	}
 
 	/**
