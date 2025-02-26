@@ -1,4 +1,4 @@
-package net.syntactickitsune.furblorb.finmer.asset;
+package net.syntactickitsune.furblorb.finmer.asset.scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
+import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
-import net.syntactickitsune.furblorb.io.FurblorbException;
 import net.syntactickitsune.furblorb.io.INamedEnum;
 
 /**
@@ -154,11 +154,11 @@ public final class SceneNode implements IFurballSerializable {
 				this.children.addAll(in.readObjectList("Children", SceneNode::new));
 			else
 				in.assertDoesNotExist("Children", type.id + " nodes may not have children");
-		} catch (CascadingException e) {
+		} catch (CascadingSceneLoadingException e) {
 			e.path.add(0, key);
 			throw e;
 		} catch (Exception e) {
-			throw new CascadingException(key, e);
+			throw new CascadingSceneLoadingException(key, e);
 		}
 	}
 
@@ -361,31 +361,6 @@ public final class SceneNode implements IFurballSerializable {
 		@Override
 		public String id() {
 			return id;
-		}
-	}
-
-	/**
-	 * A wrapper for exceptions thrown when deserializing {@link SceneNode SceneNodes} that tracks the path to the problematic node.
-	 * This makes it easier to diagnose scene deserialization errors.
-	 * @author SyntacticKitsune
-	 */
-	public static final class CascadingException extends FurblorbException {
-
-		final List<String> path = new ArrayList<>();
-
-		/**
-		 * Constructs a {@code CascadingException} with the specified values.
-		 * @param mostRecent The name of the scene node that is catching the exception.
-		 * @param cause The exception in question.
-		 */
-		public CascadingException(String mostRecent, Throwable cause) {
-			super(cause);
-			path.add(mostRecent);
-		}
-
-		@Override
-		public String getMessage() {
-			return "Exception reading " + String.join("→", path);
 		}
 	}
 }

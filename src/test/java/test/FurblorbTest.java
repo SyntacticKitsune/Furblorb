@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballMetadata;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
-import net.syntactickitsune.furblorb.finmer.asset.SceneNode;
+import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectWriter;
 import net.syntactickitsune.furblorb.finmer.io.FurballReader;

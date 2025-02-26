@@ -6,7 +6,7 @@ import java.util.List;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
-import net.syntactickitsune.furblorb.finmer.asset.SceneNode;
+import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode;
 
 /**
  * Represents an individual "shuffler" for Furblorb's asset shuffling API.

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
+import net.syntactickitsune.furblorb.finmer.asset.scene.CascadingSceneLoadingException;
+import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
@@ -140,8 +142,8 @@ public final class SceneAsset extends FurballAsset {
 
 		try {
 			root = in.readObject("Root", SceneNode::new);
-		} catch (SceneNode.CascadingException e) {
-			e.path.add(0, filename);
+		} catch (CascadingSceneLoadingException e) {
+			e.addPath(filename);
 			throw e;
 		}
 	}
