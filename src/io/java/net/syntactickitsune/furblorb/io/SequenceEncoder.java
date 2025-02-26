@@ -140,7 +140,19 @@ public interface SequenceEncoder extends Encoder {
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null}.
 	 */
-	public <E extends Enum<E> & INamedEnum> void writeEnum(E value);
+	public default <E extends Enum<E> & INamedEnum> void writeEnum(E value) {
+		writeEnum(value, INamedEnum::id);
+	}
+
+	/**
+	 * Writes the given {@code enum} constant to this {@code SequenceEncoder}'s sequence.
+	 * The constant will be encoded using its ordinal.
+	 * @param <E> The {@code enum} type.
+	 * @param value The value to write.
+	 * @param idFunction A {@link Function} to get the id of a given enum constant. Useful for format-version-specific ids.
+	 * @throws NullPointerException If {@code value} is {@code null}.
+	 */
+	public <E extends Enum<E> & INamedEnum> void writeEnum(E value, Function<E, String> idFunction);
 
 	/**
 	 * Writes the given {@link List} of {@link Object Objects} to this {@code SequenceEncoder}'s sequence.
@@ -229,6 +241,9 @@ public interface SequenceEncoder extends Encoder {
 
 	@Override
 	public default <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) { writeEnum(value); }
+
+	@Override
+	public default <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value, Function<E, String> idFunction) { writeEnum(value, idFunction); }
 
 	@Override
 	public default <T> void writeObjectList(@Nullable String key, Collection<T> value, BiConsumer<T, Encoder> writer) { writeObjectList(value, writer); }

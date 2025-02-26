@@ -204,9 +204,9 @@ public class JsonArrayCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type) {
+	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type, Function<E, String> idFunction) {
 		checkRead();
-		return JsonCodec.getConstantById(readString(), type);
+		return JsonCodec.getConstantById(readString(), type, idFunction, formatVersion);
 	}
 
 	@Override
@@ -362,9 +362,10 @@ public class JsonArrayCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> void writeEnum(E value) {
+	public <E extends Enum<E> & INamedEnum> void writeEnum(E value, Function<E, String> idFunction) {
 		checkWrite();
-		writeString(value.id());
+		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
+		writeString(idFunction.apply(value));
 	}
 
 	@Override

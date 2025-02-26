@@ -14,4 +14,13 @@ public interface INamedEnum {
 	 * @return The id of the constant.
 	 */
 	public String id();
+
+	/**
+	 * Returns the earliest format version this enum constant is available in.
+	 * Decoders/encoders will pretend the constant doesn't exist on older format versions.
+	 * @return The format version of the constant.
+	 */
+	public default byte formatVersion() {
+		return 0;
+	}
 }

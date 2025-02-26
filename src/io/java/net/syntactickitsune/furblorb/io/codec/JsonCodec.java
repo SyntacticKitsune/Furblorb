@@ -181,15 +181,15 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
+	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type, Function<E, String> idFunction) {
 		checkRead();
-		return getConstantById(readString(key), type);
+		return getConstantById(readString(key), type, idFunction, formatVersion);
 	}
 
-	static <E extends Enum<E> & INamedEnum> E getConstantById(String id, Class<E> type) {
+	static <E extends Enum<E> & INamedEnum> E getConstantById(String id, Class<E> type, Function<E, String> idFunction, byte formatVersion) {
 		final E[] constants = type.getEnumConstants();
 		for (E e : constants)
-			if (id.equals(e.id()))
+			if (e.formatVersion() <= formatVersion && id.equals(idFunction.apply(e)))
 				return e;
 
 		throw new FurblorbParsingException("No " + type.getName() + " with id '" + id + "'");
@@ -331,9 +331,11 @@ public class JsonCodec extends Codec {
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) {
+	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value, Function<E, String> idFunction) {
 		checkWrite();
-		writeString(Objects.requireNonNull(key, "key"), Objects.requireNonNull(value.id(), value.getClass().getSimpleName() + " violated INamedEnum contract"));
+		Objects.requireNonNull(key, "key");
+		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
+		writeString(key, Objects.requireNonNull(idFunction.apply(value), value.getClass().getSimpleName() + " violated INamedEnum contract"));
 	}
 
 	@Override

@@ -160,7 +160,20 @@ public interface Encoder {
 	 * @param value The value to write.
 	 * @throws NullPointerException If {@code value} is {@code null} or {@code key} is {@code null} and this {@code Encoder} requires keys.
 	 */
-	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value);
+	public default <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value) {
+		writeEnum(key, value, INamedEnum::id);
+	}
+
+	/**
+	 * Writes the given {@code enum} constant.
+	 * The constant may be encoded using its ordinal or with its {@linkplain INamedEnum name}.
+	 * @param <E> The {@code enum} type.
+	 * @param key The key to associate the value with. May be {@code null} if the {@code Encoder} doesn't support keys.
+	 * @param value The value to write.
+	 * @param idFunction A {@link Function} to get the id of a given enum constant. Useful for format-version-specific ids.
+	 * @throws NullPointerException If {@code value} is {@code null} or {@code key} is {@code null} and this {@code Encoder} requires keys.
+	 */
+	public <E extends Enum<E> & INamedEnum> void writeEnum(@Nullable String key, E value, Function<E, String> idFunction);
 
 	/**
 	 * Writes the given {@link List} of {@link Object Objects}.

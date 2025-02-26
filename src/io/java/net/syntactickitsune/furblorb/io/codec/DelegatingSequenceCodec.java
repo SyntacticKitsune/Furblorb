@@ -72,6 +72,7 @@ public class DelegatingSequenceCodec extends SequenceCodec {
 	@Override public String readString() { return delegate.readString(); }
 	@Override public String readFixedLengthString(int length) { return delegate.readFixedLengthString(length); }
 	@Override public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type) { return delegate.readEnum(type); }
+	@Override public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type, Function<E, String> idFunction) { return delegate.readEnum(type, idFunction); }
 	@Override public <T> List<T> readObjectList(Function<Decoder, T> reader) { return delegate.readObjectList(reader); }
 	@Override public <T> List<@Nullable T> readOptionalObjectList(Function<Decoder, T> reader) { return delegate.readOptionalObjectList(reader); }
 	@Override public <T> List<T> readListOf(Function<SequenceDecoder, T> reader) { return delegate.readListOf(reader); }
@@ -95,6 +96,7 @@ public class DelegatingSequenceCodec extends SequenceCodec {
 	@Override public void writeString(String value) { delegate.writeString(value); }
 	@Override public void writeFixedLengthString(String value) { delegate.writeFixedLengthString(value); }
 	@Override public <E extends Enum<E> & INamedEnum> void writeEnum(E value) { delegate.writeEnum(value); }
+	@Override public <E extends Enum<E> & INamedEnum> void writeEnum(E value, Function<E, String> idFunction) { delegate.writeEnum(value, idFunction); }
 	@Override public <T> void writeObjectList(Collection<T> value, BiConsumer<T, Encoder> writer) { delegate.writeObjectList(value, writer); }
 	@Override public <T> void writeOptionalObjectList(Collection<@Nullable T> value, BiConsumer<T, Encoder> writer) { delegate.writeOptionalObjectList(value, writer); }
 	@Override public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer) { delegate.writeListOf(value, writer); }

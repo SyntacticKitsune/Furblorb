@@ -155,7 +155,21 @@ public interface Decoder {
 	 * @return The read value.
 	 * @throws NullPointerException If {@code type} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
 	 */
-	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type);
+	public default <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) {
+		return readEnum(key, type, INamedEnum::id);
+	}
+
+	/**
+	 * Reads the next {@code enum} constant from this {@code Decoder}'s sequence.
+	 * The constant may be decoded using an ordinal or with a {@linkplain INamedEnum name}.
+	 * @param <E> The {@code enum} type.
+	 * @param key The key that the value is associated with. May be {@code null} if the {@code Decoder} doesn't support keys.
+	 * @param type The type of {@code enum} to read. Required to interpret {@code enum} constants correctly.
+	 * @param idFunction A {@link Function} to get the id of a given enum constant. Useful for format-version-specific ids.
+	 * @return The read value.
+	 * @throws NullPointerException If {@code type} is {@code null} or {@code key} is {@code null} and this {@code Decoder} requires keys.
+	 */
+	public <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type, Function<E, String> idFunction);
 
 	/**
 	 * Reads the next {@link List} of {@link Object Objects} from this {@code Decoder}'s sequence.

@@ -389,7 +389,7 @@ public class BinaryCodec extends SequenceCodec {
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type) {
+	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type, Function<E, String> idFunction) {
 		checkRead();
 		final E[] vals = type.getEnumConstants();
 		final ParsingStrategy.NumberType numberType = numberType(type);
@@ -400,16 +400,18 @@ public class BinaryCodec extends SequenceCodec {
 			case INT -> readInt();
 		};
 
-		if (index < 0 || index >= vals.length)
+		if (index < 0 || index >= vals.length || vals[index].formatVersion() > formatVersion)
 			throw new FurblorbParsingException("Attempt to access enum constant " + index + " which does not exist (enum: " + type.getName() + ", using " + numberType + " number type)");
 
 		return vals[index];
 	}
 
 	@Override
-	public <E extends Enum<E> & INamedEnum> void writeEnum(E value) {
+	public <E extends Enum<E> & INamedEnum> void writeEnum(E value, Function<E, String> idFunction) {
 		checkWrite(0);
 		Objects.requireNonNull(value, "value");
+
+		if (value.formatVersion() > formatVersion) throw new IllegalArgumentException("Cannot encode " + value + " for format version " + formatVersion + " as it is only available in " + value.formatVersion() + " and higher");
 
 		final ParsingStrategy.NumberType numberType = numberType(value.getClass());
 		switch (numberType) {

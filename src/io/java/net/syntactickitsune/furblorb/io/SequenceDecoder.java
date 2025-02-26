@@ -160,7 +160,21 @@ public interface SequenceDecoder extends Decoder {
 	 * @throws NullPointerException If {@code type} is {@code null}.
 	 * @throws FurblorbParsingException If the read ordinal is out-of-bounds.
 	 */
-	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type);
+	public default <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type) {
+		return readEnum(type, INamedEnum::id);
+	}
+
+	/**
+	 * Reads the next {@code enum} constant from this {@code SequenceDecoder}'s sequence.
+	 * The constant will be decoded using an ordinal.
+	 * @param <E> The {@code enum} type.
+	 * @param type The type of {@code enum} to read. Required to interpret {@code enum} constants correctly.
+	 * @param idFunction A {@link Function} to get the id of a given enum constant. Useful for format-version-specific ids.
+	 * @return The read value.
+	 * @throws NullPointerException If {@code type} is {@code null}.
+	 * @throws FurblorbParsingException If the read ordinal is out-of-bounds.
+	 */
+	public <E extends Enum<E> & INamedEnum> E readEnum(Class<E> type, Function<E, String> idFunction);
 
 	/**
 	 * Reads the next {@link List} from this {@code SequenceDecoder}'s sequence.
@@ -252,6 +266,9 @@ public interface SequenceDecoder extends Decoder {
 
 	@Override
 	public default <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type) { return readEnum(type); }
+
+	@Override
+	public default <E extends Enum<E> & INamedEnum> E readEnum(@Nullable String key, Class<E> type, Function<E, String> idFunction) { return readEnum(type, idFunction); }
 
 	@Override
 	public default <T> List<T> readObjectList(@Nullable String key, Function<Decoder, T> reader) { return readObjectList(reader); }
