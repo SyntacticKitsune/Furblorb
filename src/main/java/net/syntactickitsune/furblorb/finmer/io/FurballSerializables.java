@@ -11,11 +11,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.Nullable;
 
 import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.io.Decoder;
-
-import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>

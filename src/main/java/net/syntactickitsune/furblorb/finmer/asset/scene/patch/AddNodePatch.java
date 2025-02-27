@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode.Properties;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;

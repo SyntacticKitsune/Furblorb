@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.FurballUtil;
+import net.syntactickitsune.furblorb.finmer.ISerializableVisitor;
 import net.syntactickitsune.furblorb.finmer.component.buff.EquipEffectGroup;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;

@@ -18,7 +18,6 @@ import net.syntactickitsune.furblorb.finmer.asset.SceneAsset;
 import net.syntactickitsune.furblorb.finmer.asset.scene.patch.ScenePatch;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
-import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;

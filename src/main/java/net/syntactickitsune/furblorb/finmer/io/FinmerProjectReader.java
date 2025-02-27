@@ -11,9 +11,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;

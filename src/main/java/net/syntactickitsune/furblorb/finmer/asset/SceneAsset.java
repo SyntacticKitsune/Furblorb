@@ -11,14 +11,12 @@ import net.syntactickitsune.furblorb.finmer.RequiresFormatVersion;
 import net.syntactickitsune.furblorb.finmer.asset.scene.CascadingSceneLoadingException;
 import net.syntactickitsune.furblorb.finmer.asset.scene.SceneNode;
 import net.syntactickitsune.furblorb.finmer.asset.scene.patch.AddNodePatch;
-import net.syntactickitsune.furblorb.finmer.asset.scene.patch.AddNodePatch.InjectMode;
 import net.syntactickitsune.furblorb.finmer.io.FurballSerializables;
 import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.finmer.script.Script;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
-import net.syntactickitsune.furblorb.io.INamedEnum;
 
 /**
  * <p>
