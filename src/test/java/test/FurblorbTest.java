@@ -43,14 +43,6 @@ import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 final class FurblorbTest {
 
-	private static final boolean FORMAT_21_TEST = false;
-
-	@BeforeAll
-	static void setup() {
-		if (FORMAT_21_TEST)
-			System.setProperty("preview21", "true");
-	}
-
 	@Test
 	void testFormat19Furball() { // Furball → Furball
 		doFurball2FurballTest("/Core.1.0.0.furball", (byte) 19, 0, 173);
@@ -93,7 +85,6 @@ final class FurblorbTest {
 
 	@Test
 	void testFormat21Furball() { // Furball → Furball
-		Assumptions.assumeTrue(FORMAT_21_TEST, "format version 21 is not enabled");
 		doFurball2FurballTest("/Core.Format21.3bd8bc4.furball", (byte) 21, 0, 175);
 	}
 

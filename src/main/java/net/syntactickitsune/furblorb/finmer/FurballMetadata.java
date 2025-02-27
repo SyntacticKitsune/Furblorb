@@ -20,7 +20,7 @@ public final class FurballMetadata {
 	/**
 	 * The current latest furball format version that Furblorb understands.
 	 */
-	public static final byte LATEST_VERSION = Boolean.getBoolean("preview21") ? (byte) 21 : 20;
+	public static final byte LATEST_VERSION = 21;
 
 	/**
 	 * The format version the furball will be read and written using.
