@@ -46,6 +46,8 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Nullable
 	protected final ExternalFileHandler externalFiles;
 
+	protected boolean encodeZeroIdsAsNull;
+
 	/**
 	 * The index into the {@linkplain #wrapped wrapped Json array}.
 	 */
@@ -75,6 +77,15 @@ public class JsonArrayCodec extends SequenceCodec {
 	public JsonArrayCodec(JsonArray array, @Nullable ExternalFileHandler externalFiles, CodecMode mode, byte formatVersion) {
 		this(array, externalFiles, mode);
 		this.formatVersion = formatVersion;
+	}
+
+	public boolean encodeZeroIdsAsNull() {
+		return encodeZeroIdsAsNull;
+	}
+
+	public JsonArrayCodec setEncodeZeroIdsAsNull(boolean value) {
+		encodeZeroIdsAsNull = value;
+		return this;
 	}
 
 	@Override
@@ -188,7 +199,12 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public UUID readUUID() {
 		checkRead();
-		return UUID.fromString(readString());
+
+		final JsonElement next = next();
+		if (encodeZeroIdsAsNull && next.isJsonNull())
+			return JsonCodec.ZERO_UUID;
+
+		return UUID.fromString(next.getAsString());
 	}
 
 	@Override
@@ -226,7 +242,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	public <T> List<T> readListOf(Function<SequenceDecoder, T> reader) {
 		checkRead();
 		final JsonArray array = next().getAsJsonArray();
-		final JsonArrayCodec codec = new JsonArrayCodec(array, externalFiles, mode, formatVersion());
+		final JsonArrayCodec codec = popArray(array);
 
 		final List<T> ret = new ArrayList<>(array.size());
 		for (int i = 0; i < array.size(); i++)
@@ -239,7 +255,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	public <T> T readObject(Function<Decoder, T> reader) {
 		checkRead();
 		final JsonObject obj = next().getAsJsonObject();
-		final JsonCodec codec = new JsonCodec(obj, externalFiles, CodecMode.READ_ONLY, formatVersion());
+		final JsonCodec codec = popObject(obj);
 
 		return reader.apply(codec);
 	}
@@ -250,7 +266,7 @@ public class JsonArrayCodec extends SequenceCodec {
 		final JsonElement elem = next();
 		if (elem.isJsonNull()) return null;
 
-		final JsonCodec codec = new JsonCodec(elem.getAsJsonObject(), externalFiles, CodecMode.READ_ONLY, formatVersion());
+		final JsonCodec codec = popObject(elem.getAsJsonObject());
 
 		return reader.apply(codec);
 	}
@@ -346,7 +362,11 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public void writeUUID(UUID value) {
 		checkWrite();
-		writeString(value.toString());
+
+		if (encodeZeroIdsAsNull && value.equals(JsonCodec.ZERO_UUID))
+			wrapped.add(JsonNull.INSTANCE);
+		else
+			writeString(value.toString());
 	}
 
 	@Override
@@ -385,7 +405,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	public <T> void writeListOf(Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
-		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.WRITE_ONLY);
+		final JsonArrayCodec codec = popArray(arr);
 
 		for (T v : value)
 			writer.accept(codec, v);
@@ -397,7 +417,7 @@ public class JsonArrayCodec extends SequenceCodec {
 	@Override
 	public <T> void writeObject(T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion());
+		final JsonCodec codec = popObject(null);
 		writer.accept(value, codec);
 		wrapped.add(codec.wrapped);
 		index++;
@@ -429,5 +449,17 @@ public class JsonArrayCodec extends SequenceCodec {
 	 */
 	protected void checkWrite() {
 		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
+	}
+
+	protected JsonCodec popObject(@Nullable JsonObject wrapped) {
+		final JsonCodec ret = wrapped == null ? new JsonCodec(externalFiles, formatVersion()) : new JsonCodec(wrapped, externalFiles, mode, formatVersion());
+		ret.encodeZeroIdsAsNull = encodeZeroIdsAsNull;
+		return ret;
+	}
+
+	protected JsonArrayCodec popArray(JsonArray wrapped) {
+		final JsonArrayCodec ret = new JsonArrayCodec(wrapped, externalFiles, mode, formatVersion());
+		ret.encodeZeroIdsAsNull = encodeZeroIdsAsNull;
+		return ret;
 	}
 }

@@ -24,6 +24,7 @@ import net.syntactickitsune.furblorb.cli.shuffling.AssetShufflerRegistry;
 import net.syntactickitsune.furblorb.cli.shuffling.ShuffleRandom;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader.ReadOnlyExternalFileHandler;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectWriter;
@@ -93,6 +94,7 @@ final class FurballSteps {
 
 			final JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
 			final JsonCodec codec = new JsonCodec(obj, new ReadOnlyExternalFileHandler(assetPath.getParent(), assetPath), CodecMode.READ_ONLY, data.formatVersion());
+			FurballUtil.initializeJsonCodec(codec);
 			final FurballAsset asset = FurballSerializables.read(codec);
 
 			System.out.printf("! Inserted asset %s (%s).\n", asset.filename, asset.id);
@@ -110,6 +112,7 @@ final class FurballSteps {
 					System.out.printf("! Extracting asset %s (%s) to %s.\n", asset.filename, asset.id, dest.toAbsolutePath());
 					{
 						final JsonCodec codec = new JsonCodec(new WriteOnlyExternalFileHandler(dest.getParent(), dest), data.formatVersion());
+						FurballUtil.initializeJsonCodec(codec);
 						asset.writeWithId(codec);
 						Files.writeString(dest, FinmerProjectWriter.toJson(codec.unwrap()), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 					}

@@ -41,6 +41,8 @@ import net.syntactickitsune.furblorb.io.TriConsumer;
  */
 public class JsonCodec extends Codec {
 
+	static final UUID ZERO_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
 	/**
 	 * The wrapped {@link JsonObject}.
 	 */
@@ -51,6 +53,8 @@ public class JsonCodec extends Codec {
 	 */
 	@Nullable
 	protected final ExternalFileHandler externalFiles;
+
+	protected boolean encodeZeroIdsAsNull;
 
 	/**
 	 * Constructs a new {@code JsonCodec} with the specified parameters.
@@ -94,6 +98,15 @@ public class JsonCodec extends Codec {
 	 */
 	public JsonObject unwrap() {
 		return wrapped;
+	}
+
+	public boolean encodeZeroIdsAsNull() {
+		return encodeZeroIdsAsNull;
+	}
+
+	public JsonCodec setEncodeZeroIdsAsNull(boolean value) {
+		encodeZeroIdsAsNull = value;
+		return this;
 	}
 
 	@Override
@@ -170,7 +183,12 @@ public class JsonCodec extends Codec {
 	@Override
 	public UUID readUUID(@Nullable String key) {
 		checkRead();
-		return UUID.fromString(readString(Objects.requireNonNull(key, "key")));
+		Objects.requireNonNull(key, "key");
+
+		if (encodeZeroIdsAsNull && (!wrapped.has(key) || wrapped.get(key).isJsonNull()))
+			return ZERO_UUID;
+
+		return UUID.fromString(readString(key));
 	}
 
 	@Override
@@ -211,7 +229,7 @@ public class JsonCodec extends Codec {
 	public <T> List<T> readListOf(@Nullable String key, Function<SequenceDecoder, T> reader) {
 		checkRead();
 		final JsonArray arr = wrapped.getAsJsonArray(Objects.requireNonNull(key, "key"));
-		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.READ_ONLY, formatVersion());
+		final JsonArrayCodec codec = popArray(arr);
 		final List<T> ret = new ArrayList<>(arr.size());
 
 		for (int i = 0; i < arr.size(); i++)
@@ -223,7 +241,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> T readObject(@Nullable String key, Function<Decoder, T> reader) {
 		checkRead();
-		return reader.apply(new JsonCodec(wrapped.getAsJsonObject(key), externalFiles, mode, formatVersion()));
+		return reader.apply(popObject(wrapped.getAsJsonObject(key)));
 	}
 
 	@Override
@@ -318,7 +336,12 @@ public class JsonCodec extends Codec {
 	@Override
 	public void writeUUID(@Nullable String key, UUID value) {
 		checkWrite();
-		writeString(Objects.requireNonNull(key, "key"), value.toString());
+		Objects.requireNonNull(key, "key");
+
+		if (encodeZeroIdsAsNull && value.equals(ZERO_UUID))
+			wrapped.add(key, JsonNull.INSTANCE);
+		else
+			writeString(key, value.toString());
 	}
 
 	@Override
@@ -354,7 +377,7 @@ public class JsonCodec extends Codec {
 	public <T> void writeListOf(@Nullable String key, Collection<T> value, BiConsumer<SequenceEncoder, T> writer) {
 		checkWrite();
 		final JsonArray arr = new JsonArray(value.size());
-		final JsonArrayCodec codec = new JsonArrayCodec(arr, externalFiles, CodecMode.WRITE_ONLY, formatVersion());
+		final JsonArrayCodec codec = popArray(arr);
 
 		for (T v : value)
 			writer.accept(codec, Objects.requireNonNull(v));
@@ -365,7 +388,7 @@ public class JsonCodec extends Codec {
 	@Override
 	public <T> void writeObject(@Nullable String key, T value, BiConsumer<T, Encoder> writer) {
 		checkWrite();
-		final JsonCodec codec = new JsonCodec(externalFiles, formatVersion());
+		final JsonCodec codec = popObject(null);
 		writer.accept(value, codec);
 		wrapped.add(key, codec.wrapped);
 	}
@@ -422,5 +445,17 @@ public class JsonCodec extends Codec {
 	 */
 	protected void checkWrite() {
 		if (!mode.canWrite()) throw new UnsupportedOperationException("Codec is read-only");
+	}
+
+	protected JsonCodec popObject(@Nullable JsonObject wrapped) {
+		final JsonCodec ret = wrapped == null ? new JsonCodec(externalFiles, formatVersion()) : new JsonCodec(wrapped, externalFiles, mode, formatVersion());
+		ret.encodeZeroIdsAsNull = encodeZeroIdsAsNull;
+		return ret;
+	}
+
+	protected JsonArrayCodec popArray(JsonArray wrapped) {
+		final JsonArrayCodec ret = new JsonArrayCodec(wrapped, externalFiles, mode, formatVersion());
+		ret.encodeZeroIdsAsNull = encodeZeroIdsAsNull;
+		return ret;
 	}
 }

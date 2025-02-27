@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.FurblorbParsingException;
+import net.syntactickitsune.furblorb.io.codec.JsonCodec;
 
 /**
  * Various {@link Furball}-related utilities.
@@ -49,5 +50,9 @@ public final class FurballUtil {
 			to.writeObject(key, value, writer);
 		else
 			to.writeOptionalObject(key, value, writer);
+	}
+
+	public static void initializeJsonCodec(JsonCodec codec) {
+		codec.setEncodeZeroIdsAsNull(codec.formatVersion() >= 21);
 	}
 }

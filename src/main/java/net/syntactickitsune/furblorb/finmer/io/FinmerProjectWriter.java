@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonWriter;
 
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.finmer.asset.FurballAsset;
 import net.syntactickitsune.furblorb.finmer.io.FinmerProjectReader.ExtendedExternalFileHandler;
@@ -39,7 +40,7 @@ import net.syntactickitsune.furblorb.io.codec.JsonCodec;
  */
 public final class FinmerProjectWriter {
 
-	static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+	static final Gson GSON = new GsonBuilder().disableHtmlEscaping().serializeNulls().setPrettyPrinting().create();
 
 	private final ExtendedExternalFileHandler externalFiles;
 
@@ -83,6 +84,7 @@ public final class FinmerProjectWriter {
 
 	private void writeProjectFile(Furball furball) {
 		final JsonCodec codec = new JsonCodec(externalFiles, furball.meta.formatVersion);
+		FurballUtil.initializeJsonCodec(codec);
 
 		furball.meta.write(codec);
 
@@ -104,6 +106,7 @@ public final class FinmerProjectWriter {
 
 		for (FurballAsset asset : furball.assets) {
 			final JsonCodec codec = new JsonCodec(externalFiles, furball.meta.formatVersion);
+			FurballUtil.initializeJsonCodec(codec);
 			asset.writeWithId(codec);
 			externalFiles.writeExternalFile(asset.filename + ".json", toBytes(codec.unwrap()));
 		}

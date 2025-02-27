@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import net.syntactickitsune.furblorb.finmer.Furball;
 import net.syntactickitsune.furblorb.finmer.FurballDependency;
 import net.syntactickitsune.furblorb.finmer.FurballMetadata;
+import net.syntactickitsune.furblorb.finmer.FurballUtil;
 import net.syntactickitsune.furblorb.finmer.FurblorbUtil;
 import net.syntactickitsune.furblorb.io.ExternalFileHandler;
 import net.syntactickitsune.furblorb.io.FurblorbException;
@@ -74,6 +75,7 @@ public final class FinmerProjectReader {
 
 		final JsonObject proj = FurblorbUtil.readJson(externalFiles.readProjectFile());
 		final JsonCodec projCodec = new JsonCodec(proj, externalFiles, CodecMode.READ_ONLY, proj.get("FormatVersion").getAsByte());
+		FurballUtil.initializeJsonCodec(projCodec);
 		final FurballMetadata meta = readMetadata(projCodec);
 		final Furball furball = new Furball(meta);
 
@@ -90,6 +92,7 @@ public final class FinmerProjectReader {
 			try {
 				final JsonObject obj = readJson(asset);
 				final JsonCodec codec = new JsonCodec(obj, externalFiles, CodecMode.READ_ONLY, meta.formatVersion);
+				FurballUtil.initializeJsonCodec(codec);
 				furball.assets.add(FurballSerializables.read(codec));
 			} catch (Exception e) {
 				throw new FurblorbException("Exception reading asset " + asset, e);
