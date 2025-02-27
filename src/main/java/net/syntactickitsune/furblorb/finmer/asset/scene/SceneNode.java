@@ -148,7 +148,7 @@ public final class SceneNode implements IFurballSerializable {
 					compassTarget = in.readUUID("CompassLinkScene");
 				}
 				case PATCH -> {
-					patch = in.readObject("PatchData", FurballSerializables::read);
+					patch = in.readObject("Patch", FurballSerializables::read);
 					props = EnumSet.copyOf(props);
 					props.addAll(patch.getAdditionalProperties());
 				}

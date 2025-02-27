@@ -14,7 +14,7 @@ import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 import net.syntactickitsune.furblorb.io.INamedEnum;
 
-@RegisterSerializable(value = "PatchTypeReplaceNode", since = 21)
+@RegisterSerializable(value = "ScenePatchReplaceNode", since = 21)
 public final class ReplaceNodePatch extends ScenePatch {
 
 	public String target = "";
