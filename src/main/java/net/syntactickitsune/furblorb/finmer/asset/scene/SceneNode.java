@@ -249,12 +249,12 @@ public final class SceneNode implements IFurballSerializable {
 				&& Objects.equals(key, a.key) && Objects.equals(title, a.title) && Objects.equals(tooltip, a.tooltip)
 				&& Objects.equals(compassTarget, a.compassTarget) && Objects.equals(linkTarget, a.linkTarget)
 				&& Objects.equals(onTrigger, a.onTrigger) && Objects.equals(displayTest, a.displayTest)
-				&& Objects.equals(children, a.children);
+				&& Objects.equals(patch, a.patch) && Objects.equals(children, a.children);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(type, key, title, tooltip, highlight, buttonWidth, compassLink, compassTarget, linkTarget, onTrigger, displayTest, children);
+		return Objects.hash(type, key, title, tooltip, highlight, buttonWidth, compassLink, compassTarget, linkTarget, onTrigger, displayTest, patch, children);
 	}
 
 	/**

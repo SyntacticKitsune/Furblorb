@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.finmer.asset.scene.patch;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,5 +33,17 @@ public final class RemoveNodePatch extends ScenePatch {
 	@Override
 	public Set<Properties> getAdditionalProperties() {
 		return Set.of();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof RemoveNodePatch r)) return false;
+		return Objects.equals(target, r.target);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(target);
 	}
 }

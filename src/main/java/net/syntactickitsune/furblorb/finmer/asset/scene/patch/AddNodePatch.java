@@ -1,6 +1,7 @@
 package net.syntactickitsune.furblorb.finmer.asset.scene.patch;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,6 +36,18 @@ public final class AddNodePatch extends ScenePatch {
 	@Override
 	public Set<Properties> getAdditionalProperties() {
 		return EnumSet.of(Properties.CHILDREN);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof AddNodePatch a)) return false;
+		return Objects.equals(mode, a.mode) && Objects.equals(target, a.target);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(target, mode);
 	}
 
 	public static LegacyAddPatch readLegacyPatch(Decoder in) {

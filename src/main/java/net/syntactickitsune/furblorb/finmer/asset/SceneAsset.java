@@ -196,7 +196,7 @@ public final class SceneAsset extends FurballAsset {
 		if (!(obj instanceof SceneAsset a)) return false;
 		return id.equals(a.id) && Objects.equals(filename, a.filename) && patch == a.patch
 				&& gameStart == a.gameStart && Objects.equals(gameStartDescription, a.gameStartDescription)
-				&& Objects.equals(injectionTargetScene, a.injectionTargetScene)
+				&& Objects.equals(injectionTargetScene, a.injectionTargetScene) && Objects.equals(legacyPatch, a.legacyPatch)
 				&& Objects.equals(onLeave, a.onLeave) && Objects.equals(onEnter, a.onEnter) && Objects.equals(head, a.head)
 				&& Objects.equals(root, a.root);
 	}
@@ -204,6 +204,7 @@ public final class SceneAsset extends FurballAsset {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, filename, root, head, onEnter, onLeave,
-				gameStart, patch, injectionTargetScene, gameStartDescription);
+				gameStart, patch, injectionTargetScene, legacyPatch,
+				gameStartDescription);
 	}
 }
