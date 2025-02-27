@@ -3,12 +3,14 @@ package net.syntactickitsune.furblorb.finmer.script.visual.expression;
 import java.util.Objects;
 
 import net.syntactickitsune.furblorb.finmer.io.IFurballSerializable;
+import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 import net.syntactickitsune.furblorb.io.Decoder;
 import net.syntactickitsune.furblorb.io.Encoder;
 
 /**
  * Represents an {@code int} expression which may be a literal {@code int}, a variable reference, or a script.
  */
+@RegisterSerializable("ValueWrapperInt")
 public final class IntExpression implements IFurballSerializable {
 
 	/**
@@ -30,6 +32,10 @@ public final class IntExpression implements IFurballSerializable {
 	 * Constructs a new {@code IntExpression} with default values.
 	 */
 	public IntExpression() {}
+
+	public IntExpression(int value) {
+		literal = value;
+	}
 
 	/**
 	 * Decodes an {@code IntExpression} from the specified {@code Decoder}.
