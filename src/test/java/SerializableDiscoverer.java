@@ -13,7 +13,7 @@ import net.syntactickitsune.furblorb.finmer.io.RegisterSerializable;
 final class SerializableDiscoverer {
 
 	public static void main(String[] args) {
-		final Reflections refs = new Reflections("net.syntactickitsune.furblorb.api");
+		final Reflections refs = new Reflections("net.syntactickitsune.furblorb.finmer");
 
 		final Set<Class<?>> serializables = refs.get(Scanners.SubTypes
 				.of(IFurballSerializable.class).asClass());

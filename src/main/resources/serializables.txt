@@ -4,6 +4,9 @@ net.syntactickitsune.furblorb.finmer.asset.JournalAsset
 net.syntactickitsune.furblorb.finmer.asset.SceneAsset
 net.syntactickitsune.furblorb.finmer.asset.ScriptAsset
 net.syntactickitsune.furblorb.finmer.asset.StringTableAsset
+net.syntactickitsune.furblorb.finmer.asset.scene.patch.AddNodePatch
+net.syntactickitsune.furblorb.finmer.asset.scene.patch.RemoveNodePatch
+net.syntactickitsune.furblorb.finmer.asset.scene.patch.ReplaceNodePatch
 net.syntactickitsune.furblorb.finmer.component.buff.Buffs$AttackDice
 net.syntactickitsune.furblorb.finmer.component.buff.Buffs$DefenseDice
 net.syntactickitsune.furblorb.finmer.component.buff.Buffs$GrappleDice
@@ -18,7 +21,9 @@ net.syntactickitsune.furblorb.finmer.script.ExternalScript
 net.syntactickitsune.furblorb.finmer.script.InlineScript
 net.syntactickitsune.furblorb.finmer.script.VisualActionScript
 net.syntactickitsune.furblorb.finmer.script.VisualConditionScript
+net.syntactickitsune.furblorb.finmer.script.visual.expression.IntExpression
 net.syntactickitsune.furblorb.finmer.script.visual.impl.block.CombatBeginStatement
+net.syntactickitsune.furblorb.finmer.script.visual.impl.block.ForLoopStatement
 net.syntactickitsune.furblorb.finmer.script.visual.impl.block.IfStatement
 net.syntactickitsune.furblorb.finmer.script.visual.impl.block.LoopStatement
 net.syntactickitsune.furblorb.finmer.script.visual.impl.expression.CombatParticipantDeadExpression
