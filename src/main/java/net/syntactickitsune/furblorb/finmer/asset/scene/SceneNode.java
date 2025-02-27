@@ -27,7 +27,6 @@ import net.syntactickitsune.furblorb.io.INamedEnum;
 /**
  * Represents an individual node in a {@code SceneAsset}'s node tree.
  */
-@RegisterSerializable(value = "SceneNode", since = 21) // Technically made serializable in 20, but then it was moved in 21...
 public final class SceneNode implements IFurballSerializable {
 
 	/**
