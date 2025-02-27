@@ -85,7 +85,22 @@ final class FurblorbTest {
 
 	@Test
 	void testFormat21Furball() { // Furball → Furball
-		doFurball2FurballTest("/Core.Format21.3bd8bc4.furball", (byte) 21, 0, 175);
+		doFurball2FurballTest("/Core.Format21.b0d4ed4.furball", (byte) 21, 0, 175);
+	}
+
+	@TestFactory
+	List<DynamicTest> testFormat21Project() { // Project → Project
+		return doProject2ProjectTest("Core.Format21.b0d4ed4.zip", "Core");
+	}
+
+	@TestFactory
+	List<DynamicTest> testFormat21Furball2Project() { // Furball → Project
+		return doFurball2ProjectTest("Core.Format21.b0d4ed4.zip", "/Core.Format21.b0d4ed4.furball", "Core");
+	}
+
+	@TestFactory
+	List<DynamicTest> testFormat21Project2Furball() { // Project → Furball
+		return doProject2FurballTest("Core.Format21.b0d4ed4.zip", "/Core.Format21.b0d4ed4.furball", "Core");
 	}
 
 	@Test
